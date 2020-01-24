@@ -2,7 +2,7 @@
 {todo: add small blurb}
 
 # Important Document Links
-{todo: link vision satement}
+* [Vision](https://code.cs.umanitoba.ca/comp3350-winter2020/habit-tracker-13/blob/master/Vision.md)
 
 # Iterations
 * [Iteration #1](https://code.cs.umanitoba.ca/comp3350-winter2020/habit-tracker-13/-/milestones/1)
