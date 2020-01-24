@@ -16,7 +16,7 @@ Users will also be able to combine existing habits together so that the app can 
 
 Unlike other progress tracking apps on the market, the Habit Tracker will feature the ability to adaptively suggest habits to add to the users’ schedule. Habits will be suggested based on a few criteria. Habits that are scheduled to occur multiple times during a week that have not been completed will be suggested to fill the free time of the user. If the user shows the preference to complete habits that belong to a certain habit group, then another habit belonging to the same group would be suggested to fill the free time, and habits trends will be extracted from the user’s history to suggest the best weekly/monthly schedule that the user enjoys and is able to semi-successfully complete.
 
-# Measurement of success
+# Measurement of Success
 The success of the app will be measured through a few criteria. The users will be requested to express their opinion about the application. This user feedback will consist of how usable the app is and if they are satisfied with how demanding the app is to develop habits. They will be asked to rate it out of five stars and the team will aim to keep an average above 3.5. Secondly, user statistics will be monitored to make sure that users use the applications daily, are actually developing habits over months of use, and that the app is helping users be more content with their daily schedule (this will be done through the analysis of user notes). Success will be when habits are being completed consistently over months of time, and users increase or stay consistent in their positive emotion from the days tasks.
 
 
