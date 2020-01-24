@@ -1,4 +1,4 @@
-# Our Vsion
+# Our Vision
 
 The Habit Tracker will be an adaptive and personalized scheduling app that keeps up with users’ changing and complex schedules to develop, control, and predict habits to form a more productive and healthy lifestyle.
 
