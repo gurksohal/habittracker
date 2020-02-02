@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -44,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
+                User user = new User("userA");
+                nextActivity.putExtra("user",user);
                 startActivity(nextActivity);
             }
         });
