@@ -24,8 +24,8 @@ public class Habit {
         return weeklyAmount;
     }
 
-    public int getCompletedWeeklyAmount() {
-        return completedWeeklyAmount;
+    public boolean isCompleted() {
+        return completedWeeklyAmount >= weeklyAmount;
     }
 
     public User getUser() {

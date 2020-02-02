@@ -17,7 +17,7 @@ public class HabitsStub implements HabitsPersistence {
         habits.add(new Habit("run",2,0, new User("userA")));
     }
     @Override
-    public List<Habit> getUserHabits(User user) {
+    public ArrayList<Habit> getUserHabits(User user) {
         ArrayList<Habit> userHabits = new ArrayList<>();
         for(Habit habit : habits){
             if(habit.getUser().equals(user)){

@@ -23,7 +23,6 @@ import comp3350.habittracker.R;
 
 public class AddHabitActivity extends AppCompatActivity {
 
-    private HabitManager habitManager;
     private User user;
     private AlertDialog.Builder builder;
 
@@ -37,7 +36,6 @@ public class AddHabitActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
 
-        habitManager = new HabitManager();
         setSpinnerText();
         configAddButton(); //attach listener
     }
@@ -60,7 +58,7 @@ public class AddHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String habitName = txtHabitName.getText().toString();
                 String timesPerWeek = dropdown.getSelectedItem().toString();
-                if(habitManager.saveNewHabit(habitName,timesPerWeek,user)){
+                if(HabitManager.saveNewHabit(habitName,timesPerWeek,user)){
                     finish();
                 }else{
                     builder.setMessage("Unable to save habit!").setTitle("Error!");
