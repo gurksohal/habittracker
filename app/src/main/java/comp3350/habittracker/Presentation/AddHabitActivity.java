@@ -59,6 +59,7 @@ public class AddHabitActivity extends AppCompatActivity {
                 String habitName = txtHabitName.getText().toString();
                 String timesPerWeek = dropdown.getSelectedItem().toString();
                 if(HabitManager.saveNewHabit(habitName,timesPerWeek,user)){
+                    setResult(RESULT_OK,new Intent());
                     finish(); //close activity, returns back to the home screen
                 }else{ //error while creating the habit
                     builder.setMessage("Unable to save habit!").setTitle("Error!");

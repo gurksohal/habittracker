@@ -3,6 +3,7 @@ package comp3350.habittracker.Presentation;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,7 @@ import comp3350.habittracker.R;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int EDIT_ACTIVITY_ID = 0;
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
@@ -51,6 +53,14 @@ public class HomeActivity extends AppCompatActivity {
         configCalendar(); //attach listener to calendarView
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDIT_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
+            habitList.updateHabitList();
+            reloadList();
+        }
+    }
+
     //launch addHabit activity, and pass the user object to it
     private void configAddButton(){
         btnAddHabit = findViewById(R.id.btnAddHabit);
@@ -59,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
                 nextActivity.putExtra("user",user);
-                startActivity(nextActivity);
+                startActivityForResult(nextActivity,EDIT_ACTIVITY_ID);
             }
         });
     }
@@ -107,9 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         //TODO: listener to delete/edit a habit
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long id) {
-
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 Toast.makeText(HomeActivity.this, "Long Click", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -117,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //load the uncompleted habits for each day
-    private void reloadList(){
+    public void reloadList(){
         ListView list = findViewById(R.id.listView);
         ArrayList<Habit> habits = habitList.getUncompletedHabits();
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
