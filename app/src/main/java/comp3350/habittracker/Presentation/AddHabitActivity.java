@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,12 +31,13 @@ public class AddHabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_habit);
         builder = new AlertDialog.Builder(this);
 
-        //get current user
+        //get current user instance from homepage
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
 
+        //attach listener
         setSpinnerText();
-        configAddButton(); //attach listener
+        configAddButton();
     }
 
     //set the text style for the dropdown
@@ -59,8 +59,8 @@ public class AddHabitActivity extends AppCompatActivity {
                 String habitName = txtHabitName.getText().toString();
                 String timesPerWeek = dropdown.getSelectedItem().toString();
                 if(HabitManager.saveNewHabit(habitName,timesPerWeek,user)){
-                    finish();
-                }else{
+                    finish(); //close activity, returns back to the home screen
+                }else{ //error while creating the habit
                     builder.setMessage("Unable to save habit!").setTitle("Error!");
                     AlertDialog alert = builder.create();
                     alert.setTitle("Error!");

@@ -17,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
@@ -45,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
         habitList = new HabitListManager(user);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-
         txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
 
         configList(); //get today habits and attach listener
@@ -53,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         configCalendar(); //attach listener to calendarView
     }
 
+    //launch addHabit activity, and pass the user object to it
     private void configAddButton(){
         btnAddHabit = findViewById(R.id.btnAddHabit);
         btnAddHabit.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
                 //Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
                 String sCurrentDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                 txtSelectedDate.setText("Today's Date: " + sCurrentDate);
-                reloadList();
+                reloadList(); //update the list with the correct habits
             }
         });
     }
@@ -96,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
-                HabitManager.completeHabit(selected,user);
+                habitList.completeHabit(selected);
                 Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
                 toast.show();
 
@@ -105,6 +104,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: listener to delete/edit a habit
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -116,9 +116,10 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    //load the uncompleted habits for each day
     private void reloadList(){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = habitList.getDailyHabits();
+        ArrayList<Habit> habits = habitList.getUncompletedHabits();
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);

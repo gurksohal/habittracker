@@ -1,15 +1,12 @@
 package comp3350.habittracker.DomainObjects;
 
-
-import android.os.Parcel;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
     private String username;
 
-    public User(String uname){
-        username = uname;
+    public User(String userName){
+        username = userName;
     }
 
     public String getUsername() {

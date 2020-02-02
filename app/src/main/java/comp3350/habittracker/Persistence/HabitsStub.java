@@ -16,6 +16,7 @@ public class HabitsStub implements HabitsPersistence {
         habits.add(new Habit("read",7,0, new User("userA")));
         habits.add(new Habit("run",2,0, new User("userA")));
     }
+
     @Override
     public ArrayList<Habit> getUserHabits(User user) {
         ArrayList<Habit> userHabits = new ArrayList<>();
@@ -43,5 +44,11 @@ public class HabitsStub implements HabitsPersistence {
             returnValue = true;
         }
         return returnValue;
+    }
+
+    @Override
+    public boolean update(Habit habit) {
+        deleteHabit(habit);
+        return addHabit(habit);
     }
 }

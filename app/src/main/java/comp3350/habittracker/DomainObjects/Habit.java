@@ -2,7 +2,7 @@ package comp3350.habittracker.DomainObjects;
 
 import androidx.annotation.Nullable;
 
-
+//represents a habit
 public class Habit {
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
@@ -36,6 +36,7 @@ public class Habit {
         return user;
     }
 
+    //two habits are equals if they have the same name and user
     @Override
     public boolean equals(@Nullable Object obj) {
         boolean returnValue = false;
