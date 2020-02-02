@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
+    private String selectedDate;
 
     private User user; //fake user
     private HabitListManager habitList;
@@ -46,7 +47,8 @@ public class HomeActivity extends AppCompatActivity {
         habitList = new HabitListManager(user);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-        txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
+        selectedDate = getCurrentDate();
+        txtSelectedDate.setText("Today's Date: " + selectedDate); //set date field to show current date
 
         configList(); //get today habits and attach listener
         configAddButton(); //attach listener to add button
@@ -57,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == EDIT_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
             habitList.updateHabitList();
-            reloadList();
+            reloadList(selectedDate);
         }
     }
 
@@ -82,9 +84,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 //Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
-                String sCurrentDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                txtSelectedDate.setText("Today's Date: " + sCurrentDate);
-                reloadList(); //update the list with the correct habits
+                selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                txtSelectedDate.setText("Today's Date: " + selectedDate);
+                reloadList(selectedDate); //update the list with the correct habits
             }
         });
     }
@@ -99,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void configList(){
         ListView list = findViewById(R.id.listView);
-        reloadList();
+        reloadList(selectedDate);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                 toast.show();
 
                 //reload the habit list
-                reloadList();
+                reloadList(selectedDate);
             }
         });
 
@@ -125,9 +127,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //load the uncompleted habits for each day
-    public void reloadList(){
+    public void reloadList(String date){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = habitList.getUncompletedHabits();
+        ArrayList<Habit> habits = habitList.getUncompletedHabits(date);
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);

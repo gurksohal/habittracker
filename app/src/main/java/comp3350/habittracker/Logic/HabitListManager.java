@@ -19,7 +19,7 @@ public class HabitListManager {
     }
 
     //return the uncompleted habits for selected week
-    public ArrayList<Habit> getUncompletedHabits(){
+    public ArrayList<Habit> getUncompletedHabits(String date){
         ArrayList<Habit> returnHabits = new ArrayList<>();
         for(Habit habit : habits){
             if(!habit.isCompleted()){

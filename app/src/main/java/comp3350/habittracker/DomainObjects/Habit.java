@@ -32,6 +32,14 @@ public class Habit {
         return completedWeeklyAmount >= weeklyAmount;
     }
 
+    public String getLastCompletedDate() {
+        return lastCompletedDate;
+    }
+
+    public void clearCompletedAmout(){
+        completedWeeklyAmount = 0;
+    }
+
     public void complete(){
         //set last completed date
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
