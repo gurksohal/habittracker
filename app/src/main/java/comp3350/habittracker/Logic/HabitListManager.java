@@ -48,6 +48,15 @@ public class HabitListManager {
             }
         }
     }
+    //returns a habit from the habitList that matches the given String
+    public Habit getHabit(String name){
+        Habit hRetrieved = null;
+        for(Habit habit: habits){
+            if(habit.getHabitName().equals(name))
+                hRetrieved = habit;
+        }
+        return hRetrieved;
+    }
 
     public void updateHabitList(){
         habits = HabitManager.getHabits(user);

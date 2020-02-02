@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +28,7 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.R;
+import comp3350.habittracker.Persistence.HabitsStub;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -36,13 +40,16 @@ public class HomeActivity extends AppCompatActivity {
     private User user; //fake user
     private HabitListManager habitList;
 
+    private HabitManager habitManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_main);
 
         user = new User("userA");
-        new HabitManager(); //create stub database
+        habitManager = new HabitManager(); //create stub database
         habitList = new HabitListManager(user);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
@@ -113,12 +120,13 @@ public class HomeActivity extends AppCompatActivity {
                 reloadList();
             }
         });
-
-        //TODO: listener to delete/edit a habit
+        //long click for edit/remove habit
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                Toast.makeText(HomeActivity.this, "Long Click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeActivity.this, "Long Click", Toast.LENGTH_SHORT).show();
+                String sSelectedHabit = (String)arg0.getItemAtPosition(pos);
+                showAlertDialog(sSelectedHabit);
                 return true;
             }
         });
@@ -132,5 +140,55 @@ public class HomeActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);
     }
+
+    //Creates alertDialogs for edit and remove habit options
+    public void showAlertDialog(String s){
+        //Habit clicked:
+        final Habit hClickedHabit = habitList.getHabit(s);
+        //Build alert dialogs
+        final AlertDialog.Builder assurance = new AlertDialog.Builder(this);
+        assurance.setMessage("Are you sure you want to delete this habit?");
+        final AlertDialog.Builder habitEditBuilder = new AlertDialog.Builder(this);
+        habitEditBuilder.setMessage("To edit or remove a habit, click one of the buttons below");
+        //Set pos/neg buttons; pos = edit, neg = remove
+        habitEditBuilder.setPositiveButton("Edit habit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //switch activity to add habit activity
+                Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
+                nextActivity.putExtra("user",user);
+                startActivityForResult(nextActivity,EDIT_ACTIVITY_ID);
+                //updates habitListView to display changes to habit
+                habitManager.delete(hClickedHabit); //delete old habit
+                habitList.updateHabitList();
+                reloadList();
+                //Toast.makeText(HomeActivity.this, "Habit was edited", Toast.LENGTH_LONG).show();
+            }
+        });
+        habitEditBuilder.setNegativeButton("Remove habit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                assurance.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //remove habit from list
+                        habitManager.delete(hClickedHabit); //is being deleted from database
+                        habitList.updateHabitList();
+                        reloadList();
+                        Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
+                    }
+                });
+                assurance.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        assurance.setCancelable(true);
+                        Toast.makeText(HomeActivity.this, "Habit was unchanged", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                assurance.create().show();
+            }
+        });
+       habitEditBuilder.create().show();
+    }//end of showAlertDialog
 
 }
