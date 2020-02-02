@@ -3,10 +3,15 @@ package comp3350.habittracker.Presentation;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private ListView habbitList;
+    private FloatingActionButton btnAddHabit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +32,27 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home_main);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-        calendarView = findViewById(R.id.calendarView);
         habbitList = findViewById(R.id.listView);
+        txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
+        configAddButton(); //attach listener to add button
+        configCalendar(); //attach listener to calendarView
+    }
 
-        txtSelectedDate.setText("Today's Date: " + getCurrentDate());
+    private void configAddButton(){
+        btnAddHabit = findViewById(R.id.btnAddHabit);
+        btnAddHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
+                startActivity(nextActivity);
+            }
+        });
+    }
 
+    private void configCalendar() {
+        calendarView = findViewById(R.id.calendarView);
+
+        //fire's when selected date on the calendarView changes.
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -41,7 +63,9 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private String getCurrentDate(){
+    //current date doesn't get set on launch since, the date change event hasn't fired yet.
+    //So, manually set the current date
+    private String getCurrentDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
         return formatter.format(date);

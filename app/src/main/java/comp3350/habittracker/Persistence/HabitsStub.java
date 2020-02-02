@@ -35,6 +35,8 @@ public class HabitsStub implements HabitsPersistence {
 
     @Override
     public boolean addHabit(Habit habit) {
+        //only add to list, if the habit doesn't already exist
+        //two habits are the same if they have the same user, and name
         boolean returnValue = false;
         if(!habits.contains(habit)){
             habits.add(habit);
