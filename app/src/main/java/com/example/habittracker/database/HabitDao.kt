@@ -17,6 +17,8 @@ interface HabitDao {
     @Query("SELECT * FROM list_of_habit_table WHERE habitId = :key")
     fun get(key:Long): Habit
 
+    @Query("SELECT * FROM list_of_habit_table")
+    fun getAllHabits(): List<Habit>
 
 
 }
