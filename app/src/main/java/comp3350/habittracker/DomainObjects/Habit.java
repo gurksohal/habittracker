@@ -2,11 +2,15 @@ package comp3350.habittracker.DomainObjects;
 
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 //represents a habit
 public class Habit {
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
+    private String lastCompletedDate;
     private User user; //user who the habit belongs too
 
     public Habit(String name, int weeklyAmt, int completedWeekAmt, User u) {
@@ -29,6 +33,12 @@ public class Habit {
     }
 
     public void complete(){
+        //set last completed date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        lastCompletedDate = formatter.format(date);
+
+        //increase completed amount
         completedWeeklyAmount++;
     }
 
