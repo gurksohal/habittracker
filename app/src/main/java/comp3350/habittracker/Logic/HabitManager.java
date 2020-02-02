@@ -1,5 +1,7 @@
 package comp3350.habittracker.Logic;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class HabitManager {
         if(name.length() > 0){
             Habit habit = new Habit(name,perWeek,0,user);
             returnValue = db.addHabit(habit);
+            if(returnValue){
+                habits.add(habit); //update the list with the new habit
+            }
         }
         return returnValue;
     }
@@ -31,7 +36,7 @@ public class HabitManager {
         return db.getUserHabits(user);
     }
 
-    public static ArrayList<Habit> getDailyHabits(String date){
+    public static ArrayList<Habit> getDailyHabits(){
         ArrayList<Habit> returnHabits = new ArrayList<>();
         for(Habit habit : habits){
             if(!habit.isCompleted()){
@@ -47,6 +52,16 @@ public class HabitManager {
             returnNames.add(habit.getHabitName());
         }
         return returnNames;
+    }
+
+    public static void completeHabit(String name){
+        for(Habit habit: habits){
+            if(habit.getHabitName().equals(name)){
+                habit.complete();
+                Log.e("MAIN", habit.isCompleted() + "");
+                break;
+            }
+        }
     }
 
 }

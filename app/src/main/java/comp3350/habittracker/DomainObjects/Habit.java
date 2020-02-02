@@ -28,6 +28,10 @@ public class Habit {
         return completedWeeklyAmount >= weeklyAmount;
     }
 
+    public void complete(){
+        completedWeeklyAmount++;
+    }
+
     public User getUser() {
         return user;
     }

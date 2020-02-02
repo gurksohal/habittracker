@@ -45,9 +45,8 @@ public class HomeActivity extends AppCompatActivity {
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
         habbitList = findViewById(R.id.listView);
 
-        String todayDate = getCurrentDate();
-        txtSelectedDate.setText("Today's Date: " + todayDate); //set date field to show current date
-        populateList(todayDate); //get today habits
+        txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
+        populateList(); //get today habits
 
         configAddButton(); //attach listener to add button
         configCalendar(); //attach listener to calendarView
@@ -75,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
                 //Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
                 String sCurrentDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                 txtSelectedDate.setText("Today's Date: " + sCurrentDate);
+                populateList();
             }
         });
     }
@@ -87,9 +87,9 @@ public class HomeActivity extends AppCompatActivity {
         return formatter.format(date);
     }
 
-    private void populateList(String date){
+    private void populateList(){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = HabitManager.getDailyHabits(date);
+        ArrayList<Habit> habits = HabitManager.getDailyHabits();
         ArrayList<String> habitNames = HabitManager.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);
@@ -97,7 +97,10 @@ public class HomeActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(HomeActivity.this, "Click", Toast.LENGTH_SHORT).show();
+                String selected = (String) parent.getItemAtPosition(position);
+                HabitManager.completeHabit(selected);
+                Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
