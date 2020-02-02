@@ -22,6 +22,7 @@ import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.R;
 
@@ -29,10 +30,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView txtSelectedDate;
     private CalendarView calendarView;
-    private ListView habbitList;
     private FloatingActionButton btnAddHabit;
 
-    User user; //fake user
+    private User user; //fake user
+    private HabitListManager habitList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +41,14 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home_main);
 
         user = new User("userA");
-        new HabitManager(user); //create stub database
+        new HabitManager(); //create stub database
+        habitList = new HabitListManager(user);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-        habbitList = findViewById(R.id.listView);
 
         txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
-        populateList(); //get today habits
 
+        configList(); //get today habits and attach listener
         configAddButton(); //attach listener to add button
         configCalendar(); //attach listener to calendarView
     }
@@ -74,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
                 //Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
                 String sCurrentDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                 txtSelectedDate.setText("Today's Date: " + sCurrentDate);
-                populateList();
+                reloadList();
             }
         });
     }
@@ -87,20 +88,20 @@ public class HomeActivity extends AppCompatActivity {
         return formatter.format(date);
     }
 
-    private void populateList(){
+    private void configList(){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = HabitManager.getDailyHabits();
-        ArrayList<String> habitNames = HabitManager.getHabitNames(habits);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
-        list.setAdapter(adapter);
+        reloadList();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
-                HabitManager.completeHabit(selected);
+                HabitManager.completeHabit(selected,user);
                 Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
                 toast.show();
+
+                //reload the habit list
+                reloadList();
             }
         });
 
@@ -114,4 +115,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void reloadList(){
+        ListView list = findViewById(R.id.listView);
+        ArrayList<Habit> habits = habitList.getDailyHabits();
+        ArrayList<String> habitNames = habitList.getHabitNames(habits);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
+        list.setAdapter(adapter);
+    }
+
 }
