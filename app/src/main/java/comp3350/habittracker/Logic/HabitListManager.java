@@ -12,6 +12,7 @@ public class HabitListManager {
 
     private ArrayList<Habit> habits;
     private User user;
+
     public HabitListManager(User user){
         this.user = user;
         habits = HabitManager.getHabits(user);

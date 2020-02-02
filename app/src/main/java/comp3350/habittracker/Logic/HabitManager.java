@@ -1,7 +1,5 @@
 package comp3350.habittracker.Logic;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
@@ -9,7 +7,7 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.HabitsStub;
 
 //manage habits
-//add, remove, delete
+//add, remove, edit
 public class HabitManager {
 
     private static HabitsStub db;

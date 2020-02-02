@@ -13,11 +13,11 @@ public class Habit {
     private String lastCompletedDate;
     private User user; //user who the habit belongs too
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User u) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
-        user = u;
+        this.user = user;
     }
 
     public String getHabitName() {
