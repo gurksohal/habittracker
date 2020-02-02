@@ -10,9 +10,10 @@ import comp3350.habittracker.DomainObjects.User;
 //manage a list of one users habits
 public class HabitListManager {
 
-    private static ArrayList<Habit> habits;
-
+    private ArrayList<Habit> habits;
+    private User user;
     public HabitListManager(User user){
+        this.user = user;
         habits = HabitManager.getHabits(user);
     }
 
@@ -46,6 +47,10 @@ public class HabitListManager {
                 break;
             }
         }
+    }
+
+    public void updateHabitList(){
+        habits = HabitManager.getHabits(user);
     }
 
 }
