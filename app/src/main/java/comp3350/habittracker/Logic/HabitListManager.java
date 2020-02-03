@@ -15,6 +15,8 @@ public class HabitListManager {
     public HabitListManager(User user)throws ParseException{
         this.user = user;
         habits = HabitManager.getHabits(user);
+
+        //if in a new week, reset completed counter
         completedAmountCheck();
     }
 
@@ -22,6 +24,7 @@ public class HabitListManager {
     public ArrayList<Habit> getUncompletedHabits(String date)throws ParseException {
         ArrayList<Habit> returnHabits = new ArrayList<>();
         for(Habit habit : habits){
+            //habit is uncompleted if selected date is valid and isn't in current week, and habit completed amount hasn't reached the desired amount
             if(!HabitDateValidator.isCompleted(habit,date) && CalendarDateValidator.isValidDate(date)){
                 returnHabits.add(habit);
             }

@@ -23,6 +23,7 @@ import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.R;
@@ -112,12 +113,24 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
-                habitList.completeHabit(selected);
-                Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
-                toast.show();
+                Date selectDate = null;
+                Date currentDate = null;
 
-                //reload the habit list
-                reloadList(selectedDate);
+                try {
+                    selectDate = CalendarDateValidator.parseString(selectedDate);
+                    currentDate = CalendarDateValidator.getCurrentDate();
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+
+                if(selectDate.equals(currentDate)) {
+                    habitList.completeHabit(selected);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    //reload the habit list
+                    reloadList(selectedDate);
+                }
             }
         });
 
