@@ -29,6 +29,7 @@ public class HabitManager {
     public static boolean updateHabit(Habit habit){
         return db.update(habit);
     }
+    public static void delete(Habit habit){db.deleteHabit(habit);}
 
     //return all habits created by a user
     public static ArrayList<Habit> getHabits(User user){
