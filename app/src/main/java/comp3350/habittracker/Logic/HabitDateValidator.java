@@ -17,18 +17,24 @@ public class HabitDateValidator {
         return returnValue;
     }
 
-    public static void updateCompletedAmount(Habit habit)throws ParseException{
-        Date today = new Date();
-
+    public static boolean updateCompletedAmount(Habit habit)throws ParseException{
+        Date today = CalendarDateValidator.getCurrentDate();
+        boolean returnValue = false;
         //find the last day of the week in which this habit was last completeted
         //ex) lastCompletedDate = Wednesday of last week
         //endOfWeek = The following sunday
-        String endWeek = CalendarDateValidator.getEndOfCurrentWeek(habit.getLastCompletedDate());
-        Date endOfWeek = CalendarDateValidator.parseString(endWeek);
-        
-        //if a new week has started, reset completed amount
-        if(endOfWeek.before(today)){
-            habit.clearCompletedAmout();
+
+
+        if(habit.getLastCompletedDate() != null) {
+            String endWeek = CalendarDateValidator.getEndOfWeek(habit.getLastCompletedDate());
+            Date endOfWeek = CalendarDateValidator.parseString(endWeek);
+
+            //if a new week has started, reset completed amount
+            if (endOfWeek.before(today) && habit.getCompletedWeeklyAmount() != 0) {
+                habit.clearCompletedAmout();
+                returnValue = true;
+            }
         }
+        return returnValue;
     }
 }

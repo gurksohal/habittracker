@@ -1,7 +1,6 @@
 package comp3350.habittracker.Logic;
 
-import android.util.Log;
-
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
@@ -13,16 +12,17 @@ public class HabitListManager {
     private ArrayList<Habit> habits;
     private User user;
 
-    public HabitListManager(User user){
+    public HabitListManager(User user)throws ParseException{
         this.user = user;
         habits = HabitManager.getHabits(user);
+        completedAmountCheck();
     }
 
     //return the uncompleted habits for selected week
-    public ArrayList<Habit> getUncompletedHabits(String date){
+    public ArrayList<Habit> getUncompletedHabits(String date)throws ParseException {
         ArrayList<Habit> returnHabits = new ArrayList<>();
         for(Habit habit : habits){
-            if(!habit.isCompleted()){
+            if(!HabitDateValidator.isCompleted(habit,date) && CalendarDateValidator.isValidDate(date)){
                 returnHabits.add(habit);
             }
         }
@@ -52,6 +52,16 @@ public class HabitListManager {
 
     public void updateHabitList(){
         habits = HabitManager.getHabits(user);
+    }
+
+    //check if habit was completed in the last week,
+    //if so reset it's checked amount and update in the database
+    private void completedAmountCheck()throws ParseException{
+        for(Habit habit : habits){
+            if(HabitDateValidator.updateCompletedAmount(habit)){
+               HabitManager.updateHabit(habit);
+            }
+        }
     }
 
 }

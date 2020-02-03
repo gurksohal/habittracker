@@ -5,13 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import comp3350.habittracker.DomainObjects.Habit;
-
 public class CalendarDateValidator {
 
     //return the date for the end of current week
     //sunday is last of a week, monday being the first
-    public static String getEndOfCurrentWeek(String date)throws ParseException{
+    public static String getEndOfWeek(String date)throws ParseException{
         Date selectedDate = parseString(date);
         Calendar cal = Calendar.getInstance();
         cal.setTime(selectedDate);
@@ -21,7 +19,7 @@ public class CalendarDateValidator {
             int daysRemaining = (7 - day + 1);
             cal.add(Calendar.DAY_OF_YEAR, daysRemaining);
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(cal.getTime());
     }
 
@@ -29,10 +27,11 @@ public class CalendarDateValidator {
     public static boolean isCurrentWeek(String date)throws ParseException{
         boolean returnValue = false;
         if(isValidDate(date)) {
-            String endOfWeek = getEndOfCurrentWeek(date);
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            String endOfWeek = getEndOfWeek(format.format(getCurrentDate())); //end of current week
             Date endWeekDate = parseString(endOfWeek);
             Date selectedDate = parseString(date);
-            returnValue = selectedDate.before(endWeekDate);
+            returnValue = selectedDate.before(endWeekDate) || endWeekDate.equals(selectedDate);
         }
         return returnValue;
     }
@@ -42,13 +41,26 @@ public class CalendarDateValidator {
     public static boolean isValidDate(String date)throws ParseException {
         boolean returnValue = false;
         Date selectedDate = parseString(date);
-        if(selectedDate.equals(new Date()) || selectedDate.after(new Date())){
+        Date currentDate = getCurrentDate();
+        if(selectedDate.equals(currentDate) || selectedDate.after(currentDate)){
             returnValue = true;
         }
         return returnValue;
     }
 
     public static Date parseString(String date)throws ParseException{
-        return new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        Date returnValue = null;
+        if(date != null) {
+            returnValue = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        }
+        return returnValue;
+    }
+
+    public static Date getCurrentDate()throws ParseException{
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        return parseString(day + "/" + month + "/" + year);
     }
 }

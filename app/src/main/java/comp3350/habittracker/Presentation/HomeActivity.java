@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,8 +45,12 @@ public class HomeActivity extends AppCompatActivity {
 
         user = new User("userA");
         new HabitManager(); //create stub database
-        habitList = new HabitListManager(user);
 
+        try {
+            habitList = new HabitListManager(user);
+        }catch(ParseException e){
+
+        }
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
         selectedDate = getCurrentDate();
         txtSelectedDate.setText("Today's Date: " + selectedDate); //set date field to show current date
@@ -94,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
     //current date doesn't get set on launch since, the date change event hasn't fired yet.
     //So, manually set the current date
     private String getCurrentDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         return formatter.format(date);
     }
@@ -129,7 +134,14 @@ public class HomeActivity extends AppCompatActivity {
     //load the uncompleted habits for each day
     public void reloadList(String date){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = habitList.getUncompletedHabits(date);
+        ArrayList<Habit> habits;
+        try {
+            habits = habitList.getUncompletedHabits(date);
+        }catch(ParseException e){
+            habits = new ArrayList<>();
+            e.printStackTrace();
+        }
+
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);
