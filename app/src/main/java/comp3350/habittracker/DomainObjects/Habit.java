@@ -12,12 +12,14 @@ public class Habit {
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
     private String lastCompletedDate;
     private User user; //user who the habit belongs too
+    private String timeOfDay; //allows user to schedule habits based on time of day
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User u) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
-        user = u;
+        this.user = user;
+        timeOfDay = time;
     }
 
     public String getHabitName() {
@@ -28,8 +30,22 @@ public class Habit {
         return weeklyAmount;
     }
 
+    public String getTimeOfDay(){return timeOfDay;}
+
+    public int getCompletedWeeklyAmount() {
+        return completedWeeklyAmount;
+    }
+
     public boolean isCompleted() {
         return completedWeeklyAmount >= weeklyAmount;
+    }
+
+    public String getLastCompletedDate() {
+        return lastCompletedDate;
+    }
+
+    public void clearCompletedAmout(){
+        completedWeeklyAmount = 0;
     }
 
     public void complete(){

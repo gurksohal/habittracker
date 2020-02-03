@@ -1,7 +1,5 @@
 package comp3350.habittracker.Logic;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
@@ -9,7 +7,7 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.HabitsStub;
 
 //manage habits
-//add, remove, delete
+//add, remove, edit
 public class HabitManager {
 
     private static HabitsStub db;
@@ -18,11 +16,11 @@ public class HabitManager {
         db = new HabitsStub();
     }
 
-    public static boolean saveNewHabit(String name, String timesPerWeek, User user){
+    public static boolean saveNewHabit(String name, String timesPerWeek, User user, String timeOfDay){
         boolean returnValue = false;
         int perWeek = Integer.parseInt(timesPerWeek.substring(0,1));
         if(name.length() > 0){
-            Habit habit = new Habit(name,perWeek,0,user);
+            Habit habit = new Habit(name,perWeek,0,user, timeOfDay);
             returnValue = db.addHabit(habit);
         }
         return returnValue;

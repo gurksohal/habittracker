@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.R;
@@ -36,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
+    private String selectedDate;
 
     private User user; //fake user
     private HabitListManager habitList;
@@ -50,10 +53,14 @@ public class HomeActivity extends AppCompatActivity {
 
         user = new User("userA");
         habitManager = new HabitManager(); //create stub database
-        habitList = new HabitListManager(user);
+        try {
+            habitList = new HabitListManager(user);
+        }catch(ParseException e){
 
+        }
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-        txtSelectedDate.setText("Today's Date: " + getCurrentDate()); //set date field to show current date
+        selectedDate = getCurrentDate();
+        txtSelectedDate.setText("Today's Date: " + selectedDate); //set date field to show current date
 
         configList(); //get today habits and attach listener
         configAddButton(); //attach listener to add button
@@ -64,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == EDIT_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
             habitList.updateHabitList();
-            reloadList();
+            reloadList(selectedDate);
         }
     }
 
@@ -89,9 +96,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 //Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
-                String sCurrentDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                txtSelectedDate.setText("Today's Date: " + sCurrentDate);
-                reloadList(); //update the list with the correct habits
+                selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                txtSelectedDate.setText("Today's Date: " + selectedDate);
+                reloadList(selectedDate); //update the list with the correct habits
             }
         });
     }
@@ -99,25 +106,37 @@ public class HomeActivity extends AppCompatActivity {
     //current date doesn't get set on launch since, the date change event hasn't fired yet.
     //So, manually set the current date
     private String getCurrentDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         return formatter.format(date);
     }
 
     private void configList(){
         ListView list = findViewById(R.id.listView);
-        reloadList();
+        reloadList(selectedDate);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
-                habitList.completeHabit(selected);
-                Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
-                toast.show();
+                Date selectDate = null;
+                Date currentDate = null;
 
-                //reload the habit list
-                reloadList();
+                try {
+                    selectDate = CalendarDateValidator.parseString(selectedDate);
+                    currentDate = CalendarDateValidator.getCurrentDate();
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+
+                if(selectDate.equals(currentDate)) {
+                    habitList.completeHabit(selected);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    //reload the habit list
+                    reloadList(selectedDate);
+                }
             }
         });
         //long click for edit/remove habit
@@ -133,9 +152,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //load the uncompleted habits for each day
-    public void reloadList(){
+    public void reloadList(String date){
         ListView list = findViewById(R.id.listView);
-        ArrayList<Habit> habits = habitList.getUncompletedHabits();
+        ArrayList<Habit> habits;
+        try {
+            habits = habitList.getUncompletedHabits(date);
+        }catch(ParseException e){
+            habits = new ArrayList<>();
+            e.printStackTrace();
+        }
+
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);
@@ -161,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
                 //updates habitListView to display changes to habit
                 habitManager.delete(hClickedHabit); //delete old habit
                 habitList.updateHabitList();
-                reloadList();
+                reloadList(selectedDate);
                 //Toast.makeText(HomeActivity.this, "Habit was edited", Toast.LENGTH_LONG).show();
             }
         });
@@ -174,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
                         //remove habit from list
                         habitManager.delete(hClickedHabit); //is being deleted from database
                         habitList.updateHabitList();
-                        reloadList();
+                        reloadList(selectedDate);
                         Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
                     }
                 });
