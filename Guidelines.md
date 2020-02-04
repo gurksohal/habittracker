@@ -1,5 +1,5 @@
 # Variables 
-use Camel Case when necessary
+use **Camel Case** when necessary
 
 | Prefix | Type    | Example     |
 |--------|---------|-------------|
