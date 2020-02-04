@@ -4,25 +4,25 @@ use **Camel Case** when necessary
 | Prefix | Type    | Example     |
 |--------|---------|-------------|
 | `b`      | boolean | `bSuccess`    |
-| i      | integer | iCustomerID |
-| f      | float   | fTotalCost  |
-| s      | String  | sFirstName  |
-| l      | long    | lDistance   |
-| a      | array   | aReports    |
-| o      | Object  | oContact    |
+| `i`      | integer | `iCustomerID` |
+| `f`      | float   | `fTotalCost`  |
+| `s`      | String  | `sFirstName`  |
+| `l`      | long    | `lDistance`   |
+| `a`      | array   | `aReports`    |
+| `o`      | Object  | `oContact`    |
 
 # Design Elements (GUI) 
-use Camel Case when necessary
+use **Camel** Case when necessary
 
 | Prefix | Type       | Example     |
 |--------|------------|-----------|
-| btn    | button     | btnAccept   |
-| tgl    | toggle     | tglOff      |
-| txt    | Text Field | txtNotes    |
+| `btn`    | button     | `btnAccept`   |
+| `tgl`    | toggle     | `tglOff`      |
+| `txt`    | Text Field | `txtNotes`    |
 
 
 # Acceptable abbreviations 
-Num, Max, Min, Avg
+`Num`, `Max`, `Min`, `Avg`
 # Functions
 1. When naming a function, use a verb followed by an object to describe what the function does. For example, getClientData()
 2. Function names will begin with a word beginning with a lowercase letter and each consecutive word will begin with an uppercase letter. 
