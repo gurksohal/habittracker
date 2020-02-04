@@ -28,14 +28,14 @@ use **Camel Case** when necessary
 * Function names will begin with a word **beginning with a lowercase letter** and each consecutive word will begin with an uppercase letter. 
 * Block Comments should appear **before the function header** and should follow this outline, unless the function header fully describes its purpose:
 
-        ``` java
+       
         /*
          *  Function Name
          * Description of the function
          * Input Type
          * Output Type
          */
-         ```
+    
 * Functions should have only **one** `return` statement.
 * **Case statements** are allowed. 
 * For Loops
