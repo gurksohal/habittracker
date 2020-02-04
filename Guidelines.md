@@ -1,5 +1,5 @@
-# Design Standards
-Variables – use Camel Case when necessary
+#Variables 
+use Camel Case when necessary
 
 | Prefix | Type    | Example     |
 |--------|---------|-------------|
@@ -11,11 +11,13 @@ Variables – use Camel Case when necessary
 | a      | array   | aReports    |
 | o      | Object  | oContact    |
 
-Design Elements (GUI) – use Camel Case when necessary
-Prefix	     Type		Example
-btn	  button	 	btnAccept
-tgl	   toggle		tglOff
-txt	  Text Field	txtNotes
+# Design Elements (GUI) 
+use Camel Case when necessary
+| Prefix | Type       | Example   |
+|--------|------------|-----------|
+| btn    | button     | btnAccept |
+| tgl    | toggle     | tglOff    |
+| txt    | Text Field | txtNotes  |
 Acceptable abbreviations include: Num, Max, Min, Avg
 Functions
 When naming a function, use a verb followed by an object to describe what the function does. For example, getClientData()
