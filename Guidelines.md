@@ -46,7 +46,7 @@ use **Camel Case** when necessary
             //stuff
         }
         ```
-    or like:
+        or like:
     
         ```	java
         for(Object obj: objList){
