@@ -30,7 +30,7 @@ use **Camel Case** when necessary
 
        
         /*
-         *  Function Name
+         * Function Name
          * Description of the function
          * Input Type
          * Output Type
