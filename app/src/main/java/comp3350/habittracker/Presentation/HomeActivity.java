@@ -112,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void configList(){
         ListView list = findViewById(R.id.listView);
+        //habitList.sortHabits();
         reloadList(selectedDate);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

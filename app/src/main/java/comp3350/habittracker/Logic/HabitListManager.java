@@ -76,4 +76,10 @@ public class HabitListManager {
         }
     }
 
+    //TODO: sort habits by time of day
+    //sort habits by time of day
+    public void sortHabits(){
+
+    }
+
 }

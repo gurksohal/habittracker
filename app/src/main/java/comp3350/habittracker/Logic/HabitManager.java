@@ -16,11 +16,11 @@ public class HabitManager {
         db = new HabitsStub();
     }
 
-    public static boolean saveNewHabit(String name, String timesPerWeek, User user){
+    public static boolean saveNewHabit(String name, String timesPerWeek, User user, String timeOfDay, int timeAssoc){
         boolean returnValue = false;
         int perWeek = Integer.parseInt(timesPerWeek.substring(0,1));
         if(name.length() > 0){
-            Habit habit = new Habit(name,perWeek,0,user);
+            Habit habit = new Habit(name,perWeek,0,user, timeOfDay, timeAssoc);
             returnValue = db.addHabit(habit);
         }
         return returnValue;

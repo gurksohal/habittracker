@@ -10,10 +10,10 @@ public class HabitsStub implements HabitsPersistence {
     private ArrayList<Habit> habits;
     public HabitsStub(){
         habits = new ArrayList<>();
-        habits.add(new Habit("workout",5,3, new User("userA")));
-        habits.add(new Habit("piano",7,1, new User("userA")));
-        habits.add(new Habit("read",7,0, new User("userA")));
-        habits.add(new Habit("run",2,0, new User("userA")));
+        habits.add(new Habit("workout",5,3, new User("userA"),"Morning", 1));
+        habits.add(new Habit("piano",7,1, new User("userA"),"Afternoon",2));
+        habits.add(new Habit("read",7,0, new User("userA"),"Morning",1));
+        habits.add(new Habit("run",2,0, new User("userA"),"Evening",3));
     }
 
     @Override

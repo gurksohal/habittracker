@@ -37,6 +37,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
         //attach listener
         setSpinnerText();
+        setSpinnerTime();
         configAddButton();
     }
 
@@ -47,18 +48,36 @@ public class AddHabitActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
-
+    //sets the text style for the second dropdown
+    private void setSpinnerTime(){
+        Spinner timeSpinner = findViewById(R.id.spinnerTime);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.HabitTimes,R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        timeSpinner.setAdapter(adapter);
+    }
     private void configAddButton(){
         Button btnAddHabit = findViewById(R.id.btnAddHabit);
         final EditText txtHabitName = findViewById(R.id.txtHabitName);
         final Spinner dropdown = findViewById(R.id.spinner);
+        final Spinner dropdownTime = findViewById(R.id.spinnerTime);
 
         btnAddHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String habitName = txtHabitName.getText().toString();
                 String timesPerWeek = dropdown.getSelectedItem().toString();
-                if(HabitManager.saveNewHabit(habitName,timesPerWeek,user)){
+                String schedule = dropdownTime.getSelectedItem().toString();
+                int scheduleAssoc;
+                if(schedule.equals("Morning"))
+                    scheduleAssoc=1;
+                else if(schedule.equals("Afternoon"))
+                    scheduleAssoc=2;
+                else if(schedule.equals("Evening"))
+                    scheduleAssoc=3;
+                else
+                    scheduleAssoc=4;
+
+                if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){
                     setResult(RESULT_OK,new Intent());
                     finish(); //close activity, returns back to the home screen
                 }else{ //error while creating the habit
