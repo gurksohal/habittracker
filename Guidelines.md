@@ -58,7 +58,7 @@ use **Camel Case** when necessary
 # If Statements
 If statements will be written as follows: 
 ``` java
-averageNum(..){
+averageNum(){
     if (bool){ //inline comment, if necessary
         // stuff
     } else {
