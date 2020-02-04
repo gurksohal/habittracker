@@ -37,7 +37,7 @@ use **Camel Case** when necessary
          */
          ```
 * Functions should have only **one** `return` statement.
-* Case statements are allowed. 
+* **Case statements** are allowed. 
 * For Loops
     * Use the standard `i`, `j`, `k` loop variables. If there are more than 3 nested loops, continue naming the loop variables  alphabetically from `k`. 
     * For Loops will be written like: 
