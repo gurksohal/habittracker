@@ -3,7 +3,7 @@ use **Camel Case** when necessary
 
 | Prefix | Type    | Example     |
 |--------|---------|-------------|
-| b      | boolean | bSuccess    |
+| `b`      | boolean | `bSuccess`    |
 | i      | integer | iCustomerID |
 | f      | float   | fTotalCost  |
 | s      | String  | sFirstName  |
