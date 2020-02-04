@@ -9,5 +9,5 @@ Habit Tracker is an adaptive and personalized scheduling app that keeps up with 
 * [Iteration #2](https://code.cs.umanitoba.ca/comp3350-winter2020/habit-tracker-13/-/milestones/2)
 * [Iteration #3](https://code.cs.umanitoba.ca/comp3350-winter2020/habit-tracker-13/-/milestones/3)
 
-# Coding guidelines
-To do...
+# Coding standards
+* [Guidelines](https://code.cs.umanitoba.ca/comp3350-winter2020/habit-tracker-13/blob/master/Guidelines.md)
