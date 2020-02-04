@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private HabitManager habitManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
