@@ -25,8 +25,8 @@ use **Camel Case** when necessary
 `Num`, `Max`, `Min`, `Avg`
 # Functions
 * When naming a function, use a **verb** followed by an **object** to describe what the function does. For example, `getClientData()`
-* Function names will begin with a word **beginning with a lowercase letter** and each consecutive word will begin with an **uppercase letter**. 
-* Block Comments should appear **before the function header** and should follow this outline, unless the function header fully describes its purpose:
+* **Function names** will begin with a word **beginning with a lowercase letter** and each consecutive word will begin with an **uppercase letter**. 
+* **Block Comments** should appear **before the function header** and should follow this outline, unless the function header fully describes its purpose:
 
        
         /*
