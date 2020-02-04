@@ -85,7 +85,6 @@ public class HabitListManager {
     //sort habits by time of day
     public void sortHabits(){
 
-
     }
 
 }
