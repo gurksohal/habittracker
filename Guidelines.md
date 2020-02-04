@@ -12,7 +12,7 @@ use **Camel Case** when necessary
 | `o`      | Object  | `oContact`    |
 
 # Design Elements (GUI) 
-use **Camel** Case when necessary
+use **Camel Case** when necessary
 
 | Prefix | Type       | Example     |
 |--------|------------|-----------|
