@@ -6,7 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 //represents a habit
-public class Habit {
+public class Habit implements Comparable<Habit> {
+    @Override
+    public int compareTo(Habit o) {
+        int iCompare = ((Habit)o).sortByDay;
+        return this.getSortByDay()-iCompare;
+    }
+
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
