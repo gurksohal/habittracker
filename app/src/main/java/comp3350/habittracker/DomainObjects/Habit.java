@@ -2,8 +2,10 @@ package comp3350.habittracker.DomainObjects;
 
 import androidx.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
+
+import comp3350.habittracker.Logic.Utils;
 
 //represents a habit
 public class Habit implements Comparable<Habit> {
@@ -44,8 +46,8 @@ public class Habit implements Comparable<Habit> {
         return completedWeeklyAmount;
     }
 
-    public boolean isCompleted() {
-        return completedWeeklyAmount >= weeklyAmount;
+    public boolean isCompleted(String selectedDate) throws ParseException{
+        return completedWeeklyAmount >= weeklyAmount || isSameDay(selectedDate);
     }
 
     public String getLastCompletedDate() {
@@ -58,10 +60,7 @@ public class Habit implements Comparable<Habit> {
 
     public void complete(){
         //set last completed date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = new Date();
-        lastCompletedDate = formatter.format(date);
-
+        lastCompletedDate = Utils.formatDate(new Date());
         //increase completed amount
         completedWeeklyAmount++;
     }
@@ -87,5 +86,15 @@ public class Habit implements Comparable<Habit> {
     public int compareTo(Habit o) {
         int iCompare = o.sortByDay;
         return this.getSortByDay()-iCompare;
+    }
+
+    private boolean isSameDay(String date)throws ParseException {
+        boolean returnValue = false;
+        if(lastCompletedDate != null) {
+            Date selectedDate = Utils.parseString(date);
+            Date lastDoneDate = Utils.parseString(lastCompletedDate);
+            returnValue = selectedDate.equals(lastDoneDate);
+        }
+        return returnValue;
     }
 }

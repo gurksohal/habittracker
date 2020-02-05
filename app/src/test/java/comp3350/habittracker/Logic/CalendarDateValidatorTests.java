@@ -77,11 +77,6 @@ public class CalendarDateValidatorTests {
     }
 
     @Test
-    public void parseString()throws ParseException{
-        assertEquals("should be equals, since both are current date", CalendarDateValidator.parseString(stringCurrentDate), currentDate);
-    }
-
-    @Test
     public void getCurrentDate()throws ParseException{
         assertEquals("should return current date", CalendarDateValidator.getCurrentDate(), currentDate);
     }

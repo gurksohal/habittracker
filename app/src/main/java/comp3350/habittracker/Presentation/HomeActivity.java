@@ -29,6 +29,7 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
+import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
 import comp3350.habittracker.Persistence.HabitsStub;
 
@@ -55,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
         try {
             habitList = new HabitListManager(user);
         }catch(ParseException e){
-
+            e.printStackTrace();
         }
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
         selectedDate = getCurrentDate();
@@ -123,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
                 Date currentDate = null;
 
                 try {
-                    selectDate = CalendarDateValidator.parseString(selectedDate);
+                    selectDate = Utils.parseString(selectedDate);
                     currentDate = CalendarDateValidator.getCurrentDate();
                 }catch(ParseException e){
                     e.printStackTrace();

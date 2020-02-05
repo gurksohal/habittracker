@@ -56,11 +56,11 @@ public class HabitListManagerTests {
     }
 
     @Test
-    public void testCompleteHabit(){
+    public void testCompleteHabit()throws ParseException{
         //complete h1 habit
         habitListManager.completeHabit("h4");
         //habit is completed
-        assertTrue("h4 should be completed",habits.get(4).isCompleted());
+        assertTrue("h4 should be completed",habits.get(4).isCompleted(formatter.format(new Date())));
     }
 
     @Test

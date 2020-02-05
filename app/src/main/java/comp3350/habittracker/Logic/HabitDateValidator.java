@@ -12,7 +12,7 @@ public class HabitDateValidator {
     public static boolean isCompleted(Habit habit, String date)throws ParseException{
         boolean returnValue = false;
         if(CalendarDateValidator.isCurrentWeek(date)){
-            returnValue = habit.isCompleted();
+            returnValue = habit.isCompleted(date);
         }
         return returnValue;
     }
@@ -27,7 +27,7 @@ public class HabitDateValidator {
 
         if(habit.getLastCompletedDate() != null){
             String endWeek = CalendarDateValidator.getEndOfWeek(habit.getLastCompletedDate());
-            Date endOfWeek = CalendarDateValidator.parseString(endWeek);
+            Date endOfWeek = Utils.parseString(endWeek);
 
             //if a new week has started, reset completed amount
             if (endOfWeek.before(today) && habit.getCompletedWeeklyAmount() != 0){
