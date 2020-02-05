@@ -56,8 +56,9 @@ public class HomeActivity extends AppCompatActivity {
         }catch(ParseException e){
             e.printStackTrace();
         }
+
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
-        selectedDate = getCurrentDate();
+        selectedDate = getCurrentDate(); //get current date formatted
         txtSelectedDate.setText("Today's Date: " + selectedDate); //set date field to show current date
 
         configList(); //get today habits and attach listener
@@ -65,15 +66,18 @@ public class HomeActivity extends AppCompatActivity {
         configCalendar(); //attach listener to calendarView
     }
 
+    //when another activity finishes and sends result and data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if creating new habit
         if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
-            habitList.updateHabitList();
-            reloadList(selectedDate);
-        }else if(requestCode == EDIT_HABIT_ID && resultCode == Activity.RESULT_OK){
+            habitList.updateHabitList(); //reload the list with the new data
+            reloadList(selectedDate); //redisplay the list
+        }else if(requestCode == EDIT_HABIT_ID && resultCode == Activity.RESULT_OK){ //if editing habit
             String habitName = data.getStringExtra("deleteHabit");
-            Habit removeHabit = habitList.getHabit(habitName);
-            HabitManager.delete(removeHabit);
+            Habit removeHabit = habitList.getHabit(habitName); //get habit that was edited
+            HabitManager.delete(removeHabit); //delete old verison
+            //reload list and display list
             habitList.updateHabitList();
             reloadList(selectedDate);
         }
@@ -117,9 +121,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void configList(){
         ListView list = findViewById(R.id.listView);
-        //habitList.sortHabits();
-        reloadList(selectedDate);
+        reloadList(selectedDate); //load list for the first time
 
+        //set a listener on the loaded list
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -128,12 +132,14 @@ public class HomeActivity extends AppCompatActivity {
                 Date currentDate = null;
 
                 try {
+                    //get selected date and current date as date Objects
                     selectDate = Utils.parseString(selectedDate);
                     currentDate = CalendarDateValidator.getCurrentDate();
                 }catch(ParseException e){
                     e.printStackTrace();
                 }
 
+                //only process the click if selected and current dates are equal
                 if(selectDate.equals(currentDate)) {
                     habitList.completeHabit(selected);
                     Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
@@ -144,19 +150,19 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
         //long click for edit/remove habit
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                //Toast.makeText(HomeActivity.this, "Long Click", Toast.LENGTH_SHORT).show();
-                String sSelectedHabit = (String)arg0.getItemAtPosition(pos);
-                showAlertDialog(sSelectedHabit);
+                String selectedHabit = (String)arg0.getItemAtPosition(pos);
+                showAlertDialog(selectedHabit); //show alert box
                 return true;
             }
         });
     }
 
-    //load the uncompleted habits for each day
+    //load the uncompleted habits for given day
     public void reloadList(String date){
         ListView list = findViewById(R.id.listView);
         ArrayList<Habit> habits;
@@ -167,6 +173,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //get only habit names
         ArrayList<String> habitNames = habitList.getHabitNames(habits);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);

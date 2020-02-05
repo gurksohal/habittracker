@@ -13,7 +13,14 @@ public class User implements Serializable {
         return username;
     }
 
-    public boolean equals(User otherUser){ //two users are equal if they have the same username
+    /*
+     * isSameDay
+     * return true if two users are equal
+     * two users are equal if they have the same username
+     *
+     * Input: other user
+     */
+    public boolean equals(User otherUser){
         boolean returnValue = false;
         if(otherUser.username.equalsIgnoreCase(username)){
             returnValue = true;

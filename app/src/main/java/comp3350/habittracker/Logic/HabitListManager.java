@@ -22,7 +22,12 @@ public class HabitListManager {
         Collections.sort(habits); //sort on intitial creation
     }
 
-    //return the uncompleted habits for selected week
+    /*
+     * getUnCompletedHabits
+     * return list of all the habits that uncompleted for the selected date
+     *
+     * Input: selected date
+     */
     public ArrayList<Habit> getUncompletedHabits(String date)throws ParseException {
         ArrayList<Habit> returnHabits = new ArrayList<>();
         for(Habit habit : habits){
@@ -34,8 +39,12 @@ public class HabitListManager {
         return returnHabits;
     }
 
-    //return only names of habits
-    //used for display the list
+    /*
+     * getHabitNames
+     * return a list of only names of habits
+     *
+     * Input: list of habit
+     */
     public ArrayList<String> getHabitNames(ArrayList<Habit> habits){
         ArrayList<String> returnNames = new ArrayList<>();
         for(Habit habit : habits){
@@ -44,33 +53,56 @@ public class HabitListManager {
         return returnNames;
     }
 
-    //update habit in database
+    /*
+     * completeHabit
+     *
+     * Input: name of the habit to be completed
+     */
     public void completeHabit(String name){
         for(Habit habit: habits){
+            //find the habit with the right name
             if(habit.getHabitName().equals(name)){
+                //complete the habit and update database
                 habit.complete();
                 HabitManager.updateHabit(habit);
                 break;
             }
         }
     }
-    //returns a habit from the habitList that matches the given String
+
+    /*
+     * getHabit
+     * return a habit
+     *
+     * Input: name of habit
+     */
     public Habit getHabit(String name){
-        Habit hRetrieved = null;
+        Habit returnHabit = null;
         for(Habit habit: habits){
+            //find the habit with matching name
             if(habit.getHabitName().equals(name))
-                hRetrieved = habit;
+                returnHabit = habit;
         }
-        return hRetrieved;
+        return returnHabit;
     }
 
+    /*
+     * updateHabitList
+     *
+     */
     public void updateHabitList(){
+        //update the arraylist with a new instance from the database
         habits = HabitManager.getHabits(user);
-        Collections.sort(habits); //sort reloaded list
+        //sort the list
+        Collections.sort(habits);
     }
 
-    //check if habit was completed in the last week,
-    //if so reset it's checked amount and update in the database
+    /*
+     * completedAmountCheck
+     * check if habit was completed in the last week,
+     * if so reset it's checked amount and update in the database
+     *
+     */
     private void completedAmountCheck()throws ParseException{
         for(Habit habit : habits){
             if(HabitDateValidator.updateCompletedAmount(habit)){

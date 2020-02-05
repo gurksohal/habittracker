@@ -46,6 +46,11 @@ public class Habit implements Comparable<Habit> {
         return completedWeeklyAmount;
     }
 
+    /*
+     * isCompleted
+     * return if this habit is completed for a given date
+     * Input is the desired date
+     */
     public boolean isCompleted(String selectedDate) throws ParseException{
         return completedWeeklyAmount >= weeklyAmount || isSameDay(selectedDate);
     }
@@ -58,6 +63,10 @@ public class Habit implements Comparable<Habit> {
         completedWeeklyAmount = 0;
     }
 
+    /*
+     * complete
+     * set lastCompletedDate to current date and increase completedWeeklyAmt by one
+     */
     public void complete(){
         //set last completed date
         lastCompletedDate = Utils.formatDate(new Date());
@@ -69,7 +78,11 @@ public class Habit implements Comparable<Habit> {
         return user;
     }
 
-    //two habits are equals if they have the same name and user
+    /*
+     * equals
+     * return true two habits are equals, two habits are equal if they have the same name and user
+     * Input other habit
+     */
     @Override
     public boolean equals(@Nullable Object obj) {
         boolean returnValue = false;
@@ -82,12 +95,22 @@ public class Habit implements Comparable<Habit> {
         return returnValue;
     }
 
+    /*
+     * compareTo
+     * sort two habits based to selected time of day
+     * Input other habit
+     */
     @Override
     public int compareTo(Habit o) {
         int iCompare = o.sortByDay;
         return this.getSortByDay()-iCompare;
     }
 
+    /*
+     * isSameDay
+     * compare current selected date to the lastCompletedDate
+     * Input: date being compared to lastCompletedDate
+     */
     private boolean isSameDay(String date)throws ParseException {
         boolean returnValue = false;
         if(lastCompletedDate != null) {

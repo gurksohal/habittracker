@@ -34,6 +34,7 @@ public class AddHabitActivity extends AppCompatActivity {
         builder = new AlertDialog.Builder(this);
 
         //get current user instance from homepage
+        //also if an edit is being edited, get its name
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
         editHabitName = intent.getStringExtra("habitName");
@@ -51,6 +52,7 @@ public class AddHabitActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
+
     //sets the text style for the second dropdown
     private void setSpinnerTime(){
         Spinner timeSpinner = findViewById(R.id.spinnerTime);
@@ -58,15 +60,19 @@ public class AddHabitActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         timeSpinner.setAdapter(adapter);
     }
+
+    //set listener to the addHabit button
     private void configAddButton(){
         Button btnAddHabit = findViewById(R.id.btnAddHabit);
         final EditText txtHabitName = findViewById(R.id.txtHabitName);
         final Spinner dropdown = findViewById(R.id.spinner);
         final Spinner dropdownTime = findViewById(R.id.spinnerTime);
 
+        //when clicked
         btnAddHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get data from the input fields and create habit object
                 String habitName = txtHabitName.getText().toString();
                 String timesPerWeek = dropdown.getSelectedItem().toString();
                 String schedule = dropdownTime.getSelectedItem().toString();
@@ -80,13 +86,16 @@ public class AddHabitActivity extends AppCompatActivity {
                 else
                     scheduleAssoc=4;
 
+                //if habit was saved, close the page
                 if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){
                     Intent intent = new Intent();
 
                     //if edit habit was passed into activity
                     if(editHabitName != null){
+                        //pass the name of the habit back
                         intent.putExtra("deleteHabit",editHabitName);
                     }
+
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else{ //error while creating the habit
