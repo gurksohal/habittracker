@@ -14,6 +14,7 @@ import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.TestUtils;
 
 public class HabitDateValidatorTest {
 
@@ -38,7 +39,7 @@ public class HabitDateValidatorTest {
         //return false, since the habit hasn't been completed for current week
         assertFalse("should be false, since habit isn't completed",HabitDateValidator.isCompleted(incompleteHabit,date));
 
-        date = formatter.format(addDaysToDate(7)); //next week date
+        date = formatter.format(TestUtils.addDaysToDate(7)); //next week date
         //return false, since the completedhabit is only completed for one week at a time
         assertFalse("should return false, since habit isn't completed for next week", HabitDateValidator.isCompleted(completeHabit,date));
     }
@@ -50,9 +51,4 @@ public class HabitDateValidatorTest {
         assertEquals("completed amount doesn't change since its still the same week",1,incompleteHabit.getCompletedWeeklyAmount());
     }
 
-    private Date addDaysToDate(int days){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE,days); //set calendar to a future date
-        return cal.getTime();
-    }
 }

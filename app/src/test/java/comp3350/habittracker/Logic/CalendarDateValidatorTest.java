@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.habittracker.TestUtils;
+
 public class CalendarDateValidatorTest {
 
     private SimpleDateFormat formatter;
@@ -49,12 +51,12 @@ public class CalendarDateValidatorTest {
         assertTrue("should be true since today in in the current week", CalendarDateValidator.isCurrentWeek(stringCurrentDate));
 
         //add a week to the current date
-        String nextWeek = formatter.format(addDaysToDate(7));
+        String nextWeek = formatter.format(TestUtils.addDaysToDate(7));
         //output must me false if the input in upcoming weeks
         assertFalse("Should return false, today + 7 days isn't in current week",CalendarDateValidator.isCurrentWeek(nextWeek));
 
         //set calendar to last week
-        String lastWeek = formatter.format(addDaysToDate(-7));
+        String lastWeek = formatter.format(TestUtils.addDaysToDate(-7));
         //output must be false if the input was in the past weeks
         assertFalse("Should return false, today - 7 days isn't in current week",CalendarDateValidator.isCurrentWeek(lastWeek));
     }
@@ -65,11 +67,11 @@ public class CalendarDateValidatorTest {
         assertTrue("today should be a valid date", CalendarDateValidator.isValidDate(stringCurrentDate));
 
         //set calendar to a future date
-        String futureDate = formatter.format(addDaysToDate(5));
+        String futureDate = formatter.format(TestUtils.addDaysToDate(5));
         //future date is a valid date
         assertTrue("future date should be valid", CalendarDateValidator.isValidDate(futureDate));
 
-        String pastDate = formatter.format(addDaysToDate(-5));
+        String pastDate = formatter.format(TestUtils.addDaysToDate(-5));
         //past date is invalid
         assertFalse("past date should be invalid", CalendarDateValidator.isValidDate(pastDate));
     }
@@ -84,9 +86,4 @@ public class CalendarDateValidatorTest {
         assertEquals("should return current date", CalendarDateValidator.getCurrentDate(), currentDate);
     }
 
-    private Date addDaysToDate(int days){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE,days); //set calendar to a future date
-        return cal.getTime();
-    }
 }

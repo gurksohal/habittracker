@@ -50,4 +50,9 @@ public class HabitsStub implements HabitsPersistence {
         deleteHabit(habit);
         return addHabit(habit);
     }
+
+    //test up temp database just for running tests
+    public void setTestList(ArrayList<Habit> testList){
+        habits = testList;
+    }
 }

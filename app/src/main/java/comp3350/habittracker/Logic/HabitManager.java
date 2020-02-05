@@ -36,4 +36,9 @@ public class HabitManager {
         return db.getUserHabits(user);
     }
 
+    //temp database just for tests
+    public void setupTest(ArrayList<Habit> testHabits){
+        db.setTestList(testHabits);
+    }
+
 }
