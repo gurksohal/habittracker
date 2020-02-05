@@ -14,7 +14,7 @@ import java.util.Date;
 
 import comp3350.habittracker.TestUtils;
 
-public class CalendarDateValidatorTest {
+public class CalendarDateValidatorTests {
 
     private SimpleDateFormat formatter;
     private Date currentDate;

@@ -16,7 +16,7 @@ import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.TestUtils;
 
-public class HabitDateValidatorTest {
+public class HabitDateValidatorTests {
 
     private SimpleDateFormat formatter;
     private Habit completeHabit;

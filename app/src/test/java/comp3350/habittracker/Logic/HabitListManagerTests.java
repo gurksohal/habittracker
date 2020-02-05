@@ -16,7 +16,7 @@ import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.TestUtils;
 
-public class HabitListManagerTest {
+public class HabitListManagerTests {
 
     private SimpleDateFormat formatter;
     private HabitListManager habitListManager;
@@ -26,7 +26,7 @@ public class HabitListManagerTest {
     public void setUp() throws ParseException {
         HabitManager hm = new HabitManager(); //populate stub database
         User user = new User("userA");
-        habits = createDB(user);
+        habits = TestUtils.createDB(user);
         hm.setupTest(habits);
         formatter = new SimpleDateFormat("dd/MM/yyyy");
         habitListManager = new HabitListManager(user);
@@ -76,14 +76,4 @@ public class HabitListManagerTest {
         assertNotEquals("order should be differnt because of time of day",habits,(habitListManager.getUncompletedHabits(formatter.format(new Date()))));
     }
 
-    private ArrayList<Habit> createDB(User user){
-        ArrayList<Habit> returnList = new ArrayList<>();
-        for(int i = 0; i < 4; i++){
-            Habit h = new Habit("h"+i,1,0,user,"Afternoon",2);
-            returnList.add(h);
-        }
-        Habit h = new Habit("h"+4,1,0,user,"Morning",1);
-        returnList.add(h);
-        return returnList;
-    }
 }

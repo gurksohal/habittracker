@@ -26,6 +26,7 @@ public class HabitManager {
         return returnValue;
     }
 
+    //write to db
     public static boolean updateHabit(Habit habit){
         return db.update(habit);
     }
