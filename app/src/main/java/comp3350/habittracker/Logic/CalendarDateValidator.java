@@ -17,7 +17,7 @@ public class CalendarDateValidator {
 
         if(day != Calendar.SUNDAY){
             int daysRemaining = (7 - day + 1);
-            cal.add(Calendar.DAY_OF_YEAR, daysRemaining);
+            cal.add(Calendar.DATE, daysRemaining);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(cal.getTime());
@@ -50,9 +50,7 @@ public class CalendarDateValidator {
 
     public static Date parseString(String date)throws ParseException{
         Date returnValue = null;
-        if(date != null) {
-            returnValue = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-        }
+        returnValue = new SimpleDateFormat("dd/MM/yyyy").parse(date);
         return returnValue;
     }
 
