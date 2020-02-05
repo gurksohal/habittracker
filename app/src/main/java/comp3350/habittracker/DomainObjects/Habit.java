@@ -52,7 +52,7 @@ public class Habit implements Comparable<Habit> {
         return lastCompletedDate;
     }
 
-    public void clearCompletedAmout(){
+    public void clearCompletedAmount(){
         completedWeeklyAmount = 0;
     }
 

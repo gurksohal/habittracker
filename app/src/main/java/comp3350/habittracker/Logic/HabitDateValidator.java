@@ -9,7 +9,7 @@ import comp3350.habittracker.DomainObjects.Habit;
 public class HabitDateValidator {
 
     //return if habit has been completed for current week
-    public static boolean isCompleted(Habit habit, String date)throws ParseException {
+    public static boolean isCompleted(Habit habit, String date)throws ParseException{
         boolean returnValue = false;
         if(CalendarDateValidator.isCurrentWeek(date)){
             returnValue = habit.isCompleted();
@@ -25,13 +25,13 @@ public class HabitDateValidator {
         //endOfWeek = The following sunday
 
 
-        if(habit.getLastCompletedDate() != null) {
+        if(habit.getLastCompletedDate() != null){
             String endWeek = CalendarDateValidator.getEndOfWeek(habit.getLastCompletedDate());
             Date endOfWeek = CalendarDateValidator.parseString(endWeek);
 
             //if a new week has started, reset completed amount
-            if (endOfWeek.before(today) && habit.getCompletedWeeklyAmount() != 0) {
-                habit.clearCompletedAmout();
+            if (endOfWeek.before(today) && habit.getCompletedWeeklyAmount() != 0){
+                habit.clearCompletedAmount();
                 returnValue = true;
             }
         }
