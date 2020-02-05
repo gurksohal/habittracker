@@ -7,12 +7,6 @@ import java.util.Date;
 
 //represents a habit
 public class Habit implements Comparable<Habit> {
-    @Override
-    public int compareTo(Habit o) {
-        int iCompare = ((Habit)o).sortByDay;
-        return this.getSortByDay()-iCompare;
-    }
-
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
@@ -38,9 +32,13 @@ public class Habit implements Comparable<Habit> {
         return weeklyAmount;
     }
 
-    public String getTimeOfDay(){return timeOfDay;}
+    public String getTimeOfDay(){
+        return timeOfDay;
+    }
 
-    public int getSortByDay(){return sortByDay;}
+    public int getSortByDay(){
+        return sortByDay;
+    }
 
     public int getCompletedWeeklyAmount() {
         return completedWeeklyAmount;
@@ -83,5 +81,11 @@ public class Habit implements Comparable<Habit> {
             }
         }
         return returnValue;
+    }
+
+    @Override
+    public int compareTo(Habit o) {
+        int iCompare = o.sortByDay;
+        return this.getSortByDay()-iCompare;
     }
 }

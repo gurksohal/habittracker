@@ -3,6 +3,7 @@ package comp3350.habittracker;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import comp3350.habittracker.DomainObjects.HabitTests;
 import comp3350.habittracker.Logic.CalendarDateValidatorTests;
 import comp3350.habittracker.Logic.HabitDateValidatorTests;
 import comp3350.habittracker.Logic.HabitListManagerTests;
@@ -14,7 +15,8 @@ import comp3350.habittracker.Logic.HabitManagerTests;
         CalendarDateValidatorTests.class,
         HabitDateValidatorTests.class,
         HabitListManagerTests.class,
-        HabitManagerTests.class
+        HabitManagerTests.class,
+        HabitTests.class
 })
 public class AllTests {
 }
