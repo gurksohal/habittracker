@@ -47,20 +47,20 @@ public class HabitListManagerTest {
     @Test
     public void testGetHabitNames() {
         ArrayList<String> names = new ArrayList<>();
+        names.add("h0");
         names.add("h1");
         names.add("h2");
         names.add("h3");
         names.add("h4");
-        names.add("h5");
         assertEquals("name of all the habits (h1,h2,h3,h4,h5)", habitListManager.getHabitNames(habits),names);
     }
 
     @Test
     public void testCompleteHabit(){
         //complete h1 habit
-        habitListManager.completeHabit("h0");
+        habitListManager.completeHabit("h4");
         //habit is completed
-        assertTrue("h0 should be completed",habits.get(0).isCompleted());
+        assertTrue("h4 should be completed",habits.get(4).isCompleted());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class HabitListManagerTest {
     private ArrayList<Habit> createDB(User user){
         ArrayList<Habit> returnList = new ArrayList<>();
         for(int i = 0; i < 4; i++){
-            Habit h = new Habit("h"+i,1,0,user,"Afternoon",1);
+            Habit h = new Habit("h"+i,1,0,user,"Afternoon",2);
             returnList.add(h);
         }
         Habit h = new Habit("h"+4,1,0,user,"Morning",1);
