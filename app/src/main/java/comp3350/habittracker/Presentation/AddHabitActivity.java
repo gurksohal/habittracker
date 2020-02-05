@@ -25,6 +25,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
     private User user;
     private AlertDialog.Builder builder;
+    private String editHabitName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class AddHabitActivity extends AppCompatActivity {
         //get current user instance from homepage
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
+        editHabitName = intent.getStringExtra("habitName");
 
         //attach listener
         setSpinnerText();
@@ -79,7 +81,13 @@ public class AddHabitActivity extends AppCompatActivity {
                     scheduleAssoc=4;
 
                 if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){
-                    setResult(RESULT_OK,new Intent());
+                    Intent intent = new Intent();
+
+                    //if edit habit was passed into activity
+                    if(editHabitName != null){
+                        intent.putExtra("deleteHabit",editHabitName);
+                    }
+                    setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else{ //error while creating the habit
                     builder.setMessage("Unable to save habit!").setTitle("Error!");

@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,11 +30,11 @@ import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
-import comp3350.habittracker.Persistence.HabitsStub;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final int EDIT_ACTIVITY_ID = 0;
+    private static final int ADD_ACTIVITY_ID = 0;
+    private static final int EDIT_HABIT_ID = 1;
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
@@ -44,15 +43,14 @@ public class HomeActivity extends AppCompatActivity {
     private User user; //fake user
     private HabitListManager habitList;
 
-    private HabitManager habitManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_main);
 
         user = new User("userA");
-        habitManager = new HabitManager(); //create stub database
+        new HabitManager(); //create stub database
+
         try {
             habitList = new HabitListManager(user);
         }catch(ParseException e){
@@ -69,7 +67,13 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == EDIT_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
+        if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
+            habitList.updateHabitList();
+            reloadList(selectedDate);
+        }else if(requestCode == EDIT_HABIT_ID && resultCode == Activity.RESULT_OK){
+            String habitName = data.getStringExtra("deleteHabit");
+            Habit removeHabit = habitList.getHabit(habitName);
+            HabitManager.delete(removeHabit);
             habitList.updateHabitList();
             reloadList(selectedDate);
         }
@@ -83,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
                 nextActivity.putExtra("user",user);
-                startActivityForResult(nextActivity,EDIT_ACTIVITY_ID);
+                startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
             }
         });
     }
@@ -103,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    //current date doesn't get set on launch since, the date change event hasn't fired yet.
+    //current date doesn't get set on launch since the date change event hasn't fired yet.
     //So, manually set the current date
     private String getCurrentDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -184,12 +188,8 @@ public class HomeActivity extends AppCompatActivity {
                 //switch activity to add habit activity
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
                 nextActivity.putExtra("user",user);
-                startActivityForResult(nextActivity,EDIT_ACTIVITY_ID);
-                //updates habitListView to display changes to habit
-                habitManager.delete(hClickedHabit); //delete old habit
-                habitList.updateHabitList();
-                reloadList(selectedDate);
-                //Toast.makeText(HomeActivity.this, "Habit was edited", Toast.LENGTH_LONG).show();
+                nextActivity.putExtra("habitName",hClickedHabit.getHabitName());
+                startActivityForResult(nextActivity, EDIT_HABIT_ID);
             }
         });
         habitEditBuilder.setNegativeButton("Remove habit", new DialogInterface.OnClickListener() {
@@ -199,7 +199,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //remove habit from list
-                        habitManager.delete(hClickedHabit); //is being deleted from database
+                        HabitManager.delete(hClickedHabit); //is being deleted from database
                         habitList.updateHabitList();
                         reloadList(selectedDate);
                         Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();

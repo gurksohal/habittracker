@@ -10,4 +10,5 @@ public interface HabitsPersistence {
     void deleteHabit(Habit habit);
     boolean addHabit(Habit habit);
     boolean update(Habit habit);
+    void setTestList(ArrayList<Habit> testList);
 }

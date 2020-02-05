@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Persistence.HabitsPersistence;
 import comp3350.habittracker.Persistence.HabitsStub;
 
 //manage habits
 //add, remove, edit
 public class HabitManager {
 
-    private static HabitsStub db;
+    private static HabitsPersistence db;
 
     public HabitManager(){
         db = new HabitsStub();
