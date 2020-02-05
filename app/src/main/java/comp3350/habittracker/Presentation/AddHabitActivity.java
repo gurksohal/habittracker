@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.reflect.Array;
+import java.util.Collections;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;

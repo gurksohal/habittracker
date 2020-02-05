@@ -2,6 +2,7 @@ package comp3350.habittracker.Logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
@@ -18,6 +19,7 @@ public class HabitListManager {
 
         //if in a new week, reset completed counter
         completedAmountCheck();
+        Collections.sort(habits); //sort on intitial creation
     }
 
     //return the uncompleted habits for selected week
@@ -64,6 +66,7 @@ public class HabitListManager {
 
     public void updateHabitList(){
         habits = HabitManager.getHabits(user);
+        Collections.sort(habits); //sort reloaded list
     }
 
     //check if habit was completed in the last week,
@@ -76,10 +79,6 @@ public class HabitListManager {
         }
     }
 
-    //TODO: sort habits by time of day
-    //sort habits by time of day
-    public void sortHabits(){
 
-    }
 
 }
