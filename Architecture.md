@@ -8,3 +8,6 @@ There are four classes associated with the Business Layer of our application: `C
 The persistence layer has one interface: `HabitsPersistence`. This interface gets the habits associated with a given user, and provides methods for habits to be added, removed or updated in the database. The `HabitStub` class is the stub database implemented in this iteration. It provides an initial list of habits for testing purposes as well as the implementation of all methods defined in the interface.
 # Domain Objects
 There are two domain objects in this application: `Habit` and `User`. `Habit` represents a single, unique habit. The `User` object represents a unique user. 
+
+
+![diagram](ArchitectureDiagram.png)
