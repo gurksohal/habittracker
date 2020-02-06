@@ -1,18 +1,5 @@
-# Variables 
-use **Camel Case** when necessary
-
-| Prefix | Type    | Example     |
-|--------|---------|-------------|
-| `b`      | boolean | `bSuccess`    |
-| `i`      | integer | `iCustomerID` |
-| `f`      | float   | `fTotalCost`  |
-| `s`      | String  | `sFirstName`  |
-| `l`      | long    | `lDistance`   |
-| `a`      | array   | `aReports`    |
-| `o`      | Object  | `oContact`    |
-
 # Design Elements (GUI) 
-use **Camel Case** when necessary
+
 
 | Prefix | Type       | Example     |
 |--------|------------|-----------|
