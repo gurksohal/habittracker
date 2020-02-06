@@ -37,9 +37,20 @@ public class HabitManager {
     }
 
     //write to db
+    public static boolean editHabit(Habit oldHabit,String name, String timesPerWeek, User user, String timeOfDay, int timeAssoc){
+        boolean returnValue = false;
+        int perWeek = Integer.parseInt(timesPerWeek.substring(0,1));
+        if(name.length() > 0){
+            Habit habit = new Habit(name,perWeek,0,user, timeOfDay, timeAssoc);
+            returnValue = db.edit(oldHabit,habit);
+        }
+        return returnValue;
+    }
+
     public static boolean updateHabit(Habit habit){
         return db.update(habit);
     }
+
     public static void delete(Habit habit){
         db.deleteHabit(habit);
     }

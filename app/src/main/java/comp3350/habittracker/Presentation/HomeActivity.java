@@ -34,7 +34,6 @@ import comp3350.habittracker.R;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int ADD_ACTIVITY_ID = 0;
-    private static final int EDIT_HABIT_ID = 1;
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
@@ -73,13 +72,6 @@ public class HomeActivity extends AppCompatActivity {
         if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
             habitList.updateHabitList(); //reload the list with the new data
             reloadList(selectedDate); //redisplay the list
-        }else if(requestCode == EDIT_HABIT_ID && resultCode == Activity.RESULT_OK){ //if editing habit
-            String habitName = data.getStringExtra("deleteHabit");
-            Habit removeHabit = habitList.getHabit(habitName); //get habit that was edited
-            HabitManager.delete(removeHabit); //delete old verison
-            //reload list and display list
-            habitList.updateHabitList();
-            reloadList(selectedDate);
         }
     }
 
@@ -195,8 +187,8 @@ public class HomeActivity extends AppCompatActivity {
                 //switch activity to add habit activity
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
                 nextActivity.putExtra("user",user);
-                nextActivity.putExtra("habitName",hClickedHabit.getHabitName());
-                startActivityForResult(nextActivity, EDIT_HABIT_ID);
+                nextActivity.putExtra("habit",hClickedHabit);
+                startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
             }
         });
         habitEditBuilder.setNegativeButton("Remove habit", new DialogInterface.OnClickListener() {

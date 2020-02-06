@@ -25,7 +25,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
     private User user;
     private AlertDialog.Builder builder;
-    private String editHabitName;
+    private Habit editHabit = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class AddHabitActivity extends AppCompatActivity {
         //also if an edit is being edited, get its name
         Intent intent = getIntent();
         user = (User)intent.getSerializableExtra("user");
-        editHabitName = intent.getStringExtra("habitName");
+        editHabit = (Habit) intent.getSerializableExtra("habit");
 
         //attach listener
         setSpinnerText();
@@ -86,19 +86,14 @@ public class AddHabitActivity extends AppCompatActivity {
                 else
                     scheduleAssoc=4;
 
-                //if habit was saved, close the page
-                if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){
-                    Intent intent = new Intent();
-
-                    //if edit habit was passed into activity
-                    if(editHabitName != null){
-                        //pass the name of the habit back
-                        intent.putExtra("deleteHabit",editHabitName);
-                    }
-
+                Intent intent = new Intent();
+                if(editHabit != null && HabitManager.editHabit(editHabit,habitName,timesPerWeek,user,schedule,scheduleAssoc)){
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
-                }else{ //error while creating the habit
+                }else if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){ //if habit was saved, close the page
+                    setResult(RESULT_OK,intent);
+                    finish(); //close activity, returns back to the home screen
+                }else{
                     builder.setMessage("Unable to save habit!").setTitle("Error!");
                     AlertDialog alert = builder.create();
                     alert.setTitle("Error!");

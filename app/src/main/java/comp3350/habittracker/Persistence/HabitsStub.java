@@ -46,6 +46,13 @@ public class HabitsStub implements HabitsPersistence {
     }
 
     @Override
+    public boolean edit(Habit habit, Habit newHabit) {
+        deleteHabit(habit);
+        return addHabit(newHabit);
+    }
+
+    //update the same habit instance in the db
+    @Override
     public boolean update(Habit habit) {
         deleteHabit(habit);
         return addHabit(habit);

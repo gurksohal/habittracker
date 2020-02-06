@@ -2,13 +2,14 @@ package comp3350.habittracker.DomainObjects;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
 import comp3350.habittracker.Logic.Utils;
 
 //represents a habit
-public class Habit implements Comparable<Habit> {
+public class Habit implements Comparable<Habit>, Serializable {
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
@@ -88,7 +89,7 @@ public class Habit implements Comparable<Habit> {
         boolean returnValue = false;
         if (obj instanceof Habit) {
             Habit otherHabit = (Habit) obj;
-            if (otherHabit.habitName.equalsIgnoreCase(habitName) && otherHabit.user.equals(user)) {
+            if (otherHabit.habitName.trim().equalsIgnoreCase(habitName.trim()) && otherHabit.user.equals(user)) {
                 returnValue = true;
             }
         }

@@ -9,6 +9,7 @@ public interface HabitsPersistence {
     ArrayList<Habit> getUserHabits(User user);
     void deleteHabit(Habit habit);
     boolean addHabit(Habit habit);
+    boolean edit(Habit habit, Habit newHabit);
     boolean update(Habit habit);
     void setTestList(ArrayList<Habit> testList);
 }

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotEquals;
 
@@ -44,6 +45,17 @@ public class HabitManagerTests {
         HabitManager.delete(newHabit);
         //the state of two db instances should not be the same
         assertNotEquals("two db states shouldn't be equal, one is missing newHabit", habits,dbState);
+    }
+
+    @Test
+    public void testEditHabit(){
+        int size = habits.size();
+        Habit oldHabit = habits.get(0);
+        HabitManager.editHabit(oldHabit,"editedHabit","2",user,"Morning",1);
+        //oldHAbit no longer in db since it was delted
+        assertFalse("old habit is no longer in db", habits.contains(oldHabit));
+        //since old habit was deleted new habit should of been added, and the size of the list should be the same
+        assertEquals("same size since oldhabit was removed new was added", habits.size(),size);
     }
 
     @Test
