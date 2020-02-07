@@ -1,5 +1,8 @@
-# Design Elements (GUI) 
+# Variable Names
+Use Camel case
 
+# Design Elements (GUI) 
+Use Camel case
 
 | Prefix | Type       | Example     |
 |--------|------------|-----------|
