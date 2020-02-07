@@ -10,4 +10,4 @@ The persistence layer has one interface: `HabitsPersistence`. This interface get
 There are two domain objects in this application: `Habit` and `User`. `Habit` represents a single, unique habit. The `User` object represents a unique user. 
 
 
-![diagram](ArchitectureDiagram.png)
+![diagram](ArchitectureDiagramV2.png)
