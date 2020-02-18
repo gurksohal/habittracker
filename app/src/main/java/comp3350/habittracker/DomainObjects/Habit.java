@@ -1,7 +1,5 @@
 package comp3350.habittracker.DomainObjects;
 
-import androidx.annotation.Nullable;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
@@ -85,7 +83,7 @@ public class Habit implements Comparable<Habit>, Serializable {
      * Input other habit
      */
     @Override
-    public boolean equals(@Nullable Object obj) {
+    public boolean equals(Object obj) {
         boolean returnValue = false;
         if (obj instanceof Habit) {
             Habit otherHabit = (Habit) obj;
