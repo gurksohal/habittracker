@@ -62,7 +62,8 @@ public class HabitManager {
 
     //temp database just for tests
     public void setupTest(ArrayList<Habit> testHabits){
-        db.setTestList(testHabits);
+        HabitsStub stub = (HabitsStub)db;
+        stub.setTestList(testHabits);
     }
 
 }
