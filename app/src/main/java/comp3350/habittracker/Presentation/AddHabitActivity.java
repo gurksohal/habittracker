@@ -21,9 +21,11 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.R;
 
+import static java.lang.Integer.valueOf;
+
 public class AddHabitActivity extends AppCompatActivity {
 
-    private User user;
+    private String userId;
     private AlertDialog.Builder builder;
     private Habit editHabit = null;
 
@@ -36,7 +38,7 @@ public class AddHabitActivity extends AppCompatActivity {
         //get current user instance from homepage
         //also if an edit is being edited, get its name
         Intent intent = getIntent();
-        user = (User)intent.getSerializableExtra("user");
+        userId = (String) intent.getSerializableExtra("user");
         editHabit = (Habit) intent.getSerializableExtra("habit");
 
         //attach listener
@@ -74,7 +76,7 @@ public class AddHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //get data from the input fields and create habit object
                 String habitName = txtHabitName.getText().toString();
-                String timesPerWeek = dropdown.getSelectedItem().toString();
+                int timesPerWeek = valueOf(dropdown.getSelectedItem().toString().charAt(0));
                 String schedule = dropdownTime.getSelectedItem().toString();
                 int scheduleAssoc;
                 if(schedule.equals("Morning"))
@@ -86,11 +88,21 @@ public class AddHabitActivity extends AppCompatActivity {
                 else
                     scheduleAssoc=4;
 
+
+                if(editHabit!=null) {
+                    editHabit.setHabitName(habitName);
+                    editHabit.setWeeklyAmount(timesPerWeek);
+                    editHabit.setTimeOfDay(schedule);
+                    editHabit.setUserEmail(userId);
+                    editHabit.setSortByDay(scheduleAssoc);
+                }
+
+
                 Intent intent = new Intent();
-                if(editHabit != null && HabitManager.editHabit(editHabit,habitName,timesPerWeek,user,schedule,scheduleAssoc)){
+                if(editHabit != null && HabitManager.updateHabit(editHabit)){
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
-                }else if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){ //if habit was saved, close the page
+                }else if(HabitManager.saveNewHabit(habitName,timesPerWeek,userId,schedule,scheduleAssoc)){ //if habit was saved, close the page
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else{

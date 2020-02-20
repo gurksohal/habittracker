@@ -8,22 +8,54 @@ import comp3350.habittracker.Logic.Utils;
 
 //represents a habit
 public class Habit implements Comparable<Habit>, Serializable {
+
+
     private String habitName;
     private int weeklyAmount; //how many times a week user wants to do the task
     private int completedWeeklyAmount; //how many times in the current week has the task been completed
     private String lastCompletedDate;
-    private User user; //user who the habit belongs too
+    private String userEmail; //user who the habit belongs too
     private String timeOfDay;
     private int sortByDay; //1==Morning, 2==Afternoon, 3==Evening, 4==Night
+    private int id; // auto-generated Id
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, String userEmail , String time,int num) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
-        this.user = user;
+        this.userEmail = userEmail;
         timeOfDay = time;
         sortByDay = num;
+        id = -1;
     }
+
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, String userEmail , String time,int num, int id) {
+        habitName = name;
+        weeklyAmount = weeklyAmt;
+        completedWeeklyAmount = completedWeekAmt;
+        this.userEmail = userEmail;
+        timeOfDay = time;
+        sortByDay = num;
+        this.id = id;
+    }
+
+    public void setTimeOfDay(String timeOfDay) { this.timeOfDay = timeOfDay;}
+
+    public void setHabitName(String habitName) { this.habitName = habitName; }
+
+    public void setWeeklyAmount(int weeklyAmount) { this.weeklyAmount = weeklyAmount; }
+
+    public void setCompletedWeeklyAmount(int completedWeeklyAmount) { this.completedWeeklyAmount = completedWeeklyAmount; }
+
+    public void setLastCompletedDate(String lastCompletedDate) { this.lastCompletedDate = lastCompletedDate;}
+
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
+
+    public void setSortByDay(int sortByDay) { this.sortByDay = sortByDay;}
+
+    public int getId(){ return id; }
+
+    public void setId(int id){ this.id = id;}
 
     public String getHabitName() {
         return habitName;
@@ -73,8 +105,8 @@ public class Habit implements Comparable<Habit>, Serializable {
         completedWeeklyAmount++;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
     /*
@@ -87,7 +119,7 @@ public class Habit implements Comparable<Habit>, Serializable {
         boolean returnValue = false;
         if (obj instanceof Habit) {
             Habit otherHabit = (Habit) obj;
-            if (otherHabit.habitName.trim().equalsIgnoreCase(habitName.trim()) && otherHabit.user.equals(user)) {
+            if (otherHabit.habitName.trim().equalsIgnoreCase(habitName.trim()) && otherHabit.getUserEmail().equals(this.getUserEmail())) {
                 returnValue = true;
             }
         }

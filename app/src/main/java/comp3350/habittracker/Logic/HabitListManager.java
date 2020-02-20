@@ -11,11 +11,13 @@ import comp3350.habittracker.DomainObjects.User;
 public class HabitListManager {
 
     private ArrayList<Habit> habits;
-    private User user;
+    //private User user; //todo: ? once stub is impl
+    private String userEmail;
 
-    public HabitListManager(User user)throws ParseException{
-        this.user = user;
-        habits = HabitManager.getHabits(user);
+
+    public HabitListManager(String userEmail)throws ParseException{
+        //this.user = user; //todo: once userStub is implemented
+        habits = HabitManager.getHabits(userEmail);
 
         //if in a new week, reset completed counter
         completedAmountCheck();
@@ -74,13 +76,29 @@ public class HabitListManager {
      * getHabit
      * return a habit
      *
-     * Input: name of habit
+     * Input: id of habit
      */
-    public Habit getHabit(String name){
+    public Habit getHabit(int habitId){
         Habit returnHabit = null;
         for(Habit habit: habits){
             //find the habit with matching name
-            if(habit.getHabitName().equals(name))
+            if(habit.getId() == habitId)
+                returnHabit = habit;
+        }
+        return returnHabit;
+    }
+
+    /*
+     * getHabit
+     * return a habit
+     *
+     * Input: id of habit
+     */
+    public Habit getHabitByName(String habitName, String userEmail){
+        Habit returnHabit = null;
+        for(Habit habit: habits){
+            //find the habit with matching name
+            if(habit.getHabitName().equalsIgnoreCase(habitName)&&habit.getUserEmail().equalsIgnoreCase(userEmail))
                 returnHabit = habit;
         }
         return returnHabit;
@@ -92,7 +110,7 @@ public class HabitListManager {
      */
     public void updateHabitList(){
         //update the arraylist with a new instance from the database
-        habits = HabitManager.getHabits(user);
+        habits = HabitManager.getHabits(userEmail);
         //sort the list
         Collections.sort(habits);
     }

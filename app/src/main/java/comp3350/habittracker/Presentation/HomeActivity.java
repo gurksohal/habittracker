@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private FloatingActionButton btnAddHabit;
     private String selectedDate;
 
-    private User user; //fake user
+    private String userId; //fake user
     private HabitListManager habitList;
 
     @Override
@@ -47,11 +47,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_main);
 
-        user = new User("userA");
+        userId = "userA";
         new HabitManager(); //create stub database
 
         try {
-            habitList = new HabitListManager(user);
+            habitList = new HabitListManager(userId);
         }catch(ParseException e){
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
-                nextActivity.putExtra("user",user);
+                nextActivity.putExtra("user",userId);
                 startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
             }
         });
@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 String selectedHabit = (String)arg0.getItemAtPosition(pos);
-                showAlertDialog(selectedHabit); //show alert box
+                showAlertDialog(selectedHabit, userId); //show alert box
                 return true;
             }
         });
@@ -172,9 +172,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //Creates alertDialogs for edit and remove habit options
-    public void showAlertDialog(String s){
+    public void showAlertDialog(final String habitName, final String userId){
         //Habit clicked:
-        final Habit hClickedHabit = habitList.getHabit(s);
+        final Habit hClickedHabit = habitList.getHabitByName(habitName,userId);
         //Build alert dialogs
         final AlertDialog.Builder assurance = new AlertDialog.Builder(this);
         assurance.setMessage("Are you sure you want to delete this habit?");
@@ -186,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //switch activity to add habit activity
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
-                nextActivity.putExtra("user",user);
+                nextActivity.putExtra("user",userId);
                 nextActivity.putExtra("habit",hClickedHabit);
                 startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
             }
@@ -198,7 +198,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //remove habit from list
-                        HabitManager.delete(hClickedHabit); //is being deleted from database
+                        HabitManager.deleteByName(habitName,userId); //is being deleted from database
                         habitList.updateHabitList();
                         reloadList(selectedDate);
                         Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();

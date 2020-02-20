@@ -3,12 +3,13 @@ package comp3350.habittracker.Persistence;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.DomainObjects.User;
+
 
 public interface HabitsPersistence {
-    ArrayList<Habit> getUserHabits(User user);
-    void deleteHabit(Habit habit);
+    ArrayList<Habit> getUserHabits(String userEmail);
+    boolean deleteHabit(int habitId);
+    boolean deleteByName(String habitName, String userEmail);
     boolean addHabit(Habit habit);
-    boolean edit(Habit habit, Habit newHabit);
-    boolean update(Habit habit);
+    boolean modify(Habit modifiedHabit);
+    Habit getHabit(int habitId);
 }

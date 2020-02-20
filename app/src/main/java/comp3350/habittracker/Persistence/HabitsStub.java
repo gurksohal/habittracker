@@ -1,26 +1,31 @@
 package comp3350.habittracker.Persistence;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.DomainObjects.User;
+
 
 public class HabitsStub implements HabitsPersistence {
 
-    private ArrayList<Habit> habits;
+    private ArrayList<Habit> habits = new ArrayList<>();
+    int uniqueId = 0; //keep track of the uniqueID for Habits
     public HabitsStub(){
-        habits = new ArrayList<>();
-        habits.add(new Habit("workout",5,3, new User("userA"),"Morning", 1));
-        habits.add(new Habit("piano",7,1, new User("userA"),"Afternoon",2));
-        habits.add(new Habit("read",7,0, new User("userA"),"Morning",1));
-        habits.add(new Habit("run",2,0, new User("userA"),"Evening",3));
+        habits.add(0,new Habit("workout",5,3, "userA","Morning", 1,0));
+        uniqueId++;
+        habits.add(1,new Habit("piano",7,1, "userA","Afternoon",2,1));
+        uniqueId++;
+        habits.add(2,new Habit("read",7,0, "userA","Morning",1,2));
+        uniqueId++;
+        habits.add(3,new Habit("run",2,0, "userA","Evening",3,3));
+        uniqueId++;
     }
 
-    @Override
-    public ArrayList<Habit> getUserHabits(User user) {
+
+    public ArrayList<Habit> getUserHabits(String userEmail) {
         ArrayList<Habit> userHabits = new ArrayList<>();
+
         for(Habit habit : habits){
-            if(habit.getUser().equals(user)){
+            if(habit.getUserEmail().equals(userEmail)){
                 userHabits.add(habit);
             }
         }
@@ -28,34 +33,68 @@ public class HabitsStub implements HabitsPersistence {
         return userHabits;
     }
 
-    @Override
-    public void deleteHabit(Habit habit) {
-        habits.remove(habit);
+
+    public boolean deleteHabit(int habitId) {
+        if (habitId>=0){
+            for (Habit habit : habits) {
+                if (habit.getId() == habitId) {
+                    habits.remove(habit);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    @Override
+
     public boolean addHabit(Habit habit) {
         //only add to list, if the habit doesn't already exist
         //two habits are the same if they have the same user, and name
         boolean returnValue = false;
         if(!habits.contains(habit)){
+            habit.setId(uniqueId);
+            uniqueId++;
             habits.add(habit);
             returnValue = true;
         }
         return returnValue;
     }
 
-    @Override
-    public boolean edit(Habit habit, Habit newHabit) {
-        deleteHabit(habit);
-        return addHabit(newHabit);
+
+    public boolean modify(Habit modifiedHabit) {
+        if(modifiedHabit.getId()>=0) {
+            for (Habit habit : habits) {
+                if (habit.getId() == modifiedHabit.getId()) {
+                    habits.remove(habit);
+                    habits.add(modifiedHabit);
+                    return true;
+                }
+            }
+
+        }
+            return false;
     }
 
-    //update the same habit instance in the db
-    @Override
-    public boolean update(Habit habit) {
-        deleteHabit(habit);
-        return addHabit(habit);
+    public boolean deleteByName(String habitName, String userEmail){
+        for (Habit habit : habits) {
+            if (habit.getHabitName().equalsIgnoreCase(habitName)&&habit.getUserEmail().equalsIgnoreCase(userEmail)) {
+                habits.remove(habit);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    //get a habit based on it's id
+    public Habit getHabit(int habitId){
+        for(Habit habit : habits){
+            if(habit.getId() == habitId){
+                return habit;
+            }
+        }
+        return null;
     }
 
     //test up temp database just for running tests
