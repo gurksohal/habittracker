@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
@@ -34,9 +34,11 @@ import comp3350.habittracker.R;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int ADD_ACTIVITY_ID = 0;
+    //private static final int NOTES_ACTIVITY_ID = 0;
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
+    private Button btnAddNotes;
     private String selectedDate;
 
     private String userId; //fake user
@@ -62,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
         configList(); //get today habits and attach listener
         configAddButton(); //attach listener to add button
+        configNotesButton();//attach listener to notes button
         configCalendar(); //attach listener to calendarView
     }
 
@@ -84,6 +87,20 @@ public class HomeActivity extends AppCompatActivity {
                 Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
                 nextActivity.putExtra("user",userId);
                 startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
+            }
+        });
+    }
+    //launch createNotes activity
+    private void configNotesButton(){
+        btnAddNotes = findViewById(R.id.btnNotes);
+        btnAddNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
+                nextActivity.putExtra("user",userId);
+               // startActivityForResult(nextActivity,ADD_ACTIVITY_ID);
+                startActivity(nextActivity);
+
             }
         });
     }

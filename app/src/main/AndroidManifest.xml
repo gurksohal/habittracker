@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Presentation.AddHabitActivity"></activity>
+        <activity android:name=".Presentation.CreateNewNoteActivity"></activity>
         <activity android:name=".Presentation.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
