@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface NotePersistance {
     boolean addNote(Note note);
-    ArrayList<Habit> getHabitNotes(int habitID);
+    ArrayList<Note> getHabitNotes(int habitID);
     boolean deleteNote(int noteID);
     boolean modifyNote(Note note);
     Note getNote(int noteId);

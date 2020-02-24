@@ -1,6 +1,8 @@
 package comp3350.habittracker.DomainObjects;
 
 public class Note {
+
+
     private int noteId;
     private int habitId; //referencing habit
     private String note; // the actual note
@@ -24,6 +26,57 @@ public class Note {
         this.note = note;
         this.noteDate = noteDate;
     }
+
+
+    public int getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
+
+    public int getHabitId() {
+        return habitId;
+    }
+
+    public void setHabitId(int habitId) {
+        this.habitId = habitId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public int getFeeling() {
+        return feeling;
+    }
+
+    public void setFeeling(int feeling) {
+        this.feeling = feeling;
+    }
+
+    public String getNoteDate() {
+        return noteDate;
+    }
+
+    public void setNoteDate(String noteDate) {
+        this.noteDate = noteDate;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+
 
 
 }
