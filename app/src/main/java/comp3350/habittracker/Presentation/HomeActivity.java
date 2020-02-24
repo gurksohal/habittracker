@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if creating new habit
         if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
-            habitList.updateHabitList(); //reload the list with the new data
+            habitList.updateHabitList(userId); //reload the list with the new data
             reloadList(selectedDate); //redisplay the list
         }
     }
@@ -199,7 +199,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //remove habit from list
                         HabitManager.deleteByName(habitName,userId); //is being deleted from database
-                        habitList.updateHabitList();
+                        habitList.updateHabitList(userId);
                         reloadList(selectedDate);
                         Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
                     }
