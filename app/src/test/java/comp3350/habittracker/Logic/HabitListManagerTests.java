@@ -29,7 +29,7 @@ public class HabitListManagerTests {
         habits = TestUtils.createDB(user);
         hm.setupTest(habits);
         formatter = new SimpleDateFormat("dd/MM/yyyy");
-        habitListManager = new HabitListManager(user);
+        habitListManager = new HabitListManager(user.getUsername());
     }
 
     @Test

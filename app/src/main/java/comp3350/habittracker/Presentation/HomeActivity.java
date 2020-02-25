@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
-    private Button btnAddNotes;
+    //private Button btnAddNotes;
     private String selectedDate;
 
     private String userId; //fake user
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
         configList(); //get today habits and attach listener
         configAddButton(); //attach listener to add button
-        configNotesButton();//attach listener to notes button
+        //configNotesButton();//attach listener to notes button
         configCalendar(); //attach listener to calendarView
     }
 
@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if creating new habit
         if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
-            habitList.updateHabitList(); //reload the list with the new data
+            habitList.updateHabitList(userId); //reload the list with the new data
             reloadList(selectedDate); //redisplay the list
         }
     }
@@ -90,8 +90,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-    //launch createNotes activity
-    private void configNotesButton(){
+    //launch createNotes activity //todo: move this to view notes activity
+   /* private void configNotesButton(){
         btnAddNotes = findViewById(R.id.btnNotes);
         btnAddNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     private void configCalendar() {
         calendarView = findViewById(R.id.calendarView);
@@ -128,18 +128,45 @@ public class HomeActivity extends AppCompatActivity {
         return formatter.format(date);
     }
 
+    private void notesAlertBox(final String habitName, final String userId){
+        final Habit currHabit = habitList.getHabitByName(habitName,userId);
+        //Build alert dialogs
+        final AlertDialog.Builder notesDialog = new AlertDialog.Builder(HomeActivity.this);
+        notesDialog.setMessage("View notes or mark habit as complete");
+        notesDialog.setPositiveButton("Check off habit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //todo: mark habit as complete here
+            }
+        });
+        notesDialog.setNegativeButton("View Notes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
+                nextActivity.putExtra("user",userId);
+                nextActivity.putExtra("habit",currHabit);
+                nextActivity.putExtra("date",getCurrentDate());
+                // startActivityForResult(nextActivity,ADD_ACTIVITY_ID);
+                startActivity(nextActivity);
+            }
+        });
+        notesDialog.create().show();
+    }
+
     private void configList(){
         ListView list = findViewById(R.id.listView);
         reloadList(selectedDate); //load list for the first time
 
         //set a listener on the loaded list
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
                 Date selectDate = null;
                 Date currentDate = null;
-
+                //Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
+                //nextActivity.putExtra("habit",parent.getItemIdAtPosition(position));
                 try {
                     //get selected date and current date as date Objects
                     selectDate = Utils.parseString(selectedDate);
@@ -147,9 +174,11 @@ public class HomeActivity extends AppCompatActivity {
                 }catch(ParseException e){
                     e.printStackTrace();
                 }
+                //AlertBox
 
-                //only process the click if selected and current dates are equal
-                if(selectDate.equals(currentDate)) {
+                notesAlertBox(selected,userId);
+                        //only process the click if selected and current dates are equal
+                if(selectDate.equals(currentDate)) {//todo: habits are marked as complete immediately
                     habitList.completeHabit(selected);
                     Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
                     toast.show();
@@ -216,7 +245,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //remove habit from list
                         HabitManager.deleteByName(habitName,userId); //is being deleted from database
-                        habitList.updateHabitList();
+                        habitList.updateHabitList(userId);
                         reloadList(selectedDate);
                         Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
                     }

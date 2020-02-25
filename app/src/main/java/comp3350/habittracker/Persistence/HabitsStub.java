@@ -47,10 +47,13 @@ public class HabitsStub implements HabitsPersistence {
     }
 
 
+
     public boolean addHabit(Habit habit) {
         //only add to list, if the habit doesn't already exist
         //two habits are the same if they have the same user, and name
         boolean returnValue = false;
+        //todo: habit must check for name and uID of each item not just the habit object itself
+
         if(!habits.contains(habit)){
             habit.setId(uniqueId);
             uniqueId++;

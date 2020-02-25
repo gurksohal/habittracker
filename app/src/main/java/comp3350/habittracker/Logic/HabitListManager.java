@@ -12,7 +12,7 @@ public class HabitListManager {
 
     private ArrayList<Habit> habits;
     //private User user; //todo: ? once stub is impl
-    private String userEmail;
+    //private String userEmail;
 
 
     public HabitListManager(String userEmail)throws ParseException{
@@ -108,7 +108,7 @@ public class HabitListManager {
      * updateHabitList
      *
      */
-    public void updateHabitList(){
+    public void updateHabitList(String userEmail){
         //update the arraylist with a new instance from the database
         habits = HabitManager.getHabits(userEmail);
         //sort the list
