@@ -61,11 +61,12 @@ public class CreateNewNoteActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText et = findViewById(R.id.etWriteNotes);
-                String note = et.toString();
+                EditText et = (EditText)findViewById(R.id.etWriteNotes);
+                String note = et.getText().toString();
                 int feeling = 0; //todo: implement feelings
                 noteManager.saveNewNote(userHabit.getId(),userId,note,feeling,noteDate);
-
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
