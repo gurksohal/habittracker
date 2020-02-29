@@ -41,4 +41,23 @@ public class NoteManager {
         return db.getHabitNotes(habitID);
     }
 
+    public static Note getNotebyContents(String sNote, int habitId){
+        ArrayList<Note> notes = db.getHabitNotes(habitId);
+        for(Note note : notes){
+            if(note.getNote().equals(sNote)){
+                return note;
+            }
+        }
+       return null;
+    }
+
+    public static ArrayList<String>listNotes(int habitId) {
+        ArrayList<Note> notes = db.getHabitNotes(habitId);
+        //display all note contents
+        ArrayList<String> noteContents = new ArrayList<String>();
+            for(Note n : notes)
+                noteContents.add(n.getNote());
+            return noteContents;
+    }
+
 }

@@ -56,7 +56,7 @@ public class CreateNewNoteActivity extends AppCompatActivity {
 
     //listener for btnNotes  //btnSaveNote -- creates a new note
     private void configSaveButton(){
-        FloatingActionButton btnSave = findViewById(R.id.btnSaveNote);
+        FloatingActionButton btnSave = findViewById(R.id.btnUpdateNote);
         //when clicked
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
