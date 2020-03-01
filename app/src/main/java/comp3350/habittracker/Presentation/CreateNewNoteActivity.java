@@ -5,34 +5,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Spinner;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.NoteManager;
-import comp3350.habittracker.Persistence.NoteStub;
-import comp3350.habittracker.R;
 
-import static java.lang.Integer.valueOf;
+import comp3350.habittracker.R;
 
 
 public class CreateNewNoteActivity extends AppCompatActivity {
-    private int habitId;
+
     private String userId;
     private Habit userHabit;
     private String noteDate;
@@ -73,7 +64,7 @@ public class CreateNewNoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText et = (EditText)findViewById(R.id.etWriteNotes);
                 String note = et.getText().toString();
-                int feeling = getFeelings(); //todo: implement feelings
+                int feeling = getFeelings();
                 if(feeling>-1) {
                     noteManager.saveNewNote(userHabit.getId(), userId, note, 0, noteDate);
                     Intent intent = new Intent();

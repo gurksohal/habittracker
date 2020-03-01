@@ -1,9 +1,7 @@
 package comp3350.habittracker.Logic;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Note;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.NotePersistance;
 import comp3350.habittracker.Persistence.NoteStub;
 public class NoteManager {
@@ -40,9 +38,11 @@ public class NoteManager {
     public static ArrayList<Note> getHabitNotes(int habitID){
         return db.getHabitNotes(habitID);
     }
-
+    /*
+        gets a Note based on the String contained inside the Note object
+     */
     public static Note getNotebyContents(String sNote, int habitId){
-        ArrayList<Note> notes = db.getHabitNotes(habitId);
+        ArrayList<Note> notes = getHabitNotes(habitId);
         for(Note note : notes){
             if(note.getNote().equals(sNote)){
                 return note;
@@ -50,16 +50,20 @@ public class NoteManager {
         }
        return null;
     }
-
+    /*
+        returns an arraylist of all the Strings contained inside all Notes associated with the habitId
+     */
     public static ArrayList<String>listNotes(int habitId) {
-        ArrayList<Note> notes = db.getHabitNotes(habitId);
+        ArrayList<Note> notes = getHabitNotes(habitId);
         //display all note contents
         ArrayList<String> noteContents = new ArrayList<String>();
             for(Note n : notes)
                 noteContents.add(n.getNote());
             return noteContents;
     }
-
+    /*
+        Gets a Note based on the unique id
+     */
     public static Note getNote(int noteId){return db.getNote(noteId);}
 
 }

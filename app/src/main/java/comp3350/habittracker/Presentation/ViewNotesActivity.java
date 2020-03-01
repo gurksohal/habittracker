@@ -2,33 +2,23 @@ package comp3350.habittracker.Presentation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.NoteManager;
-import comp3350.habittracker.Persistence.NoteStub;
 import comp3350.habittracker.R;
 public class ViewNotesActivity extends AppCompatActivity {
     private int habitId;
@@ -61,7 +51,7 @@ public class ViewNotesActivity extends AppCompatActivity {
     //when another activity finishes and sends result and data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //if creating new habit
+        //if creating new Note, or updating a Note
         if(requestCode == CREATE_NOTE_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
             reloadList(habitId); //redisplay the list
         }
@@ -76,14 +66,15 @@ public class ViewNotesActivity extends AppCompatActivity {
                 nextActivity.putExtra("user",userId);
                 nextActivity.putExtra("habit",userHabit);
                 nextActivity.putExtra("date",noteDate);
-                //startActivity(nextActivity);
                 startActivityForResult(nextActivity, CREATE_NOTE_ACTIVITY_ID);
             }
 
         });
 
     }
-
+    /*
+        when cancelbtn clicked, exit to HomeActivity
+     */
     private void configCancelButton(){
         FloatingActionButton btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener(){
@@ -108,15 +99,12 @@ public class ViewNotesActivity extends AppCompatActivity {
     }
     private void reloadList(int habitId){//reload all notes for that habit
         ListView notesList = (ListView)findViewById(R.id.lvNotes);
-        //ArrayList<Note> notes = noteManager.getHabitNotes(habitId);
-            //display all note contents
-          //  ArrayList<String> noteContents = new ArrayList<String>();
-           // for(Note n : notes) //todo: make sure this isnt a code smell
-                //noteContents.add(n.getNote());
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,noteManager.listNotes(habitId));
         notesList.setAdapter(adapter);
     }
-
+    /*
+        Builds the alert box for editing/removing Notes
+     */
     public void showAlertBox(final String selected, final int habitId){
        //Build alerts
         final AlertDialog.Builder assurance = new AlertDialog.Builder(this);
