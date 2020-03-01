@@ -3,7 +3,16 @@ package comp3350.habittracker.DomainObjects;
 import java.io.Serializable;
 
 public class User implements Serializable {
+
     private String username;
+    private String name;
+
+    public User(String username, String name){
+        this.username = username;
+        this.name = name;
+    }
+
+
 
     public User(String userName){
         username = userName;

@@ -1,6 +1,8 @@
 package comp3350.habittracker.DomainObjects;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
 
 
     private int noteId;
