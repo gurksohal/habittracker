@@ -129,6 +129,9 @@ public class ViewNotesActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //switch to edit note activity
                 Intent nextActivity = new Intent(ViewNotesActivity.this,EditNoteActivity.class);
+                Note currNote = noteManager.getNotebyContents(selected,habitId);
+                int noteId = currNote.getNoteId();
+                nextActivity.putExtra("noteId",noteId);
                 nextActivity.putExtra("note",selected);
                 nextActivity.putExtra("habit",userHabit);
                 startActivityForResult(nextActivity,CREATE_NOTE_ACTIVITY_ID);

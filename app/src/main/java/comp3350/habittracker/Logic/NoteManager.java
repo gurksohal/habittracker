@@ -60,4 +60,6 @@ public class NoteManager {
             return noteContents;
     }
 
+    public static Note getNote(int noteId){return db.getNote(noteId);}
+
 }

@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +38,20 @@ public class CreateNewNoteActivity extends AppCompatActivity {
     private String noteDate;
     private NoteManager noteManager;
     private AlertDialog.Builder builder;
+    private RadioButton bad,avg,good;
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_create_note);
         builder = new AlertDialog.Builder(this);
         noteManager = new NoteManager();
+       //Radio Group
+        bad = (RadioButton)findViewById(R.id.radio_bad);
+        avg = (RadioButton)findViewById(R.id.radio_average);
+        good = (RadioButton)findViewById(R.id.radio_good);
+        bad.setChecked(false);
+        avg.setChecked(false);
+        good.setChecked(false);
         //Intent
         Intent intent = getIntent();
         userId = (String)intent.getSerializableExtra("user");
@@ -63,11 +73,15 @@ public class CreateNewNoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText et = (EditText)findViewById(R.id.etWriteNotes);
                 String note = et.getText().toString();
-                int feeling = 0; //todo: implement feelings
-                noteManager.saveNewNote(userHabit.getId(),userId,note,feeling,noteDate);
-                Intent intent = new Intent();
-                setResult(RESULT_OK,intent);
-                finish();
+                int feeling = getFeelings(); //todo: implement feelings
+                if(feeling>-1) {
+                    noteManager.saveNewNote(userHabit.getId(), userId, note, 0, noteDate);
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else{
+                   Toast.makeText(CreateNewNoteActivity.this,"Please select a feeling",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -81,6 +95,16 @@ public class CreateNewNoteActivity extends AppCompatActivity {
             }
         });
     }
+    private int getFeelings(){
+        int feelings = -1;
 
+        if(bad.isChecked())
+            feelings = 0;
+        else if(avg.isChecked())
+            feelings = 1;
+        else if(good.isChecked())
+            feelings = 2;
+    return feelings;
+    }
 }
 
