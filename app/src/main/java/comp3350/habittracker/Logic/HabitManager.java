@@ -3,9 +3,8 @@ package comp3350.habittracker.Logic;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.HabitsPersistence;
-import comp3350.habittracker.Persistence.HabitsStub;
+import comp3350.habittracker.Persistence.stub.HabitsStub;
 
 //manage habits
 //add, remove, edit

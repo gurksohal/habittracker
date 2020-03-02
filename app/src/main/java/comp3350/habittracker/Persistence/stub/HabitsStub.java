@@ -1,8 +1,9 @@
-package comp3350.habittracker.Persistence;
+package comp3350.habittracker.Persistence.stub;
 
 import java.util.*;
 
 import comp3350.habittracker.DomainObjects.Habit;
+import comp3350.habittracker.Persistence.HabitsPersistence;
 
 
 public class HabitsStub implements HabitsPersistence {

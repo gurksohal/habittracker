@@ -9,5 +9,6 @@ public interface UserPersistance {
     boolean addUser(User user);
     boolean deleteUser(String username);
     boolean modifyUser(User user);
-    Note getUser(String username);
+    User getUser(String username);
+    ArrayList<User> getAllUsers();
 }

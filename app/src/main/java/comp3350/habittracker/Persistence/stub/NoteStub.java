@@ -1,9 +1,10 @@
-package comp3350.habittracker.Persistence;
+package comp3350.habittracker.Persistence.stub;
 
 import java.util.ArrayList;
 
 
 import comp3350.habittracker.DomainObjects.Note;
+import comp3350.habittracker.Persistence.NotePersistance;
 
 public class NoteStub implements NotePersistance {
     private ArrayList<Note> notes = new ArrayList<>();
