@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etWriteNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Begin typing a note..."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.083" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnUpdateNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="481dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@android:drawable/ic_menu_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.918"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etWriteNotes"
+        app:layout_constraintVertical_bias="0.897" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCancelNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="481dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnUpdateNote"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etWriteNotes"
+        app:layout_constraintVertical_bias="0.892"
+        app:srcCompat="@android:drawable/ic_input_delete" />
+
+    <TextView
+        android:id="@+id/tvHabitName"
+        android:layout_width="410dp"
+        android:layout_height="51dp"
+        android:text="habitName"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/etWriteNotes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radio_feelings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="454dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdateNote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etWriteNotes">
+
+        <RadioButton
+            android:id="@+id/radio_bad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Bad"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="155dp"
+            tools:layout_editor_absoluteY="545dp" />
+
+        <RadioButton
+            android:id="@+id/radio_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Average"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="170dp"
+            tools:layout_editor_absoluteY="545dp" />
+
+        <RadioButton
+            android:id="@+id/radio_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Good"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="200dp"
+            tools:layout_editor_absoluteY="545dp" />
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

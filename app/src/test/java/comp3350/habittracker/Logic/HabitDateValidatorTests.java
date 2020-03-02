@@ -26,8 +26,8 @@ public class HabitDateValidatorTests {
         formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         User user = new User("userA");
-        completeHabit = new Habit("run", 2,2,user,"Morning",1);
-        incompleteHabit = new Habit("walk", 2,1,user,"Morning",1);
+        completeHabit = new Habit("run", 2,2,user.getUsername(),"Morning",1);
+        incompleteHabit = new Habit("walk", 2,1,user.getUsername(),"Morning",1);
     }
 
     @Test

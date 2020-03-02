@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
+
 import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
 
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView txtSelectedDate;
     private CalendarView calendarView;
     private FloatingActionButton btnAddHabit;
+    //private Button btnAddNotes;
     private String selectedDate;
 
     private String userId; //fake user
@@ -111,18 +113,53 @@ public class HomeActivity extends AppCompatActivity {
         return formatter.format(date);
     }
 
+    private void notesAlertBox(final Date selectDate, final Date currentDate, final String habitName, final String userId){
+        final Habit currHabit = habitList.getHabitByName(habitName,userId);
+        //Build alert dialogs
+        final AlertDialog.Builder notesDialog = new AlertDialog.Builder(HomeActivity.this);
+        notesDialog.setMessage("View notes or mark habit as complete");
+        notesDialog.setPositiveButton("Check off habit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //todo: mark habit as complete here
+                if(selectDate.equals(currentDate)) {//todo: habits are marked as complete immediately
+                    habitList.completeHabit(habitName);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Completed " + habitName, Toast.LENGTH_SHORT);
+                    toast.show();
+                    //reload the habit list
+                    reloadList(selectedDate);
+                    }
+                }
+        });
+        notesDialog.setNegativeButton("View Notes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
+                Intent nextActivity = new Intent(HomeActivity.this,ViewNotesActivity.class);
+                nextActivity.putExtra("user",userId);
+                nextActivity.putExtra("habit",currHabit);
+                nextActivity.putExtra("date",currentDate.toString());
+                // startActivityForResult(nextActivity,ADD_ACTIVITY_ID);
+                startActivity(nextActivity);
+            }
+        });
+        notesDialog.create().show();
+    }
+
     private void configList(){
         ListView list = findViewById(R.id.listView);
         reloadList(selectedDate); //load list for the first time
 
         //set a listener on the loaded list
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = (String) parent.getItemAtPosition(position);
                 Date selectDate = null;
                 Date currentDate = null;
-
+                //Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
+                //nextActivity.putExtra("habit",parent.getItemIdAtPosition(position));
                 try {
                     //get selected date and current date as date Objects
                     selectDate = Utils.parseString(selectedDate);
@@ -130,16 +167,18 @@ public class HomeActivity extends AppCompatActivity {
                 }catch(ParseException e){
                     e.printStackTrace();
                 }
+                //AlertBox
 
-                //only process the click if selected and current dates are equal
-                if(selectDate.equals(currentDate)) {
+                notesAlertBox(selectDate, currentDate,selected,userId);
+                        //only process the click if selected and current dates are equal
+                /*if(selectDate.equals(currentDate)) {//todo: habits are marked as complete immediately
                     habitList.completeHabit(selected);
                     Toast toast = Toast.makeText(getApplicationContext(), "Completed " + selected, Toast.LENGTH_SHORT);
                     toast.show();
 
                     //reload the habit list
                     reloadList(selectedDate);
-                }
+                }*/
             }
         });
 
