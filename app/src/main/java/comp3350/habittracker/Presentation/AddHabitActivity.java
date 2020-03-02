@@ -38,15 +38,30 @@ public class AddHabitActivity extends AppCompatActivity {
         //get current user instance from homepage
         //also if an edit is being edited, get its name
         Intent intent = getIntent();
-        userId = (String) intent.getSerializableExtra("user");
+        userId = intent.getStringExtra("user");
         editHabit = (Habit) intent.getSerializableExtra("habit");
 
         //attach listener
         setSpinnerText();
         setSpinnerTime();
         configAddButton();
+
+        //editing a habit
+        if(editHabit != null){
+            fillInfo(editHabit);
+        }
     }
 
+    //fill the fields, with information about that habit that is being edited
+    private void fillInfo(Habit habit){
+        final EditText txtHabitName = findViewById(R.id.txtHabitName);
+        final Spinner dropdown = findViewById(R.id.spinner);
+        final Spinner dropdownTime = findViewById(R.id.spinnerTime);
+        //set the fields to the correct values
+        txtHabitName.setText(habit.getHabitName());
+        dropdown.setSelection(habit.getWeeklyAmount() - 1);
+        dropdownTime.setSelection(habit.getSortByDay() - 1);
+    }
     //set the text style for the dropdown
     private void setSpinnerText(){
         Spinner spinner = findViewById(R.id.spinner);
@@ -76,7 +91,8 @@ public class AddHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //get data from the input fields and create habit object
                 String habitName = txtHabitName.getText().toString();
-                int timesPerWeek = valueOf(dropdown.getSelectedItem().toString().charAt(0));
+                char c = dropdown.getSelectedItem().toString().charAt(0);
+                int timesPerWeek = Integer.parseInt(String.valueOf(c));
                 String schedule = dropdownTime.getSelectedItem().toString();
                 int scheduleAssoc;
                 if(schedule.equals("Morning"))
@@ -91,6 +107,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
                 if(editHabit!=null) {
                     editHabit.setHabitName(habitName);
+                    System.out.println("Setting times per week too: " + timesPerWeek);
                     editHabit.setWeeklyAmount(timesPerWeek);
                     editHabit.setTimeOfDay(schedule);
                     editHabit.setUserEmail(userId);
