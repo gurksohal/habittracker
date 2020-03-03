@@ -169,7 +169,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 //AlertBox
 
-                notesAlertBox(selectDate, currentDate,selected,userId);
+                if(selectDate.equals(currentDate)){
+                    notesAlertBox(selectDate, currentDate,selected,userId);
+                }
+
                         //only process the click if selected and current dates are equal
                 /*if(selectDate.equals(currentDate)) {//todo: habits are marked as complete immediately
                     habitList.completeHabit(selected);
