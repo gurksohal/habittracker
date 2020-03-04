@@ -34,7 +34,6 @@ import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
-import comp3350.habittracker.Logic.UserManager;
 import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
 
