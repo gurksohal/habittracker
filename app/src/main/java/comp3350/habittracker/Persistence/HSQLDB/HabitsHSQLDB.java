@@ -1,0 +1,117 @@
+package comp3350.habittracker.Persistence.HSQLDB;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import comp3350.habittracker.DomainObjects.Habit;
+import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Persistence.HabitsPersistence;
+
+public class HabitsHSQLDB implements HabitsPersistence {
+
+    private ArrayList<Habit> habits;
+    private String path;
+
+    public HabitsHSQLDB(String db){
+        habits = new ArrayList<>();
+        path = db;
+    }
+
+    private Connection connection() throws SQLException{
+        return DriverManager.getConnection("jdbc:hsqldb:file:" + path + ";shutdown=true", "SA", "");
+    }
+
+    private Habit fromResultSet(final ResultSet rs) throws SQLException {
+        String name = rs.getString("name");
+        int weekAmt = rs.getInt("weekAmt");
+        int completeAmt = rs.getInt("completeAmt");
+        String lastCompleteDate = rs.getString("lastCompleteDate");
+        String time = rs.getString("time");
+        int sortTime = rs.getInt("sortTime");
+        String user = rs.getString("username");
+        User u = new User(user);
+        return new Habit(name, weekAmt, completeAmt, u, time, sortTime,lastCompleteDate);
+    }
+
+    @Override
+    public ArrayList<Habit> getUserHabits(User user) {
+        if(habits.size() == 0){
+            try(Connection c = connection()){
+                String query = "SELECT * FROM HABITS WHERE USERNAME = ?";
+                PreparedStatement st = c.prepareStatement(query);
+                st.setString(1, user.getUsername());
+                ResultSet rs = st.executeQuery();
+
+                while(rs.next()){
+                    Habit habit = fromResultSet(rs);
+                    habits.add(habit);
+                }
+
+                st.close();
+                rs.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return habits;
+    }
+
+    @Override
+    public void deleteHabit(Habit habit) {
+        try(Connection c = connection()){
+            PreparedStatement st = c.prepareStatement("DELETE FROM HABITS WHERE NAME=? AND USERNAME=?");
+            st.setString(1, habit.getHabitName());
+            st.setString(2, habit.getUser().getUsername());
+            st.executeUpdate();
+
+            //update cache
+            habits.remove(habit);
+            st.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean addHabit(Habit habit) {
+        boolean returnValue = false;
+        if(!habits.contains(habit)){
+            try(Connection c = connection()){
+                PreparedStatement st = c.prepareStatement("INSERT INTO HABITS VALUES(?,?,?,?,?,?,?)");
+                st.setString(1, habit.getHabitName());
+                st.setInt(2, habit.getWeeklyAmount());
+                st.setInt(3,habit.getCompletedWeeklyAmount());
+                st.setString(4,habit.getLastCompletedDate());
+                st.setString(5,habit.getTimeOfDay());
+                st.setInt(6, habit.getSortByDay());
+                st.setString(7, habit.getUser().getUsername());
+                st.executeUpdate();
+
+                //update cache
+                habits.add(habit);
+                st.close();
+                returnValue = true;
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return returnValue;
+    }
+
+    @Override
+    public boolean edit(Habit habit, Habit newHabit) {
+        deleteHabit(habit);
+        return addHabit(newHabit);
+    }
+
+    @Override
+    public boolean update(Habit habit) {
+        deleteHabit(habit);
+        return addHabit(habit);
+    }
+}
