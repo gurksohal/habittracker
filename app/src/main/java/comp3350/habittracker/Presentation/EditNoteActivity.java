@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,7 +29,8 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        setContentView(R.layout.activity_edit_note);
+        setContentView(R.layout.activity_create_note);
+
         //Intent
         Intent intent = getIntent();
         userHabit = (Habit)intent.getSerializableExtra("habit");

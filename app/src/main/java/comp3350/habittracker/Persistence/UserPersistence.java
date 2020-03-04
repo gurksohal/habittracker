@@ -4,6 +4,6 @@ import comp3350.habittracker.DomainObjects.User;
 
 public interface UserPersistence {
     boolean addUser(String username, String password);
-    boolean isValidUser(String username, String password);
-    User getUser(String username);
+    boolean getUser(String username, String password);
+    void changePassword(String username, String password);
 }

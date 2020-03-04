@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,6 +34,7 @@ public class ViewNotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_view_notes);
+
         //Receive intent
         Intent intent = getIntent();
 

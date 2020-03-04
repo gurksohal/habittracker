@@ -2,14 +2,19 @@ package comp3350.habittracker.Presentation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.AssetManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,29 +25,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import comp3350.habittracker.Application.CreateTables;
-import comp3350.habittracker.Application.Main;
-import comp3350.habittracker.Application.Services;
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
 import comp3350.habittracker.Logic.HabitManager;
-import comp3350.habittracker.Logic.NotesManager;
 import comp3350.habittracker.Logic.UserManager;
 import comp3350.habittracker.Logic.Utils;
-import comp3350.habittracker.Persistence.HSQLDB.HabitsHSQLDB;
-import comp3350.habittracker.Persistence.HSQLDB.NotesHSQLDB;
-import comp3350.habittracker.Persistence.HSQLDB.UserHSQLDB;
-import comp3350.habittracker.Persistence.Stub.HabitsStub;
 import comp3350.habittracker.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -61,12 +54,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_main);
 
-        copyDatabaseToDevice();
+        Intent intent = getIntent();
+        user = (User)intent.getSerializableExtra("user");
 
-        user = new User("userA");
-        new UserManager(Services.getUserPersistence());
-        new HabitManager(Services.getHabitsPersistence());
-        new NotesManager(Services.getNotePersistence());
+        setTitle(String.format("Logged in as: %s", user.getUsername()));
 
         try {
             habitList = new HabitListManager(user);
@@ -83,57 +74,35 @@ public class HomeActivity extends AppCompatActivity {
         configCalendar(); //attach listener to calendarView
     }
 
-    private void copyDatabaseToDevice() {
-        final String DB_PATH = "db";
-
-        String[] assetNames;
-        Context context = getApplicationContext();
-        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
-        AssetManager assetManager = getAssets();
-
-        try {
-
-            assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < assetNames.length; i++) {
-                assetNames[i] = DB_PATH + "/" + assetNames[i];
-            }
-
-            copyAssetsToDirectory(assetNames, dataDirectory);
-
-            Main.setDBPathName(dataDirectory.toString() + "/" + Main.getDBPathName());
-        } catch (final IOException ioe) {
-            UserMessage.warning(this, "Unable to access application data: " + ioe.getMessage());
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
-    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException {
-        AssetManager assetManager = getAssets();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.logout){
+            //delete saved info
+            SharedPreferences sharedPreferences = getSharedPreferences("account", 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
 
-        for (String asset : assets) {
-            String[] components = asset.split("/");
-            String copyPath = directory.toString() + "/" + components[components.length - 1];
-
-            char[] buffer = new char[1024];
-            int count;
-
-            File outFile = new File(copyPath);
-
-            if (!outFile.exists()) {
-                InputStreamReader in = new InputStreamReader(assetManager.open(asset));
-                FileWriter out = new FileWriter(outFile);
-
-                count = in.read(buffer);
-                while (count != -1) {
-                    out.write(buffer, 0, count);
-                    count = in.read(buffer);
-                }
-
-                out.close();
-                in.close();
-            }
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); //remove from back stack
+            return true;
         }
-    }
 
+        if(item.getItemId() == R.id.changePass){
+            Intent intent = new Intent(HomeActivity.this, ChangePasswordActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     //when another activity finishes and sends result and data
     @Override

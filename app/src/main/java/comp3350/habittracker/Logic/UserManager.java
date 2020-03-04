@@ -13,14 +13,14 @@ public class UserManager {
 
     //return if login was a success
     public static boolean login(String username, String password){
-        return userPersistence.isValidUser(username,password);
+        return userPersistence.getUser(username,password);
     }
 
     public static boolean register(String username, String password){
         return userPersistence.addUser(username, password);
     }
 
-    public static User getUser(String username){
-        return userPersistence.getUser(username);
+    public static void changePassword(String username, String password){
+        userPersistence.changePassword(username, password);
     }
 }

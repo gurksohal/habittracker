@@ -26,7 +26,7 @@ public class UserStub implements UserPersistence {
     }
 
     @Override
-    public boolean isValidUser(String username, String password){
+    public boolean getUser(String username, String password){
         boolean returnValue = false;
         if(users.keySet().contains(username) && users.get(username).equals(password)){
             returnValue = true;
@@ -35,11 +35,7 @@ public class UserStub implements UserPersistence {
     }
 
     @Override
-    public User getUser(String username) {
-        User returnValue = null;
-        if(users.keySet().contains(username)){
-            returnValue = new User(users.get(username));
-        }
-        return returnValue;
+    public void changePassword(String username, String password) {
+        return;
     }
 }

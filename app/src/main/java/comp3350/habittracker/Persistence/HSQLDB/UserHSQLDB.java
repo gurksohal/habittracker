@@ -28,7 +28,11 @@ public class UserHSQLDB implements UserPersistence {
             PreparedStatement st = c.prepareStatement("INSERT INTO users VALUES(?,?)");
             st.setString(1, username);
             st.setString(2, password);
-            returnValue = st.execute();
+            int val = st.executeUpdate();
+            if(val == 1){
+                returnValue = true;
+            }
+
             st.close();
         }catch (SQLException e){
             e.printStackTrace();
@@ -37,7 +41,7 @@ public class UserHSQLDB implements UserPersistence {
     }
 
     @Override
-    public boolean isValidUser(String username, String password) {
+    public boolean getUser(String username, String password) {
         boolean returnValue = false;
         try(Connection c = connection()){
             PreparedStatement st = c.prepareStatement("SELECT * FROM users WHERE USERNAME=? AND password=?");
@@ -54,21 +58,17 @@ public class UserHSQLDB implements UserPersistence {
     }
 
     @Override
-    public User getUser(String username) {
-        User user = null;
+    public void changePassword(String username, String password) {
+        boolean returnValue = false;
         try(Connection c = connection()){
-            PreparedStatement st = c.prepareStatement("SELECT * FROM users WHERE username=?");
-            st.setString(1, username);
-            ResultSet rs = st.executeQuery();
-            //if a user was found
-            if(!rs.next()){
-                user = new User(rs.getString("username"));
-            }
-            rs.close();
+            PreparedStatement st = c.prepareStatement("UPDATE users SET PASSWORD=? WHERE USERNAME=?");
+            st.setString(1, password);
+            st.setString(2, username);
+            st.executeUpdate();
+
             st.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return user;
     }
 }

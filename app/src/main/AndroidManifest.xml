@@ -9,14 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Presentation.AddHabitActivity"></activity>
         <activity android:name=".Presentation.CreateNewNoteActivity"></activity>
         <activity android:name=".Presentation.EditNoteActivity"></activity>
         <activity android:name=".Presentation.ViewNotesActivity"></activity>
-        <activity android:name=".Presentation.HomeActivity">
+        <activity android:name=".Presentation.RegisterActivity"></activity>
+        <activity android:name=".Presentation.HomeActivity"></activity>
+        <activity android:name=".Presentation.ChangePasswordActivity"></activity>
+        <activity android:name=".Presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

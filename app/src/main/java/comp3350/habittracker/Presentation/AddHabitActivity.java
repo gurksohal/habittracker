@@ -1,6 +1,7 @@
 package comp3350.habittracker.Presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Intent;
