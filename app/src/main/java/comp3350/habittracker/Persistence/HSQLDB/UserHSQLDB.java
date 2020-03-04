@@ -1,5 +1,7 @@
 package comp3350.habittracker.Persistence.HSQLDB;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -35,6 +37,7 @@ public class UserHSQLDB implements UserPersistence {
 
             st.close();
         }catch (SQLException e){
+            Log.w("adding user", e.toString());
             e.printStackTrace();
         }
         return returnValue;
@@ -52,6 +55,7 @@ public class UserHSQLDB implements UserPersistence {
             rs.close();
             st.close();
         }catch (SQLException e){
+            Log.w("getting user", e.toString());
             e.printStackTrace();
         }
         return returnValue;
@@ -68,6 +72,7 @@ public class UserHSQLDB implements UserPersistence {
 
             st.close();
         }catch (SQLException e){
+            Log.w("changing password", e.toString());
             e.printStackTrace();
         }
     }

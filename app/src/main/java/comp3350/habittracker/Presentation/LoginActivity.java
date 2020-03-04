@@ -94,7 +94,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     launchHomePage(new User(username));
                 }else{
-                    login.setError("Incorrect username/password");
+                    login.setError("");
+                    loginUserName.setError("Incorrect username/password");
+                    loginPassword.setError("Incorrect username/password");
                 }
 
             }

@@ -2,8 +2,6 @@ package comp3350.habittracker.Presentation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -161,6 +158,9 @@ public class HomeActivity extends AppCompatActivity {
                     toast.show();
                     //reload the habit list
                     reloadList(selectedDate);
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(), "Can't complete habits in future!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -199,9 +199,7 @@ public class HomeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(selectDate.equals(currentDate)){
-                    notesAlertBox(selectDate, currentDate,selected);
-                }
+                notesAlertBox(selectDate, currentDate,selected);
 
             }
         });

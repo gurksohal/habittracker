@@ -1,5 +1,7 @@
 package comp3350.habittracker.Persistence.HSQLDB;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -46,6 +48,7 @@ public class NotesHSQLDB implements NotePersistence {
             st.close();
             rs.close();
         }catch (SQLException e){
+            Log.w("Getting habit notes", e.toString());
             e.printStackTrace();
         }
         return notes;
@@ -63,6 +66,7 @@ public class NotesHSQLDB implements NotePersistence {
             st.executeUpdate();
             st.close();
         }catch(SQLException e){
+            Log.w("Add note", e.toString());
             e.printStackTrace();
         }
     }
@@ -77,6 +81,7 @@ public class NotesHSQLDB implements NotePersistence {
             st.executeUpdate();
             st.close();
         } catch (SQLException e){
+            Log.w("delete note", e.toString());
             e.printStackTrace();
         }
     }

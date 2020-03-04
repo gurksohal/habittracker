@@ -16,10 +16,12 @@ public class UserManager {
         return userPersistence.getUser(username,password);
     }
 
+    //register user
     public static boolean register(String username, String password){
         return userPersistence.addUser(username, password);
     }
 
+    //change password
     public static void changePassword(String username, String password){
         userPersistence.changePassword(username, password);
     }

@@ -1,5 +1,7 @@
 package comp3350.habittracker.Persistence.HSQLDB;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -56,6 +58,7 @@ public class HabitsHSQLDB implements HabitsPersistence {
                 rs.close();
             }catch (SQLException e){
                 e.printStackTrace();
+                Log.w("Getting Habits", e.toString());
             }
         }
         return habits;
@@ -74,6 +77,7 @@ public class HabitsHSQLDB implements HabitsPersistence {
             st.close();
         }catch (SQLException e){
             e.printStackTrace();
+            Log.w("deleting habit", e.toString());
         }
     }
 
@@ -97,6 +101,7 @@ public class HabitsHSQLDB implements HabitsPersistence {
                 st.close();
                 returnValue = true;
             }catch (SQLException e){
+                Log.w("Add Habit", e.toString());
                 e.printStackTrace();
             }
         }

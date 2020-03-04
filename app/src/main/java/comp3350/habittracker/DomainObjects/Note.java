@@ -32,6 +32,7 @@ public class Note implements Serializable {
         return noteDate;
     }
 
+    //two notes are equal if the text and habit is the same
     @Override
     public boolean equals(Object o){
         boolean returnValue = false;

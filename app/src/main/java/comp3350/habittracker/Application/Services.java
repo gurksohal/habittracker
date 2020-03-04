@@ -1,6 +1,5 @@
 package comp3350.habittracker.Application;
 
-import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.Persistence.HSQLDB.HabitsHSQLDB;
 import comp3350.habittracker.Persistence.HSQLDB.NotesHSQLDB;
 import comp3350.habittracker.Persistence.HSQLDB.UserHSQLDB;
