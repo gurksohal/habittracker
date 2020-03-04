@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
-import comp3350.habittracker.TestUtils;
+import comp3350.habittracker.Persistence.Stub.HabitsStub;
+import comp3350.habittracker.Utils.TestUtils;
 
 public class HabitManagerTests {
     private HabitManager habitManager;
@@ -22,7 +23,7 @@ public class HabitManagerTests {
     @Before
     public void setUp() {
         user = new User("userA");
-        habitManager = new HabitManager();
+        habitManager = new HabitManager(new HabitsStub());
         //create fake database for testing
         habits = TestUtils.createDB(user);
         habitManager.setupTest(habits);

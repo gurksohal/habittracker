@@ -12,10 +12,10 @@ public class HabitTests {
     public void testEquals(){
         User user = new User("userA");
         User user1 = new User("userB");
-        Habit habit = new Habit("habit1",2,1,user.getUsername(),"Morning",1);
-        Habit diffHabit = new Habit("habit2", 2,0,user.getUsername(),"Morning",1);
-        Habit sameHabit = new Habit("habit1", 2,0,user.getUsername(),"Morning",1);
-        Habit diffUser = new Habit("habit1", 2,0,user1.getUsername(),"Morning",1);
+        Habit habit = new Habit("habit1",2,1,user,"Morning",1);
+        Habit diffHabit = new Habit("habit2", 2,0,user,"Morning",1);
+        Habit sameHabit = new Habit("habit1", 2,0,user,"Morning",1);
+        Habit diffUser = new Habit("habit1", 2,0,user1,"Morning",1);
 
         //habits are the same if they have same name and user
         assertEquals("both habits are equal",habit,sameHabit);

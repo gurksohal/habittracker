@@ -14,7 +14,8 @@ import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
-import comp3350.habittracker.TestUtils;
+import comp3350.habittracker.Persistence.Stub.HabitsStub;
+import comp3350.habittracker.Utils.TestUtils;
 
 public class HabitListManagerTests {
 
@@ -24,12 +25,12 @@ public class HabitListManagerTests {
 
     @Before
     public void setUp() throws ParseException {
-        HabitManager hm = new HabitManager(); //populate stub database
+        HabitManager hm = new HabitManager(new HabitsStub()); //populate stub database
         User user = new User("userA");
         habits = TestUtils.createDB(user);
         hm.setupTest(habits);
         formatter = new SimpleDateFormat("dd/MM/yyyy");
-        habitListManager = new HabitListManager(user.getUsername());
+        habitListManager = new HabitListManager(user);
     }
 
     @Test

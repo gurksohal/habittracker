@@ -9,12 +9,11 @@ import static org.junit.Assert.assertFalse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
-import comp3350.habittracker.TestUtils;
+import comp3350.habittracker.Utils.TestUtils;
 
 public class HabitDateValidatorTests {
 
@@ -26,8 +25,8 @@ public class HabitDateValidatorTests {
         formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         User user = new User("userA");
-        completeHabit = new Habit("run", 2,2,user.getUsername(),"Morning",1);
-        incompleteHabit = new Habit("walk", 2,1,user.getUsername(),"Morning",1);
+        completeHabit = new Habit("run", 2,2,user,"Morning",1);
+        incompleteHabit = new Habit("walk", 2,1,user,"Morning",1);
     }
 
     @Test

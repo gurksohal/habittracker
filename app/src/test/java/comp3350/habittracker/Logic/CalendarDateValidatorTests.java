@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import comp3350.habittracker.TestUtils;
+import comp3350.habittracker.Utils.TestUtils;
 
 public class CalendarDateValidatorTests {
 

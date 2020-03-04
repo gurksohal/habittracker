@@ -1,13 +1,33 @@
-package comp3350.habittracker;
+package comp3350.habittracker.Utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import comp3350.habittracker.Application.Main;
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 
 public class TestUtils {
+
+    private static final File DB_SRC = new File("src/main/assets/db/SC.script");
+
+    public static File copyDB() throws IOException {
+        final File target = File.createTempFile("temp-db", ".script");
+
+        FileChannel src = new FileInputStream(DB_SRC).getChannel();
+        FileChannel dest = new FileOutputStream(target).getChannel();
+        dest.transferFrom(src,0, src.size());
+
+        Main.setDBPathName(target.getAbsolutePath().replace(".script", ""));
+        return target;
+    }
 
     //add days to current date
     public static Date addDaysToDate(int days){
