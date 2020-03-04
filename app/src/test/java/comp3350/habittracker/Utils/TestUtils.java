@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,7 +13,9 @@ import java.util.Date;
 
 import comp3350.habittracker.Application.Main;
 import comp3350.habittracker.DomainObjects.Habit;
+import comp3350.habittracker.DomainObjects.Note;
 import comp3350.habittracker.DomainObjects.User;
+import comp3350.habittracker.Logic.Utils;
 
 public class TestUtils {
 
@@ -44,6 +47,21 @@ public class TestUtils {
         }
         Habit h = new Habit("h"+4,1,0,user,"Morning",1);
         returnList.add(h);
+        return returnList;
+    }
+
+    public static ArrayList<Note> createNoteDB(Habit habit1, Habit habit2){
+        ArrayList<Note> returnList = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            Note note = new Note("H1note" + i, 1, Utils.formatDate(new Date()), habit1);
+            returnList.add(note);
+        }
+
+        for(int i = 0; i < 2; i++){
+            Note note = new Note("H2note" + i, 1, Utils.formatDate(new Date()), habit2);
+            returnList.add(note);
+        }
+
         return returnList;
     }
 }
