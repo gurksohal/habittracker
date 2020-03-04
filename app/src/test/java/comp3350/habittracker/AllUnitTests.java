@@ -9,17 +9,10 @@ import comp3350.habittracker.Logic.CalendarDateValidatorTests;
 import comp3350.habittracker.Logic.HabitDateValidatorTests;
 import comp3350.habittracker.Logic.HabitListManagerTests;
 import comp3350.habittracker.Logic.HabitManagerTests;
-import comp3350.habittracker.Logic.IntegrationTests.HabitManagerIT;
-import comp3350.habittracker.Logic.IntegrationTests.NotesManagerIT;
 import comp3350.habittracker.Logic.NotesManagerTests;
-import comp3350.habittracker.Logic.UserManager;
-
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        HabitManagerIT.class,
-        NotesManagerIT.class,
-        UserManager.class,
         NotesManagerTests.class,
         CalendarDateValidatorTests.class,
         HabitDateValidatorTests.class,
@@ -28,5 +21,5 @@ import comp3350.habittracker.Logic.UserManager;
         HabitTests.class,
         NoteTests.class
 })
-public class AllTests {
+public class AllUnitTests {
 }

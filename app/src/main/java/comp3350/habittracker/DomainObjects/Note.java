@@ -32,11 +32,16 @@ public class Note implements Serializable {
         return noteDate;
     }
 
-    public boolean equals(Note otherNote){
+    @Override
+    public boolean equals(Object o){
         boolean returnValue = false;
-        if(otherNote.getNoteText().equalsIgnoreCase(noteText) && otherNote.getHabit().equals(habit)){
-            returnValue = true;
+        if(o instanceof Note){
+            Note otherNote = (Note) o;
+            if(otherNote.getNoteText().equalsIgnoreCase(noteText) && otherNote.getHabit().equals(habit)){
+                returnValue = true;
+            }
         }
+
         return returnValue;
     }
 }

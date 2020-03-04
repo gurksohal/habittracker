@@ -20,10 +20,14 @@ public class User implements Serializable {
      *
      * Input: other user
      */
-    public boolean equals(User otherUser){
+    public boolean equals(Object o){
         boolean returnValue = false;
-        if(otherUser.username.equalsIgnoreCase(username)){
-            returnValue = true;
+
+        if(o instanceof User){
+            User otherUser = (User) o;
+            if(otherUser.username.equalsIgnoreCase(username)){
+                returnValue = true;
+            }
         }
         return returnValue;
     }
