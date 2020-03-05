@@ -2,7 +2,6 @@ package comp3350.habittracker.DomainObjects;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import comp3350.habittracker.Logic.Utils;

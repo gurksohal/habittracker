@@ -11,15 +11,16 @@ import comp3350.habittracker.Logic.HabitListManagerTests;
 import comp3350.habittracker.Logic.HabitManagerTests;
 import comp3350.habittracker.Logic.IntegrationTests.HabitManagerIT;
 import comp3350.habittracker.Logic.IntegrationTests.NotesManagerIT;
+import comp3350.habittracker.Logic.IntegrationTests.UserManagerIT;
 import comp3350.habittracker.Logic.NotesManagerTests;
 import comp3350.habittracker.Logic.UserManager;
 
-
+//run all the tests, include unit and integration
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         HabitManagerIT.class,
         NotesManagerIT.class,
-        UserManager.class,
+        UserManagerIT.class,
         NotesManagerTests.class,
         CalendarDateValidatorTests.class,
         HabitDateValidatorTests.class,

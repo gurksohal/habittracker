@@ -1,6 +1,5 @@
 package comp3350.habittracker.Logic;
 
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.UserPersistence;
 
 public class UserManager {

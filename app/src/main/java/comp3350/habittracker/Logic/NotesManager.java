@@ -1,12 +1,10 @@
 package comp3350.habittracker.Logic;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
 import comp3350.habittracker.Persistence.NotePersistence;
-import comp3350.habittracker.Persistence.Stub.HabitsStub;
 import comp3350.habittracker.Persistence.Stub.NotesStub;
 
 public class NotesManager {

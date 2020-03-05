@@ -11,6 +11,7 @@ import comp3350.habittracker.Logic.HabitListManagerTests;
 import comp3350.habittracker.Logic.HabitManagerTests;
 import comp3350.habittracker.Logic.NotesManagerTests;
 
+//run only unit tests
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         NotesManagerTests.class,

@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Persistence.UserPersistence;
 
 public class UserHSQLDB implements UserPersistence {

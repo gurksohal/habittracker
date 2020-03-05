@@ -5,14 +5,14 @@ import org.junit.runners.Suite;
 
 import comp3350.habittracker.Logic.IntegrationTests.HabitManagerIT;
 import comp3350.habittracker.Logic.IntegrationTests.NotesManagerIT;
-import comp3350.habittracker.Logic.UserManager;
+import comp3350.habittracker.Logic.IntegrationTests.UserManagerIT;
 
-
+//run only integration tests
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         HabitManagerIT.class,
         NotesManagerIT.class,
-        UserManager.class
+        UserManagerIT.class
 })
 public class AllIntegrationTests {
 }
