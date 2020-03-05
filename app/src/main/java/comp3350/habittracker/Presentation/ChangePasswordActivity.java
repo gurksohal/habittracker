@@ -1,7 +1,6 @@
 package comp3350.habittracker.Presentation;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
