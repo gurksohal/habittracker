@@ -10,4 +10,4 @@ The persistence layer has three interface: `HabitsPersistence`,`UsersPersistence
 There are three domain objects in this application: `Habit`, `User` and `Note`. `Habit` represents a single, unique habit. The `User` object represents a unique user. The `Note` object represents a single, unique note.
 
 
-![diagram](Iteration_2_SoftwareDiagramV2.jpg)
+![diagram](Iteration2_SoftwareDiagramV2.jpg)
