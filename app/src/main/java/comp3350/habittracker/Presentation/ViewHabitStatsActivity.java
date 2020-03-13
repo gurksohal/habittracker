@@ -5,13 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,13 +24,14 @@ import java.util.ArrayList;
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
 
+import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.Logic.NotesManager;
 import comp3350.habittracker.R;
-public class ViewNotesActivity extends AppCompatActivity {
+public class ViewHabitStatsActivity extends AppCompatActivity {
 
     private Habit userHabit;
-    private String noteDate;
     private static final int CREATE_NOTE_ACTIVITY_ID = 0;
+    private static final int EDIT_HABIT_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -38,21 +42,78 @@ public class ViewNotesActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         userHabit = (Habit)intent.getSerializableExtra("habit");
-        noteDate = intent.getStringExtra("date");
+        setTitle(userHabit.getHabitName());
 
-        TextView txtHabitName = findViewById(R.id.tvHabitNameView);
-        txtHabitName.setText(userHabit.getHabitName());
         //config buttons
         configCreateButton();
-        configCancelButton();
         configList();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        //reload everything
+        setTitle(userHabit.getHabitName());
+        reloadList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.habit_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.editHabit){
+            Intent nextActivity = new Intent(ViewHabitStatsActivity.this, AddHabitActivity.class);
+            nextActivity.putExtra("user",userHabit.getUser());
+            nextActivity.putExtra("habit",userHabit);
+            startActivityForResult(nextActivity, EDIT_HABIT_ID);
+            return true;
+        }
+
+        if(item.getItemId() == R.id.deleteHabit){
+            final AlertDialog.Builder assurance = new AlertDialog.Builder(this);
+            assurance.setMessage("Are you sure you want to delete this habit?");
+
+            assurance.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //remove habit from list
+                    HabitManager.delete(userHabit); //is being deleted from database
+                    Toast.makeText(ViewHabitStatsActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+            assurance.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    assurance.setCancelable(true);
+                    Toast.makeText(ViewHabitStatsActivity.this, "Habit was unchanged",Toast.LENGTH_LONG).show();
+                }
+            });
+
+            assurance.create().show();
+
+            return true;
+        }
+
+        if(item.getItemId() == R.id.share){
+            Toast.makeText(ViewHabitStatsActivity.this, "SHARE",Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //when another activity finishes and sends result and data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if creating new Note, or updating a Note
-        if(requestCode == CREATE_NOTE_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
+        reloadList();
+        if(requestCode == EDIT_HABIT_ID && resultCode == Activity.RESULT_OK){
+            userHabit = (Habit) data.getSerializableExtra("habit");
             reloadList(); //redisplay the list
         }
     }
@@ -62,26 +123,14 @@ public class ViewNotesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 //start createNote activity
-                Intent nextActivity = new Intent(ViewNotesActivity.this,CreateNewNoteActivity.class);
+                Intent nextActivity = new Intent(ViewHabitStatsActivity.this,CreateNewNoteActivity.class);
                 nextActivity.putExtra("habit",userHabit);
-                nextActivity.putExtra("date",noteDate);
                 startActivityForResult(nextActivity, CREATE_NOTE_ACTIVITY_ID);
             }
         });
 
     }
-    /*
-        when cancelbtn clicked, exit to HomeActivity
-     */
-    private void configCancelButton(){
-        FloatingActionButton btnCancel = findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
-    }
+
     private void configList(){
         //displays the notes for the current habit in the ListView
         ListView notesList = (ListView)findViewById(R.id.lvNotes);
@@ -116,10 +165,9 @@ public class ViewNotesActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //switch to edit note activity
-                Intent nextActivity = new Intent(ViewNotesActivity.this,EditNoteActivity.class);
+                Intent nextActivity = new Intent(ViewHabitStatsActivity.this,EditNoteActivity.class);
                 Note currNote = NotesManager.getNoteByContents(userHabit, selected);
                 nextActivity.putExtra("note",currNote);
-                nextActivity.putExtra("habit",userHabit);
                 startActivityForResult(nextActivity,CREATE_NOTE_ACTIVITY_ID);
             }
         });
@@ -133,14 +181,14 @@ public class ViewNotesActivity extends AppCompatActivity {
                         //remove Note
                         NotesManager.deleteNote(currNote);
                         reloadList();
-                        Toast.makeText(ViewNotesActivity.this,"Note deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewHabitStatsActivity.this,"Note deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
                 assurance.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         assurance.setCancelable(true);
-                        Toast.makeText(ViewNotesActivity.this,"Note was unchanged",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewHabitStatsActivity.this,"Note was unchanged",Toast.LENGTH_SHORT).show();
                     }
                 });
                 assurance.create().show();

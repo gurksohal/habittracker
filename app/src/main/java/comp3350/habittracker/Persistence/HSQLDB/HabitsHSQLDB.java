@@ -109,13 +109,31 @@ public class HabitsHSQLDB implements HabitsPersistence {
 
     @Override
     public boolean edit(Habit habit, Habit newHabit) {
-        deleteHabit(habit);
-        return addHabit(newHabit);
+        boolean returnValue = false;
+        try(Connection c = connection()){
+            PreparedStatement st = c.prepareStatement("UPDATE habits SET NAME=?, WEEKAMT=?, COMPLETEAMT=?, LASTCOMPLETEDATE=?, TIME=?, SORTTIME=? WHERE name=? AND username=?");
+            st.setString(1, newHabit.getHabitName());
+            st.setInt(2, newHabit.getWeeklyAmount());
+            st.setInt(3,newHabit.getCompletedWeeklyAmount());
+            st.setString(4,newHabit.getLastCompletedDate());
+            st.setString(5,newHabit.getTimeOfDay());
+            st.setInt(6, newHabit.getSortByDay());
+            st.setString(7, habit.getHabitName());
+            st.setString(8,habit.getUser().getUsername());
+
+            st.executeUpdate();
+            st.close();
+            returnValue = true;
+        }catch (SQLException e){
+            Log.w("Edit Habit", e.toString());
+            e.printStackTrace();
+        }
+
+        return returnValue;
     }
 
     @Override
     public boolean update(Habit habit) {
-        deleteHabit(habit);
-        return addHabit(habit);
+        return edit(habit, habit);
     }
 }

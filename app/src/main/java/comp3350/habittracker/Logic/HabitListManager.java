@@ -1,5 +1,6 @@
 package comp3350.habittracker.Logic;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +9,7 @@ import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 
 //manage a list of one users habits
-public class HabitListManager {
+public class HabitListManager implements Serializable {
 
     private ArrayList<Habit> habits;
     private User user;
@@ -20,6 +21,12 @@ public class HabitListManager {
         //if in a new week, reset completed counter
         completedAmountCheck();
         Collections.sort(habits); //sort on intitial creation
+    }
+
+
+    //return a list of all the habits for the user
+    public ArrayList<Habit> getHabits(){
+        return habits;
     }
 
     /*

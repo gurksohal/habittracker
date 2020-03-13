@@ -30,7 +30,6 @@ import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.CalendarDateValidator;
 import comp3350.habittracker.Logic.HabitListManager;
-import comp3350.habittracker.Logic.HabitManager;
 import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
 
@@ -71,6 +70,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        habitList.updateHabitList();
+        //reload everything
+        reloadList(selectedDate);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
@@ -96,6 +103,14 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, ChangePasswordActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
+            return true;
+        }
+
+        if(item.getItemId() == R.id.manageHabit){
+            Intent intent = new Intent(HomeActivity.this, ViewHabitsActivity.class);
+            intent.putExtra("habitList", habitList);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -144,34 +159,27 @@ public class HomeActivity extends AppCompatActivity {
         return Utils.formatDate(new Date());
     }
 
-    private void notesAlertBox(final Date selectDate, final Date currentDate, final String habitName){
+    private void notesAlertBox(final String habitName){
         final Habit currHabit = habitList.getHabit(habitName);
         //Build alert dialogs
         final AlertDialog.Builder notesDialog = new AlertDialog.Builder(HomeActivity.this);
-        notesDialog.setMessage("View notes or mark habit as complete");
-        notesDialog.setPositiveButton("Check off habit", new DialogInterface.OnClickListener() {
+        notesDialog.setMessage("Would you like to add a note?");
+        notesDialog.setPositiveButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(selectDate.equals(currentDate)) {
-                    habitList.completeHabit(habitName);
-                    Toast toast = Toast.makeText(getApplicationContext(), "Completed " + habitName, Toast.LENGTH_SHORT);
-                    toast.show();
-                    //reload the habit list
-                    reloadList(selectedDate);
-                }else{
-                    Toast toast = Toast.makeText(getApplicationContext(), "Can't complete habits in future!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+                habitList.completeHabit(habitName);
+                Toast toast = Toast.makeText(getApplicationContext(), "Completed " + habitName, Toast.LENGTH_SHORT);
+                toast.show();
+                //reload the habit list
+                reloadList(selectedDate);
             }
         });
-        notesDialog.setNegativeButton("View Notes", new DialogInterface.OnClickListener() {
+        notesDialog.setNegativeButton("Add note", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Intent nextActivity = new Intent (HomeActivity.this, CreateNewNoteActivity.class);
-                Intent nextActivity = new Intent(HomeActivity.this,ViewNotesActivity.class);
+                habitList.completeHabit(habitName);
+                Intent nextActivity = new Intent(HomeActivity.this,CreateNewNoteActivity.class);
                 nextActivity.putExtra("habit",currHabit);
-                nextActivity.putExtra("date",Utils.formatDate(currentDate));
-                // startActivityForResult(nextActivity,ADD_ACTIVITY_ID);
                 startActivity(nextActivity);
             }
         });
@@ -199,18 +207,12 @@ public class HomeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                notesAlertBox(selectDate, currentDate,selected);
-
-            }
-        });
-
-        //long click for edit/remove habit
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                String selectedHabit = (String)arg0.getItemAtPosition(pos);
-                showAlertDialog(selectedHabit); //show alert box
-                return true;
+                if(selectDate.equals(currentDate)){
+                    notesAlertBox(selected);
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(), "Can't complete habits in future!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
@@ -231,51 +233,4 @@ public class HomeActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, habitNames);
         list.setAdapter(adapter);
     }
-
-    //Creates alertDialogs for edit and remove habit options
-    public void showAlertDialog(String s){
-        //Habit clicked:
-        final Habit hClickedHabit = habitList.getHabit(s);
-        //Build alert dialogs
-        final AlertDialog.Builder assurance = new AlertDialog.Builder(this);
-        assurance.setMessage("Are you sure you want to delete this habit?");
-        final AlertDialog.Builder habitEditBuilder = new AlertDialog.Builder(this);
-        habitEditBuilder.setMessage("To edit or remove a habit, click one of the buttons below");
-        //Set pos/neg buttons; pos = edit, neg = remove
-        habitEditBuilder.setPositiveButton("Edit habit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //switch activity to add habit activity
-                Intent nextActivity = new Intent(HomeActivity.this, AddHabitActivity.class);
-                nextActivity.putExtra("user",user);
-                nextActivity.putExtra("habit",hClickedHabit);
-                startActivityForResult(nextActivity, ADD_ACTIVITY_ID);
-            }
-        });
-        habitEditBuilder.setNegativeButton("Remove habit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                assurance.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //remove habit from list
-                        HabitManager.delete(hClickedHabit); //is being deleted from database
-                        habitList.updateHabitList();
-                        reloadList(selectedDate);
-                        Toast.makeText(HomeActivity.this, "Habit removed",Toast.LENGTH_LONG).show();
-                    }
-                });
-                assurance.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        assurance.setCancelable(true);
-                        Toast.makeText(HomeActivity.this, "Habit was unchanged", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                assurance.create().show();
-            }
-        });
-       habitEditBuilder.create().show();
-    }//end of showAlertDialog
-
 }

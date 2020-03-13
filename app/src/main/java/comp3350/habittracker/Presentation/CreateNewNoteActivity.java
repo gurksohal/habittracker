@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import comp3350.habittracker.DomainObjects.Habit;
-import comp3350.habittracker.Logic.NotesManager;
 
+import java.util.Date;
+
+import comp3350.habittracker.DomainObjects.Habit;
+
+import comp3350.habittracker.Logic.NotesManager;
+import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.R;
 
 
@@ -25,7 +28,6 @@ public class CreateNewNoteActivity extends AppCompatActivity {
 
     private Habit userHabit;
     private String noteDate;
-    private NotesManager noteManager;
     private AlertDialog.Builder builder;
     private RadioButton bad,avg,good;
 
@@ -45,11 +47,10 @@ public class CreateNewNoteActivity extends AppCompatActivity {
         //Intent
         Intent intent = getIntent();
         userHabit = (Habit) intent.getSerializableExtra("habit");
-        noteDate = intent.getStringExtra("date");
-        TextView txtHabitName = findViewById(R.id.tvHabitName);
-        txtHabitName.setText(userHabit.getHabitName());
+
+        noteDate = Utils.formatDate(new Date());
+
         configSaveButton();
-        configCancelButton();
     }
 
     //listener for btnNotes  //btnSaveNote -- creates a new note
@@ -63,7 +64,7 @@ public class CreateNewNoteActivity extends AppCompatActivity {
                 String note = et.getText().toString();
                 int feeling = getFeelings();
                 if(feeling >-1) {
-                    if(noteManager.saveNewNote(note, feeling, noteDate, userHabit)){
+                    if(NotesManager.saveNewNote(note, feeling, noteDate, userHabit)){
                         Intent intent = new Intent();
                         setResult(RESULT_OK, intent);
                         finish();
@@ -76,16 +77,7 @@ public class CreateNewNoteActivity extends AppCompatActivity {
             }
         });
     }
-    //btnCancelNote -- returns user to home activity
-    private void configCancelButton(){
-        FloatingActionButton btnCancel = findViewById(R.id.btnCancelNote);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
+
     private int getFeelings(){
         int feelings = -1;
 

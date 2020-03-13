@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/manageHabit"
-        android:title="Manage Habits"
+    <item android:id="@+id/editHabit"
+        android:title="Edit Habit"
         app:showAsAction="never" />
 
-    <item android:id="@+id/changePass"
-        android:title="Change Password"
+    <item android:id="@+id/deleteHabit"
+        android:title="Delete Habit"
         app:showAsAction="never" />
 
-    <item android:id="@+id/logout"
-        android:title="Logout"
+    <item android:id="@+id/share"
+        android:title="Share"
         app:showAsAction="never" />
 </menu>

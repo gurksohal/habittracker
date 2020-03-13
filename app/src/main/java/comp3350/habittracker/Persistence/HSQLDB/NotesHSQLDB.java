@@ -88,8 +88,20 @@ public class NotesHSQLDB implements NotePersistence {
 
     @Override
     public void editNote(Note note, Note newNote) {
-        deleteNote(note);
-        addNote(newNote);
+
+        try(Connection c = connection()){
+            PreparedStatement st = c.prepareStatement("UPDATE notes SET TEXT=?, FEELING=? WHERE NAME=? AND USERNAME=? AND TEXT=?");
+            st.setString(1,newNote.getNoteText());
+            st.setInt(2, newNote.getFeeling());
+            st.setString(3, note.getHabit().getHabitName());
+            st.setString(4, note.getHabit().getUser().getUsername());
+            st.setString(5, note.getNoteText());
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException e){
+            Log.w("updating note", e.toString());
+            e.printStackTrace();
+        }
     }
 
 }

@@ -41,7 +41,7 @@ public class HabitManager {
         boolean returnValue = false;
         int perWeek = Integer.parseInt(timesPerWeek.substring(0,1));
         if(name.length() > 0){
-            Habit habit = new Habit(name,perWeek,0,user, timeOfDay, timeAssoc);
+            Habit habit = new Habit(name,perWeek,oldHabit.getCompletedWeeklyAmount(),user, timeOfDay, timeAssoc);
             returnValue = habitsPersistence.edit(oldHabit,habit);
         }
         return returnValue;

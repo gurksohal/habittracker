@@ -5,25 +5,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
 import comp3350.habittracker.Logic.NotesManager;
 import comp3350.habittracker.R;
 
 public class EditNoteActivity extends AppCompatActivity {
 
-    private Habit userHabit;
     private Note currentNote;
     private RadioButton bad,avg,good;
-    private RadioGroup feels;
 
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -32,22 +27,27 @@ public class EditNoteActivity extends AppCompatActivity {
 
         //Intent
         Intent intent = getIntent();
-        userHabit = (Habit)intent.getSerializableExtra("habit");
         currentNote = (Note)intent.getSerializableExtra("note");
-        TextView txtHabitName = findViewById(R.id.tvHabitName);
-        txtHabitName.setText(userHabit.getHabitName());
+
         //Radio Group
         bad = (RadioButton)findViewById(R.id.radio_bad);
         avg = (RadioButton)findViewById(R.id.radio_average);
         good = (RadioButton)findViewById(R.id.radio_good);
-        feels = (RadioGroup)findViewById(R.id.radio_feelings);
-        feels.clearCheck(); //clear the checked buttons so user can change if they want
+
+        int userFeeling = currentNote.getFeeling();
+        if(userFeeling == 0){
+            bad.toggle();
+        }else if(userFeeling == 1){
+            avg.toggle();
+        }else if(userFeeling == 2){
+            good.toggle();
+        }
+
+
         //set edit text to be current note
         EditText et = (EditText)findViewById(R.id.etWriteNotes);
         et.setText(currentNote.getNoteText());
         configUpdateButton();
-        configCancelButton();
-
     }
 
     private  void configUpdateButton(){
@@ -71,21 +71,8 @@ public class EditNoteActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-    /*
-        when cancelbtn is clicked, exit back to ViewNotesActivity
-     */
-    private void configCancelButton(){
-        FloatingActionButton btnCancel = findViewById(R.id.btnCancelNote);
-        btnCancel.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
-    }
+
     /*
         assigns a numerical value to the radiobtn clicked
      */
@@ -97,7 +84,6 @@ public class EditNoteActivity extends AppCompatActivity {
             feelings = 1;
         else if(good.isChecked())
             feelings = 2;
-        feels.clearCheck();
         return feelings;
     }
 }
