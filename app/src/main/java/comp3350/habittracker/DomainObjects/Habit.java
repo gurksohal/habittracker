@@ -16,6 +16,8 @@ public class Habit implements Comparable<Habit>, Serializable {
     private User user; //user who the habit belongs too
     private String timeOfDay;
     private int sortByDay; //1==Morning, 2==Afternoon, 3==Evening, 4==Night
+    private int totalCompletedAmt;
+    private String createdDate;
 
     public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num) {
         habitName = name;
@@ -24,9 +26,10 @@ public class Habit implements Comparable<Habit>, Serializable {
         this.user = user;
         timeOfDay = time;
         sortByDay = num;
+        createdDate = Utils.formatDate(new Date());
     }
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String date) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String createDate, String date) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
@@ -34,6 +37,11 @@ public class Habit implements Comparable<Habit>, Serializable {
         timeOfDay = time;
         sortByDay = num;
         lastCompletedDate = date;
+        createdDate = createDate;
+    }
+
+    public String getCreatedDate(){
+        return createdDate;
     }
 
     public String getHabitName() {

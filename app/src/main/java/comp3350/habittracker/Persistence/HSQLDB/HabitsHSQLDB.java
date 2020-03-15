@@ -34,9 +34,10 @@ public class HabitsHSQLDB implements HabitsPersistence {
         String lastCompleteDate = rs.getString("lastCompleteDate");
         String time = rs.getString("time");
         int sortTime = rs.getInt("sortTime");
+        String createdDate = rs.getString("createDate");
         String user = rs.getString("username");
         User u = new User(user);
-        return new Habit(name, weekAmt, completeAmt, u, time, sortTime,lastCompleteDate);
+        return new Habit(name, weekAmt, completeAmt, u, time, sortTime,lastCompleteDate, createdDate);
     }
 
     @Override
@@ -85,14 +86,15 @@ public class HabitsHSQLDB implements HabitsPersistence {
         boolean returnValue = false;
         if(!habits.contains(habit)){
             try(Connection c = connection()){
-                PreparedStatement st = c.prepareStatement("INSERT INTO HABITS VALUES(?,?,?,?,?,?,?)");
+                PreparedStatement st = c.prepareStatement("INSERT INTO HABITS VALUES(?,?,?,?,?,?,?,?)");
                 st.setString(1, habit.getHabitName());
                 st.setInt(2, habit.getWeeklyAmount());
                 st.setInt(3,habit.getCompletedWeeklyAmount());
                 st.setString(4,habit.getLastCompletedDate());
                 st.setString(5,habit.getTimeOfDay());
                 st.setInt(6, habit.getSortByDay());
-                st.setString(7, habit.getUser().getUsername());
+                st.setString(7, habit.getCreatedDate());
+                st.setString(8, habit.getUser().getUsername());
                 st.executeUpdate();
 
                 //update cache
@@ -111,15 +113,13 @@ public class HabitsHSQLDB implements HabitsPersistence {
     public boolean edit(Habit habit, Habit newHabit) {
         boolean returnValue = false;
         try(Connection c = connection()){
-            PreparedStatement st = c.prepareStatement("UPDATE habits SET NAME=?, WEEKAMT=?, COMPLETEAMT=?, LASTCOMPLETEDATE=?, TIME=?, SORTTIME=? WHERE name=? AND username=?");
+            PreparedStatement st = c.prepareStatement("UPDATE habits SET NAME=?, WEEKAMT=?, TIME=?, SORTTIME=? WHERE name=? AND username=?");
             st.setString(1, newHabit.getHabitName());
             st.setInt(2, newHabit.getWeeklyAmount());
-            st.setInt(3,newHabit.getCompletedWeeklyAmount());
-            st.setString(4,newHabit.getLastCompletedDate());
-            st.setString(5,newHabit.getTimeOfDay());
-            st.setInt(6, newHabit.getSortByDay());
-            st.setString(7, habit.getHabitName());
-            st.setString(8,habit.getUser().getUsername());
+            st.setString(3,newHabit.getTimeOfDay());
+            st.setInt(4, newHabit.getSortByDay());
+            st.setString(5, habit.getHabitName());
+            st.setString(6,habit.getUser().getUsername());
 
             st.executeUpdate();
             st.close();
