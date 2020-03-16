@@ -27,9 +27,10 @@ public class Habit implements Comparable<Habit>, Serializable {
         timeOfDay = time;
         sortByDay = num;
         createdDate = Utils.formatDate(new Date());
+        totalCompletedAmt = 0;
     }
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String createDate, String date) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String createDate, String date, int completeAmt) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
@@ -38,6 +39,11 @@ public class Habit implements Comparable<Habit>, Serializable {
         sortByDay = num;
         lastCompletedDate = date;
         createdDate = createDate;
+        totalCompletedAmt = completeAmt;
+    }
+
+    public int getTotalCompletedAmt(){
+        return totalCompletedAmt;
     }
 
     public String getCreatedDate(){
@@ -90,6 +96,7 @@ public class Habit implements Comparable<Habit>, Serializable {
         lastCompletedDate = Utils.formatDate(new Date());
         //increase completed amount
         completedWeeklyAmount++;
+        totalCompletedAmt++;
     }
 
     public User getUser() {
