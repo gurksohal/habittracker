@@ -1,14 +1,6 @@
 package comp3350.habittracker.Logic;
 
-import android.util.Log;
-
-import java.text.ParseException;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
