@@ -5,13 +5,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,12 +24,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.hsqldb.Table;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comp3350.habittracker.DomainObjects.Habit;
 import comp3350.habittracker.DomainObjects.Note;
 
 import comp3350.habittracker.Logic.HabitManager;
+import comp3350.habittracker.Logic.HabitStats;
 import comp3350.habittracker.Logic.NotesManager;
 import comp3350.habittracker.R;
 public class ViewHabitStatsActivity extends AppCompatActivity {
@@ -47,6 +56,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         //config buttons
         configCreateButton();
         configList();
+        loadStats();
     }
 
     @Override
@@ -149,6 +159,56 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         ArrayList<Note> notes =  NotesManager.getNotes(userHabit);
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, NotesManager.getNoteText(notes));
         notesList.setAdapter(adapter);
+    }
+
+    private void loadStats(){
+        HabitStats stats = new HabitStats(userHabit);
+        final TableLayout tableLayout = findViewById(R.id.statsTable);
+        ArrayList<String> titles = new ArrayList<>();
+        ArrayList<String> values = new ArrayList<>();
+
+        titles.add("Desired Weekly Completion Amount:");
+        values.add(String.valueOf(userHabit.getWeeklyAmount()));
+
+        titles.add("Current Weekly Completed Amount:");
+        values.add(stats.getCompletedThisWeek());
+
+        titles.add("Last Completed Date:");
+        values.add(stats.getLastCompleteDate());
+
+        titles.add("Average Mood of Notes:");
+        values.add(stats.getAvgNoteFeeling());
+
+        titles.add("Total Times Completed:");
+        values.add(String.valueOf(stats.getTimesCompleted()));
+
+        titles.add("Favourite Day to Complete:");
+        values.add(stats.getFavDay());
+
+        for(int i = 0; i < titles.size(); i++){
+            final TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+            //create textView
+            final TextView text = new TextView(this);
+            text.setText(titles.get(i));
+            text.setTextSize(25);
+            text.setPadding(4,2,0,10);
+            text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            //create valView
+            final TextView value = new TextView(this);
+            value.setText(values.get(i));
+            value.setTextSize(25);
+            value.setPadding(0,2,4,10);
+            value.setGravity(Gravity.RIGHT);
+            value.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            tableRow.addView(text);
+            tableRow.addView(value);
+
+            tableLayout.addView(tableRow);
+        }
     }
 
     /*

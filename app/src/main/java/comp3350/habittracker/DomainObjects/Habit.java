@@ -2,6 +2,7 @@ package comp3350.habittracker.DomainObjects;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.habittracker.Logic.Utils;
@@ -18,6 +19,8 @@ public class Habit implements Comparable<Habit>, Serializable {
     private int sortByDay; //1==Morning, 2==Afternoon, 3==Evening, 4==Night
     private int totalCompletedAmt;
     private String createdDate;
+    //index 0 = sunday, 6 = saturday
+    private int[] daysOfWeek;
 
     public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num) {
         habitName = name;
@@ -28,9 +31,10 @@ public class Habit implements Comparable<Habit>, Serializable {
         sortByDay = num;
         createdDate = Utils.formatDate(new Date());
         totalCompletedAmt = 0;
+        daysOfWeek = new int[]{0,0,0,0,0,0,0};
     }
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String createDate, String date, int completeAmt) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num,String date, String createDate, int completeAmt, int[] array) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
@@ -40,6 +44,11 @@ public class Habit implements Comparable<Habit>, Serializable {
         lastCompletedDate = date;
         createdDate = createDate;
         totalCompletedAmt = completeAmt;
+        daysOfWeek = array;
+    }
+
+    public int[] getDaysOfWeek(){
+        return daysOfWeek;
     }
 
     public int getTotalCompletedAmt(){
@@ -97,6 +106,9 @@ public class Habit implements Comparable<Habit>, Serializable {
         //increase completed amount
         completedWeeklyAmount++;
         totalCompletedAmt++;
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        daysOfWeek[day-1]++;
     }
 
     public User getUser() {
