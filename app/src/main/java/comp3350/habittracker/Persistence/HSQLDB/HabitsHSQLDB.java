@@ -35,9 +35,10 @@ public class HabitsHSQLDB implements HabitsPersistence {
         String time = rs.getString("time");
         int sortTime = rs.getInt("sortTime");
         String createdDate = rs.getString("createDate");
+        int totalCompleteAmt = rs.getInt("totalCompleteAmt");
         String user = rs.getString("username");
         User u = new User(user);
-        return new Habit(name, weekAmt, completeAmt, u, time, sortTime,lastCompleteDate, createdDate);
+        return new Habit(name, weekAmt, completeAmt, u, time, sortTime,lastCompleteDate, createdDate, totalCompleteAmt);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class HabitsHSQLDB implements HabitsPersistence {
         boolean returnValue = false;
         if(!habits.contains(habit)){
             try(Connection c = connection()){
-                PreparedStatement st = c.prepareStatement("INSERT INTO HABITS VALUES(?,?,?,?,?,?,?,?)");
+                PreparedStatement st = c.prepareStatement("INSERT INTO HABITS VALUES(?,?,?,?,?,?,?,?,?)");
                 st.setString(1, habit.getHabitName());
                 st.setInt(2, habit.getWeeklyAmount());
                 st.setInt(3,habit.getCompletedWeeklyAmount());
@@ -94,7 +95,8 @@ public class HabitsHSQLDB implements HabitsPersistence {
                 st.setString(5,habit.getTimeOfDay());
                 st.setInt(6, habit.getSortByDay());
                 st.setString(7, habit.getCreatedDate());
-                st.setString(8, habit.getUser().getUsername());
+                st.setInt(8, habit.getTotalCompletedAmt());
+                st.setString(9, habit.getUser().getUsername());
                 st.executeUpdate();
 
                 //update cache
