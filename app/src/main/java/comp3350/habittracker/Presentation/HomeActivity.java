@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,12 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         user = (User)intent.getSerializableExtra("user");
 
         setTitle(String.format("Logged in as: %s", user.getUsername()));
-
-        try {
-            habitList = new HabitListManager(user);
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
+        habitList = new HabitListManager(user);
 
         txtSelectedDate = findViewById(R.id.txtSelectedDate);
         selectedDate = getCurrentDate(); //get current date formatted
@@ -72,7 +68,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        habitList.updateHabitList();
         //reload everything
         reloadList(selectedDate);
     }
@@ -120,7 +115,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if creating new habit
         if(requestCode == ADD_ACTIVITY_ID && resultCode == Activity.RESULT_OK){
-            habitList.updateHabitList(); //reload the list with the new data
             reloadList(selectedDate); //redisplay the list
         }
     }
@@ -205,6 +199,8 @@ public class HomeActivity extends AppCompatActivity {
                     currentDate = CalendarDateValidator.getCurrentDate();
                 }catch(ParseException e){
                     e.printStackTrace();
+                    UserMessage.fatalError(HomeActivity.this, "Unable to load calendar date");
+                    return;
                 }
 
                 if(selectDate.equals(currentDate)){
@@ -225,6 +221,8 @@ public class HomeActivity extends AppCompatActivity {
             habits = habitList.getUncompletedHabits(date);
         }catch(ParseException e){
             habits = new ArrayList<>();
+            Log.e("Uncompleted habit", e.getMessage());
+            UserMessage.warning(HomeActivity.this, "Unable to load habits");
             e.printStackTrace();
         }
 

@@ -109,7 +109,7 @@ public class AddHabitActivity extends AppCompatActivity {
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else{
-                    builder.setMessage("Unable to save habit!").setTitle("Error!");
+                    builder.setMessage("Unable to save habit! Make sure habit is unique.").setTitle("Error!");
                     AlertDialog alert = builder.create();
                     alert.setTitle("Error!");
                     alert.show();

@@ -26,7 +26,7 @@ public class HabitListManager implements Serializable {
 
         //if in a new week, reset completed counter
         try{
-            completedAmountCheck();
+            completedAmountCheck(habits);
         }catch(ParseException e){
             Log.e("Updating complete amt", e.toString());
             e.printStackTrace();
@@ -44,7 +44,8 @@ public class HabitListManager implements Serializable {
      */
     public ArrayList<Habit> getUncompletedHabits(String date)throws ParseException {
         ArrayList<Habit> returnHabits = new ArrayList<>();
-        for(Habit habit : getHabits()){
+        ArrayList<Habit> habits = getHabits();
+        for(Habit habit : habits){
             //habit is uncompleted if selected date is valid and isn't in current week, and habit completed amount hasn't reached the desired amount
             if(!HabitDateValidator.isCompleted(habit,date) && CalendarDateValidator.isValidDate(date)){
                 returnHabits.add(habit);
@@ -73,7 +74,8 @@ public class HabitListManager implements Serializable {
      * Input: name of the habit to be completed
      */
     public void completeHabit(String name){
-        for(Habit habit: getHabits()){
+        ArrayList<Habit> habits = getHabits();
+        for(Habit habit: habits){
             //find the habit with the right name
             if(habit.getHabitName().equals(name)){
                 //complete the habit and update database
@@ -92,7 +94,8 @@ public class HabitListManager implements Serializable {
      */
     public Habit getHabit(String name){
         Habit returnHabit = null;
-        for(Habit habit: getHabits()){
+        ArrayList<Habit> habits = getHabits();
+        for(Habit habit: habits){
             //find the habit with matching name
             if(habit.getHabitName().equals(name))
                 returnHabit = habit;
@@ -106,8 +109,8 @@ public class HabitListManager implements Serializable {
      * if so reset it's checked amount and update in the database
      *
      */
-    private void completedAmountCheck()throws ParseException{
-        for(Habit habit : getHabits()){
+    private void completedAmountCheck(ArrayList<Habit> habits)throws ParseException{
+        for(Habit habit : habits){
             if(HabitDateValidator.updateCompletedAmount(habit)){
                HabitManager.updateHabit(habit);
             }

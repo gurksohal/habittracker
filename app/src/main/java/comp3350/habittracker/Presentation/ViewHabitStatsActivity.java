@@ -225,7 +225,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //switch to edit note activity
-                Intent nextActivity = new Intent(ViewHabitStatsActivity.this,EditNoteActivity.class);
+                Intent nextActivity = new Intent(ViewHabitStatsActivity.this,CreateNewNoteActivity.class);
                 Note currNote = NotesManager.getNoteByContents(userHabit, selected);
                 nextActivity.putExtra("note",currNote);
                 startActivityForResult(nextActivity,CREATE_NOTE_ACTIVITY_ID);

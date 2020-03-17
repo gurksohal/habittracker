@@ -32,7 +32,6 @@ public class ViewHabitsActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        habitList.updateHabitList();
         //reload everything
         reloadList();
     }
