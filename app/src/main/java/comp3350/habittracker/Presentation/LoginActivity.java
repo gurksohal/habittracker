@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = sharedPreferences.getString("password", "");
 
         //if username and pass are both stored, and info hasn't changed
-        if(username.length() > 0 && password.length() > 0 && UserManager.login(username, password)){
+        if(UserManager.login(username, password) == UserManager.SUCCESS){
             launchHomePage(new User(username));
         }
 
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(username.length() <= 20 && password.length() <= 20 && UserManager.login(username,password)){
+                if(UserManager.login(username,password) == UserManager.SUCCESS){
                     //store username and pass
                     SharedPreferences sharedPreferences = getSharedPreferences("account", 0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
 
                     launchHomePage(new User(username));
-                }else{
+                }else {
                     login.setError("");
                     loginUserName.setError("Incorrect username/password");
                     loginPassword.setError("Incorrect username/password");
