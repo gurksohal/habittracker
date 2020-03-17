@@ -59,7 +59,8 @@ public class HabitStats {
             returnString = "Average";
         }else if(avg == 2){
             returnString = "Good";
-        }else if(notes.size() == 0){
+        }
+        if(notes.size() == 0){
             returnString = "No notes added!";
         }
         return returnString;
