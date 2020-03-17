@@ -56,7 +56,6 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         //config buttons
         configCreateButton();
         configList();
-        loadStats();
     }
 
     @Override
@@ -155,6 +154,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         });
     }
     private void reloadList(){//reload all notes for that habit
+        loadStats(); //reload stats each time
         ListView notesList = (ListView)findViewById(R.id.lvNotes);
         ArrayList<Note> notes =  NotesManager.getNotes(userHabit);
         ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, NotesManager.getNoteText(notes));
@@ -164,6 +164,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
     private void loadStats(){
         HabitStats stats = new HabitStats(userHabit);
         final TableLayout tableLayout = findViewById(R.id.statsTable);
+        tableLayout.removeAllViews();
         ArrayList<String> titles = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
 
@@ -188,7 +189,6 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         for(int i = 0; i < titles.size(); i++){
             final TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
             //create textView
             final TextView text = new TextView(this);
             text.setText(titles.get(i));

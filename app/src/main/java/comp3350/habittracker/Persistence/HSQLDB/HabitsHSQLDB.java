@@ -127,13 +127,22 @@ public class HabitsHSQLDB implements HabitsPersistence {
     public boolean edit(Habit habit, Habit newHabit) {
         boolean returnValue = false;
         try(Connection c = connection()){
-            PreparedStatement st = c.prepareStatement("UPDATE habits SET NAME=?, WEEKAMT=?, TIME=?, SORTTIME=? WHERE name=? AND username=?");
+            PreparedStatement st = c.prepareStatement("UPDATE habits SET NAME=?, WEEKAMT=?, TIME=?, SORTTIME=?, COMPLETEAMT=?, LASTCOMPLETEDATE=?, TOTALCOMPLETEAMT=?, " +
+                    "MON=?, TUES=?, WED=?, THRU=?, FRI=?, SAT=?, SUN=? WHERE name=? AND username=?");
             st.setString(1, newHabit.getHabitName());
             st.setInt(2, newHabit.getWeeklyAmount());
             st.setString(3,newHabit.getTimeOfDay());
             st.setInt(4, newHabit.getSortByDay());
-            st.setString(5, habit.getHabitName());
-            st.setString(6,habit.getUser().getUsername());
+            st.setInt(5, newHabit.getCompletedWeeklyAmount());
+            st.setString(6, newHabit.getLastCompletedDate());
+            st.setInt(7, newHabit.getTotalCompletedAmt());
+            int i = 8;
+            for(int value : newHabit.getDaysOfWeek()){
+                st.setInt(i++,value);
+            }
+
+            st.setString(i++, habit.getHabitName());
+            st.setString(i,habit.getUser().getUsername());
 
             st.executeUpdate();
             st.close();

@@ -48,7 +48,7 @@ public class HabitStats {
         ArrayList<Note> notes = NotesManager.getNotes(habit);
         double sum = 0;
         for(Note note : notes){
-            sum = note.getFeeling();
+            sum += note.getFeeling();
         }
 
         int avg = (int) Math.round(sum/notes.size());
