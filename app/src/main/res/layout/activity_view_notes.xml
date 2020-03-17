@@ -67,15 +67,25 @@
             android:layout_weight="1"
             android:fillViewport="true"
             android:scrollbarStyle="outsideInset"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical|horizontal">
 
-            <TableLayout
-                android:id="@+id/statsTable"
+            <HorizontalScrollView
+                android:id="@+id/activity_horizontalView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:isScrollContainer="true"
-                android:stretchColumns="1"
-                app:layout_constraintBottom_toTopOf="@+id/tvHabitNameView"></TableLayout>
+                android:layout_weight="1"
+                android:fillViewport="true"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical|horizontal">
+
+                <TableLayout
+                    android:id="@+id/statsTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:isScrollContainer="true"
+                    android:stretchColumns="1"
+                    app:layout_constraintBottom_toTopOf="@+id/tvHabitNameView"></TableLayout>
+            </HorizontalScrollView>
         </ScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
