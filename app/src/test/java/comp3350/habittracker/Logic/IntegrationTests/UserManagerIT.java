@@ -7,8 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 import comp3350.habittracker.Logic.UserManager;
 import comp3350.habittracker.Persistence.HSQLDB.UserHSQLDB;
@@ -29,7 +28,7 @@ public class UserManagerIT {
     @Test
     public void testLogin(){
         //able to fetch the user from db
-        assertTrue(UserManager.login("userA", "pass"));
+        assertEquals(UserManager.SUCCESS, UserManager.login("userA", "pass"));
     }
 
     @Test
@@ -37,7 +36,7 @@ public class UserManagerIT {
         UserManager.register("fake", "123");
         //
         //should be able to fetch the newly registered user
-        assertTrue(UserManager.login("fake","123"));
+        assertEquals(UserManager.SUCCESS, UserManager.login("fake","123"));
     }
 
     @Test
@@ -45,9 +44,9 @@ public class UserManagerIT {
         UserManager.changePassword("userA", "update");
 
         //old info shouldn't work anymore
-        assertFalse(UserManager.login("userA", "pass"));
+        assertEquals(UserManager.DB_FAIL, UserManager.login("userA", "pass"));
         //should be able to login with the updated password
-        assertTrue(UserManager.login("userA", "update"));
+        assertEquals(UserManager.SUCCESS, UserManager.login("userA", "update"));
     }
 
     @After
