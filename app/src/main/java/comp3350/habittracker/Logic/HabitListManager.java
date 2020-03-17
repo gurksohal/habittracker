@@ -1,5 +1,7 @@
 package comp3350.habittracker.Logic;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,21 +13,26 @@ import comp3350.habittracker.DomainObjects.User;
 //manage a list of one users habits
 public class HabitListManager implements Serializable {
 
-    private ArrayList<Habit> habits;
     private User user;
 
-    public HabitListManager(User user)throws ParseException {
+    public HabitListManager(User user){
         this.user = user;
-        habits = HabitManager.getHabits(user);
-
-        //if in a new week, reset completed counter
-        completedAmountCheck();
-        Collections.sort(habits); //sort on intitial creation
     }
 
 
     //return a list of all the habits for the user
     public ArrayList<Habit> getHabits(){
+        ArrayList<Habit> habits = HabitManager.getHabits(user);
+
+        //if in a new week, reset completed counter
+        try{
+            completedAmountCheck();
+        }catch(ParseException e){
+            Log.e("Updating complete amt", e.toString());
+            e.printStackTrace();
+        }
+
+        Collections.sort(habits); //sort on intitial creation
         return habits;
     }
 
@@ -37,7 +44,7 @@ public class HabitListManager implements Serializable {
      */
     public ArrayList<Habit> getUncompletedHabits(String date)throws ParseException {
         ArrayList<Habit> returnHabits = new ArrayList<>();
-        for(Habit habit : habits){
+        for(Habit habit : getHabits()){
             //habit is uncompleted if selected date is valid and isn't in current week, and habit completed amount hasn't reached the desired amount
             if(!HabitDateValidator.isCompleted(habit,date) && CalendarDateValidator.isValidDate(date)){
                 returnHabits.add(habit);
@@ -66,7 +73,7 @@ public class HabitListManager implements Serializable {
      * Input: name of the habit to be completed
      */
     public void completeHabit(String name){
-        for(Habit habit: habits){
+        for(Habit habit: getHabits()){
             //find the habit with the right name
             if(habit.getHabitName().equals(name)){
                 //complete the habit and update database
@@ -85,23 +92,12 @@ public class HabitListManager implements Serializable {
      */
     public Habit getHabit(String name){
         Habit returnHabit = null;
-        for(Habit habit: habits){
+        for(Habit habit: getHabits()){
             //find the habit with matching name
             if(habit.getHabitName().equals(name))
                 returnHabit = habit;
         }
         return returnHabit;
-    }
-
-    /*
-     * updateHabitList
-     *
-     */
-    public void updateHabitList(){
-        //update the arraylist with a new instance from the database
-        habits = HabitManager.getHabits(user);
-        //sort the list
-        Collections.sort(habits);
     }
 
     /*
@@ -111,13 +107,10 @@ public class HabitListManager implements Serializable {
      *
      */
     private void completedAmountCheck()throws ParseException{
-        for(Habit habit : habits){
+        for(Habit habit : getHabits()){
             if(HabitDateValidator.updateCompletedAmount(habit)){
                HabitManager.updateHabit(habit);
             }
         }
     }
-
-
-
 }
