@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/manageHabit"
-        android:title="Manage Habits"
+        android:title="Habits"
         app:showAsAction="never" />
 
     <item android:id="@+id/changePass"

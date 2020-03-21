@@ -110,7 +110,14 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         }
 
         if(item.getItemId() == R.id.share){
-            Toast.makeText(ViewHabitStatsActivity.this, "SHARE",Toast.LENGTH_LONG).show();
+            HabitStats stats = new HabitStats(userHabit);
+
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Stats for: " + userHabit.getHabitName());
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, stats.getShareString());
+            startActivity(Intent.createChooser(sharingIntent,"Share habit stats to..."));
             return true;
         }
         return super.onOptionsItemSelected(item);

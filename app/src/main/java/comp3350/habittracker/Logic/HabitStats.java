@@ -73,4 +73,18 @@ public class HabitStats {
     public boolean isCompletedThisweek(){
         return habit.getCompletedWeeklyAmount() >= habit.getWeeklyAmount();
     }
+
+    public String getShareString(){
+        String completedString = "\n\n Habit completed for this week :)";
+        String shareBody = String.format("%s Habit Stats:\n",habit.getHabitName());
+        shareBody += String.format("Completed %d out of %d times this week\n", habit.getCompletedWeeklyAmount(), habit.getWeeklyAmount());
+        shareBody += String.format("Average feeling: %s\n", getAvgNoteFeeling());
+        shareBody += String.format("Total times completed: %d\n", getTimesCompleted());
+        shareBody += String.format("Favourite day to complete: %s", getFavDay());
+
+        if(isCompletedThisweek()){
+            shareBody += completedString;
+        }
+        return shareBody;
+    }
 }
