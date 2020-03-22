@@ -193,6 +193,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         titles.add("Favourite Day to Complete:");
         values.add(stats.getFavDay());
 
+
         for(int i = 0; i < titles.size(); i++){
             final TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
