@@ -11,9 +11,9 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Presentation.AddHabitActivity"></activity>
+        <activity android:name=".Presentation.ViewHabitsActivity"></activity>
         <activity android:name=".Presentation.CreateNewNoteActivity"></activity>
-        <activity android:name=".Presentation.EditNoteActivity"></activity>
-        <activity android:name=".Presentation.ViewNotesActivity"></activity>
+        <activity android:name=".Presentation.ViewHabitStatsActivity"></activity>
         <activity android:name=".Presentation.RegisterActivity"></activity>
         <activity android:name=".Presentation.HomeActivity"></activity>
         <activity android:name=".Presentation.ChangePasswordActivity"></activity>

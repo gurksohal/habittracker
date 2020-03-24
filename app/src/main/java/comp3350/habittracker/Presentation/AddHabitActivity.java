@@ -100,13 +100,16 @@ public class AddHabitActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 if(editHabit != null && HabitManager.editHabit(editHabit,habitName,timesPerWeek,user,schedule,scheduleAssoc)){
+                    int perWeek = Integer.parseInt(timesPerWeek.substring(0,1));
+                    Habit newHabit = new Habit(habitName, perWeek, editHabit.getCompletedWeeklyAmount(), user, schedule, scheduleAssoc);
+                    intent.putExtra("habit", newHabit);
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else if(HabitManager.saveNewHabit(habitName,timesPerWeek,user,schedule,scheduleAssoc)){ //if habit was saved, close the page
                     setResult(RESULT_OK,intent);
                     finish(); //close activity, returns back to the home screen
                 }else{
-                    builder.setMessage("Unable to save habit!").setTitle("Error!");
+                    builder.setMessage("Unable to save habit! Make sure habit is unique.").setTitle("Error!");
                     AlertDialog alert = builder.create();
                     alert.setTitle("Error!");
                     alert.show();

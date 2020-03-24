@@ -2,6 +2,7 @@ package comp3350.habittracker.DomainObjects;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import comp3350.habittracker.Logic.Utils;
@@ -16,6 +17,10 @@ public class Habit implements Comparable<Habit>, Serializable {
     private User user; //user who the habit belongs too
     private String timeOfDay;
     private int sortByDay; //1==Morning, 2==Afternoon, 3==Evening, 4==Night
+    private int totalCompletedAmt;
+    private String createdDate;
+    //index 0 = sunday, 6 = saturday
+    private int[] daysOfWeek;
 
     public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num) {
         habitName = name;
@@ -24,9 +29,12 @@ public class Habit implements Comparable<Habit>, Serializable {
         this.user = user;
         timeOfDay = time;
         sortByDay = num;
+        createdDate = Utils.formatDate(new Date());
+        totalCompletedAmt = 0;
+        daysOfWeek = new int[]{0,0,0,0,0,0,0};
     }
 
-    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num, String date) {
+    public Habit(String name, int weeklyAmt, int completedWeekAmt, User user, String time,int num,String date, String createDate, int completeAmt, int[] array) {
         habitName = name;
         weeklyAmount = weeklyAmt;
         completedWeeklyAmount = completedWeekAmt;
@@ -34,6 +42,21 @@ public class Habit implements Comparable<Habit>, Serializable {
         timeOfDay = time;
         sortByDay = num;
         lastCompletedDate = date;
+        createdDate = createDate;
+        totalCompletedAmt = completeAmt;
+        daysOfWeek = array;
+    }
+
+    public int[] getDaysOfWeek(){
+        return daysOfWeek;
+    }
+
+    public int getTotalCompletedAmt(){
+        return totalCompletedAmt;
+    }
+
+    public String getCreatedDate(){
+        return createdDate;
     }
 
     public String getHabitName() {
@@ -82,6 +105,12 @@ public class Habit implements Comparable<Habit>, Serializable {
         lastCompletedDate = Utils.formatDate(new Date());
         //increase completed amount
         completedWeeklyAmount++;
+        totalCompletedAmt++;
+        Calendar calendar = Calendar.getInstance();
+        //keep track of what day habit was completed
+        //array is indexed with 0 being sunday and 6 being saturday
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        daysOfWeek[day-1]++;
     }
 
     public User getUser() {

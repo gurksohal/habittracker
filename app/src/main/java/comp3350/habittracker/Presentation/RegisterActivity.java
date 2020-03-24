@@ -42,9 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(username)) {
                     userNameEdit.setError("Please enter your username");
                     return;
-                }else if(username.length() > 20){
-                    userNameEdit.setError("Max length of username is 20! Current name is over that limit");
-                    return;
                 }
 
                 EditText passwordEdit = findViewById(R.id.passwordRegister);
@@ -52,12 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(password)) {
                     passwordEdit.setError("Please enter your password");
                     return;
-                }else if(password.length() > 20){
-                    passwordEdit.setError("Max length of password is 20! Current password is over that limit");
-                    return;
                 }
 
-                if(UserManager.register(username,password)){
+                if(UserManager.register(username,password) == UserManager.SUCCESS){
                     //store info for next time
                     SharedPreferences sharedPreferences = getSharedPreferences("account", 0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -65,7 +59,12 @@ public class RegisterActivity extends AppCompatActivity {
                     editor.putString("password", password);
 
                     launchHomePage(new User(username));
-                }else{
+                }else if(UserManager.register(username,password) == UserManager.INPUT_FAIL){
+                    UserMessage.warning(RegisterActivity.this, "Invalid input");
+                    userNameEdit.setError("Make sure username is 20 or less characters");
+                    passwordEdit.setError("Make sure password is 20 or less characters");
+                }
+                else{
                     UserMessage.fatalError(RegisterActivity.this, "Unable to register user.");
                 }
             }

@@ -71,7 +71,7 @@ public class NotesManager {
         boolean returnValue = false;
         //only add note if text isn't empty and note text is unique for this habit
         if(text.length() > 0 && getNoteByContents(habit, text) == null){
-            Note note = new Note(text, feel, date, habit);
+            Note note = new Note(text.trim(), feel, date, habit);
             notePersistence.addNote(note);
             returnValue = true;
         }
@@ -87,11 +87,16 @@ public class NotesManager {
      */
     public static boolean updateNote(Note oldNote, String text, int feel, String date){
         boolean returnValue = false;
+        notePersistence.deleteNote(oldNote); //ignore the old note from uniqueness check
         //text cant be empty and the new text has to be unique
         if(text.length() > 0 && getNoteByContents(oldNote.getHabit(), text) == null){
-            Note note = new Note(text, feel, date, oldNote.getHabit());
+            notePersistence.addNote(oldNote); //readd it for it to be updated
+            Note note = new Note(text.trim(), feel, date, oldNote.getHabit());
             notePersistence.editNote(oldNote,note);
             returnValue = true;
+        }else{
+            //can't update note, re add the deleted note to the db
+            notePersistence.addNote(oldNote);
         }
         return returnValue;
     }

@@ -70,11 +70,4 @@ public class HabitListManagerTests {
         assertEquals("return H0 habit",habits.get(0),habitListManager.getHabit("h0"));
     }
 
-    @Test
-    public void testUpdateHabitList()throws ParseException{
-        habitListManager.updateHabitList();
-        //the order of the two lists shouldn't match
-        assertNotEquals("order should be differnt because of time of day",habits,(habitListManager.getUncompletedHabits(formatter.format(new Date()))));
-    }
-
 }
