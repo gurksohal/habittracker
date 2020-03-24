@@ -36,18 +36,18 @@ public class UserAccountTests {
 
     @Before
     public void setup(){
+        Intents.init();
         SystemTestUtils.cleanUp();
-        SystemTestUtils.setTestDB();
     }
 
     @After
     public void tearDown(){
+        Intents.release();
         SystemTestUtils.cleanUp();
     }
 
     @Test
     public void testSuccessLogin(){
-        Intents.init();
         //userA already exists by default, so we can use that test login
 
         //type in username and password
@@ -57,7 +57,6 @@ public class UserAccountTests {
         onView(withId(R.id.loginButton)).perform(click());
         //make sure HomeActivity has been intended
         intended(hasComponent(HomeActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -76,7 +75,6 @@ public class UserAccountTests {
     @Test
     public void testLogout(){
         //follow the same steps as for success login test
-        Intents.init();
         //userA already exists by default, so we can use that test login
 
         //type in username and password
@@ -93,13 +91,11 @@ public class UserAccountTests {
         onView(withText("Logout")).perform(click());
         //make sure loginActivity was intended
         intended(hasComponent(LoginActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
     public void testChangePassword(){
         //follow the same steps as for success login test
-        Intents.init();
         //userA already exists by default, so we can use that test login
 
         //type in username and password
@@ -117,11 +113,10 @@ public class UserAccountTests {
         //make sure changepassword activity was intended
         intended(hasComponent(ChangePasswordActivity.class.getName()));
         //enter new pass
-        onView(withId(R.id.newPassword)).perform(typeText("pass1"));
+        onView(withId(R.id.newPassword)).perform(typeText("pass"));
         //click changepass button
         onView(withId(R.id.changeButton)).perform(click());
         //make sure HomeActivity has been intended
         intended(hasComponent(HomeActivity.class.getName()));
-        Intents.release();
     }
 }

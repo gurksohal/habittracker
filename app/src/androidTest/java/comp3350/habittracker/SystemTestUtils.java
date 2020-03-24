@@ -18,15 +18,11 @@ public class SystemTestUtils {
         editor.commit();
     }
 
-    //set db to default, so its same across all instances
-    public static void setTestDB(){
-        File dataDirectory = getApplicationContext().getDir("db", Context.MODE_PRIVATE);
-        File[] files = dataDirectory.listFiles();
-        if(files != null){
-            for(File file : files){
-                file.delete();
-            }
-        }
-        DBUtils.copyDatabaseToDevice(getApplicationContext());
+    public static void setAccount(String username, String pass){
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("account", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("username", username);
+        editor.putString("password", pass);
+        editor.commit();
     }
 }
