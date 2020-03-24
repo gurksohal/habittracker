@@ -30,6 +30,7 @@ import comp3350.habittracker.Logic.Utils;
 import comp3350.habittracker.Persistence.HabitsPersistence;
 import comp3350.habittracker.Presentation.LoginActivity;
 
+//test being able to view stats
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestHabitStats {

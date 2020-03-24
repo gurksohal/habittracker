@@ -168,7 +168,11 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         notesList.setAdapter(adapter);
     }
 
+    //create table to show stats
     private void loadStats(){
+        //unable to get individual row by id, if the rows are premade in the activity.xml,
+        //so the table rows are create during load
+
         HabitStats stats = new HabitStats(userHabit);
         final TableLayout tableLayout = findViewById(R.id.statsTable);
         tableLayout.removeAllViews();
@@ -193,7 +197,7 @@ public class ViewHabitStatsActivity extends AppCompatActivity {
         titles.add("Favourite Day to Complete:");
         values.add(stats.getFavDay());
 
-
+        //create rows to display stats
         for(int i = 0; i < titles.size(); i++){
             final TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));

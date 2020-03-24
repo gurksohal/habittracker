@@ -1,9 +1,7 @@
 package comp3350.habittracker.Presentation;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,12 +10,6 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import comp3350.habittracker.Application.Main;
 import comp3350.habittracker.Application.Services;
 import comp3350.habittracker.DomainObjects.User;
 import comp3350.habittracker.Logic.HabitManager;
@@ -33,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_view);
         DBUtils.copyDatabaseToDevice(getApplicationContext());
-        loadManagers();
+        loadManagers(); //setup all the mangers with instances to the db
 
         SharedPreferences sharedPreferences = getSharedPreferences("account", 0);
         String username = sharedPreferences.getString("username", ""); //get username if its stored, otherwise default to empty string

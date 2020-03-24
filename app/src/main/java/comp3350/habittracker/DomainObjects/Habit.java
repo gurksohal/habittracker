@@ -107,6 +107,8 @@ public class Habit implements Comparable<Habit>, Serializable {
         completedWeeklyAmount++;
         totalCompletedAmt++;
         Calendar calendar = Calendar.getInstance();
+        //keep track of what day habit was completed
+        //array is indexed with 0 being sunday and 6 being saturday
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         daysOfWeek[day-1]++;
     }

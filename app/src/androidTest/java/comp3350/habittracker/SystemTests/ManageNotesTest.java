@@ -35,6 +35,7 @@ import comp3350.habittracker.Persistence.NotePersistence;
 import comp3350.habittracker.Presentation.LoginActivity;
 import comp3350.habittracker.R;
 
+//add adding, deleting and editing notes
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class ManageNotesTest {

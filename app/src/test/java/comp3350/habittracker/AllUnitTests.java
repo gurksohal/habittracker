@@ -9,7 +9,11 @@ import comp3350.habittracker.Logic.CalendarDateValidatorTests;
 import comp3350.habittracker.Logic.HabitDateValidatorTests;
 import comp3350.habittracker.Logic.HabitListManagerTests;
 import comp3350.habittracker.Logic.HabitManagerTests;
+import comp3350.habittracker.Logic.HabitStats;
+import comp3350.habittracker.Logic.HabitStatsTests;
 import comp3350.habittracker.Logic.NotesManagerTests;
+import comp3350.habittracker.Logic.UserManager;
+import comp3350.habittracker.Logic.UserManagerTests;
 
 //run only unit tests
 @RunWith(Suite.class)
@@ -20,7 +24,9 @@ import comp3350.habittracker.Logic.NotesManagerTests;
         HabitListManagerTests.class,
         HabitManagerTests.class,
         HabitTests.class,
-        NoteTests.class
+        NoteTests.class,
+        HabitStatsTests.class,
+        UserManagerTests.class
 })
 public class AllUnitTests {
 }

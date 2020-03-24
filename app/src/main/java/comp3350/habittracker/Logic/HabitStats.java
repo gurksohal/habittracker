@@ -13,12 +13,21 @@ public class HabitStats {
         habit = h;
     }
 
+    /*
+     * getCompletedThisWeek
+     * return a string formatted as: {Completed amt} (percent of completed this week)
+     */
     public String getCompletedThisWeek(){
         int toComplete = habit.getWeeklyAmount();
         int completed = habit.getCompletedWeeklyAmount();
         return completed + "(" + (completed/toComplete)*100 + "%)";
     }
 
+    /*
+     * getLastCompleteDate
+     * return the date when this habit was last completed, if it hasn't been completed return
+     * "Never found"
+     */
     public String getLastCompleteDate(){
         String returnString = habit.getLastCompletedDate();
         if(returnString == null){
@@ -27,11 +36,17 @@ public class HabitStats {
         return returnString;
     }
 
+    /*
+     * getFavDay
+     * return the day in which this habit has been completed the most
+     */
     public String getFavDay(){
         String[] days = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         int maxIndex = 0;
         String returnString = "None";
+        //get array representing times completed for each day
         int[] array = habit.getDaysOfWeek();
+        //find the index of the max number
         for(int i = 1; i < array.length; i++){
             if(array[i] > array[maxIndex]){
                 maxIndex = i;
@@ -39,14 +54,20 @@ public class HabitStats {
         }
 
         if(array[maxIndex] > 0){
+            //get the day represented by the index
             returnString = days[maxIndex];
         }
         return returnString;
     }
 
+    /*
+     * getAvgNoteFeeling
+     * return a string representing average mood
+     */
     public String getAvgNoteFeeling(){
         ArrayList<Note> notes = NotesManager.getNotes(habit);
         double sum = 0;
+        //sum
         for(Note note : notes){
             sum += note.getFeeling();
         }
@@ -70,6 +91,8 @@ public class HabitStats {
         return habit.getTotalCompletedAmt();
     }
 
+    //habit is completed for current week,
+    //if amt completed this week is equal to the desired weekly amt
     public boolean isCompletedThisweek(){
         return habit.getCompletedWeeklyAmount() >= habit.getWeeklyAmount();
     }

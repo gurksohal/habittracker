@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private FloatingActionButton btnAddHabit;
     private String selectedDate;
 
-    private User user; //fake user
+    private User user;
     private HabitListManager habitList;
 
     @Override

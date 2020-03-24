@@ -14,6 +14,7 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 public class SystemTestUtils {
 
+    //remove stored account info, so app launches to the login screen
     public static void cleanUp(){
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("account", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -21,6 +22,7 @@ public class SystemTestUtils {
         editor.commit();
     }
 
+    //store login info, so app bypass login screen on launch
     public static void setAccount(String username, String pass){
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("account", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -29,6 +31,7 @@ public class SystemTestUtils {
         editor.commit();
     }
 
+    //clear db for test user
     public static void tearDown(){
         HabitsPersistence habitsPersistence = Services.getHabitsPersistence();
         ArrayList<Habit> habitArrayList = habitsPersistence.getUserHabits(new User("userA"));
