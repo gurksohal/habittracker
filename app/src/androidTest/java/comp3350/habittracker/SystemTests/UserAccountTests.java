@@ -1,6 +1,9 @@
-package comp3350.habittracker;
+package comp3350.habittracker.SystemTests;
+
+import android.content.Intent;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -26,6 +29,7 @@ import org.junit.runner.RunWith;
 import comp3350.habittracker.Presentation.ChangePasswordActivity;
 import comp3350.habittracker.Presentation.HomeActivity;
 import comp3350.habittracker.Presentation.LoginActivity;
+import comp3350.habittracker.R;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -36,27 +40,28 @@ public class UserAccountTests {
 
     @Before
     public void setup(){
-        Intents.init();
+        activityTestRule.finishActivity();
         SystemTestUtils.cleanUp();
+        activityTestRule.launchActivity(new Intent());
     }
 
     @After
     public void tearDown(){
-        Intents.release();
         SystemTestUtils.cleanUp();
     }
 
     @Test
     public void testSuccessLogin(){
         //userA already exists by default, so we can use that test login
-
+        Intents.init();
         //type in username and password
-        onView(withId(R.id.userNameLogin)).perform(typeText("userA"));
+        onView(ViewMatchers.withId(R.id.userNameLogin)).perform(typeText("userA"));
         onView(withId(R.id.passwordLogin)).perform(typeText("pass"));
         //click login
         onView(withId(R.id.loginButton)).perform(click());
         //make sure HomeActivity has been intended
         intended(hasComponent(HomeActivity.class.getName()));
+        Intents.release();
     }
 
     @Test
@@ -76,7 +81,7 @@ public class UserAccountTests {
     public void testLogout(){
         //follow the same steps as for success login test
         //userA already exists by default, so we can use that test login
-
+        Intents.init();
         //type in username and password
         onView(withId(R.id.userNameLogin)).perform(typeText("userA"));
         onView(withId(R.id.passwordLogin)).perform(typeText("pass"));
@@ -91,13 +96,14 @@ public class UserAccountTests {
         onView(withText("Logout")).perform(click());
         //make sure loginActivity was intended
         intended(hasComponent(LoginActivity.class.getName()));
+        Intents.release();
     }
 
     @Test
     public void testChangePassword(){
         //follow the same steps as for success login test
         //userA already exists by default, so we can use that test login
-
+        Intents.init();
         //type in username and password
         onView(withId(R.id.userNameLogin)).perform(typeText("userA"));
         onView(withId(R.id.passwordLogin)).perform(typeText("pass"));
@@ -118,5 +124,6 @@ public class UserAccountTests {
         onView(withId(R.id.changeButton)).perform(click());
         //make sure HomeActivity has been intended
         intended(hasComponent(HomeActivity.class.getName()));
+        Intents.release();
     }
 }
